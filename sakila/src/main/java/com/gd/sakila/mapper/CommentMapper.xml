@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gd.sakila.mapper.CommentMapper">
+
+	<!-- 게시글삭제 transaction-->
+	<delete id ="deleteCommentByBoard" 
+			parameterType = "Integer"> 
+			DELETE FROM 
+				comment
+			WHERE 
+				board_id = #{boardId}
+	</delete>
+
+	 <!-- 댓글하나만 -->
+	<delete id ="deleteCommentByCommentId" 
+			parameterType = "Integer">
+	
+			DELETE FROM 
+				comment
+			WHERE 
+				comment_id = #{commentId}
+	</delete>
+
+
+	<insert id="insertComment"
+			parameterType="com.gd.sakila.vo.Comment">
+			
+			INSERT INTO
+				comment
+				(staff_id, content, insert_date, board_id)
+				VALUES
+				(${staffId}, ${content}, now(), ${boardId})
+	</insert>
+
+
+	<select id ="selectCommentListByBoard"
+			resultType="com.gd.sakila.vo.Comment"
+			parameterType="Integer"> <!--parameterType="int" 뭐가 다른가--> <!-- username가져오기... -->
+			
+			SELECT 
+			comment_id commentId,
+			staff_id staffId,
+			content content,
+			insert_date insertDate
+		FROM
+			comment
+		Where
+			board_id = ${boardId}
+		Order BY
+			insert_date DESC
+	</select>
+	
+
+</mapper>

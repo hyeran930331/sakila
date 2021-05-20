@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gd.sakila.mapper.BoardMapper"> <!-- mapper이름 오류 -->
+
+	<select id="selectBoardList" 
+			resultType="com.gd.sakila.vo.Board" 
+			parameterType="com.gd.sakila.vo.Page">
+		SELECT 
+			board_id boardId,
+			board_title boardTitle,
+			insert_date insertDate
+		FROM
+			board
+		<where>
+			<if test="searchWord != null">
+				board_title LIKE CONCAT('%',#{searchWord},'%')
+			</if>
+		</where>
+		Order BY
+			board_id DESC
+		LIMIT
+			#{beginRow}, #{rowPerPage}
+	</select>
+
+	<select id="selectBoardTotal"
+			parameterType="String"
+			resultType="Integer">
+		SELECT COUNT(*) <!-- 집계함수의 별표는 대표칼럽 = 참조값, 유사열유사칼럼 -->
+		FROM board
+		<where>
+			<if test="searchWord !=null">	
+				board_title LIKE CONCAT('%',#{searchWord},'%')
+			</if>
+		</where>
+	</select>
+
+	<select id="selectBoardOne" 
+			parameterType="Integer"
+			resultType="java.util.Map">
+		SELECT 
+			board_id boardId,
+			board_title boardTitle,
+			board_content boardContent,
+			insert_date insertDate,
+			s.username username,
+			b.staff_id staffId
+		FROM
+			board b INNER JOIN staff s
+			ON b.staff_id = s.staff_id
+		WHERE board_id = #{boardId}
+
+	</select>
+
+	<insert id="insertBoard" 
+			parameterType="com.gd.sakila.vo.Board">
+		INSERT INTO board( 
+			staff_id, board_pw, board_title, board_content, insert_date
+		) VALUES (
+			#{staffId}, PASSWORD(#{boardPw}), #{boardTitle}, #{boardContent}, now()
+		)
+	</insert>
+	
+	<delete id="deleteBoard"
+			parameterType="com.gd.sakila.vo.Board">
+		DELETE FROM board 
+		WHERE board_id = #{boardID} 
+		AND board_pw = PASSWORD(#{boardPW})
+	</delete>
+	
+	<update id="updateBoard" 
+			parameterType="com.gd.sakila.vo.Board">
+		UPDATE board
+		SET 
+			board_title = #{boardTitle},
+			board_content = #{boardContent}
+		WHERE 
+			board_id = #{boardId}
+			AND board_pw = PASSWORD(#{boardPw})
+	</update>
+</mapper>
