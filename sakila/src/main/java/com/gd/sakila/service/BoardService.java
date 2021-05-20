@@ -1,20 +1,25 @@
 package com.gd.sakila.service;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.gd.sakila.mapper.BoardMapper;
+import com.gd.sakila.mapper.BoardfileMapper;
 import com.gd.sakila.mapper.CommentMapper;
 import com.gd.sakila.vo.Board;
+import com.gd.sakila.vo.BoardForm;
+import com.gd.sakila.vo.Boardfile;
 import com.gd.sakila.vo.Comment;
 import com.gd.sakila.vo.Page;
 
-import jdk.internal.org.jline.utils.Log;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -22,8 +27,10 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional //try catch, 자동 rollback
 public class BoardService {
 	@Autowired	BoardMapper boardMapper;
+	@Autowired BoardfileMapper boardfileMapper;
 	@Autowired CommentMapper commentMapper;
 	
+	//수정
 	public int modifyBoard(Board board){
 		log.debug("▶▶▶▶▶▶ modifyBoard param: "+ board.toString());
 		return boardMapper.updateBoard(board);
@@ -52,9 +59,48 @@ public class BoardService {
 		return commentRow+boardRow;
 	}
 	
-	public int addBoard(Board board) {
-		log.debug("▶▶▶▶▶▶addBoard param: "+ board.toString());
-		return boardMapper.insertBoard(board);
+	//추가
+	public void addBoard(BoardForm boardForm) {
+		log.debug("▶▶▶▶▶▶addBoard param: "+ boardForm); //이건 왜toString()안쓰지?
+		//1. 받아온 boardForm에서 private board추출
+		Board board =boardForm.getBoard();
+		log.debug("▶▶▶▶▶▶ board : " + board.getBoardId());
+		// board추출값을 가지고 insertBoard를 만듦.
+		boardMapper.insertBoard(board);
+		log.debug("▶▶▶▶▶▶ board : " + board.getBoardId());
+		
+		//2. 파일 리스트
+		List<MultipartFile> list = boardForm.getBoardfile();
+		if (list != null) {
+			for(MultipartFile f : list) { //리스트를 가져와서 반복한다.
+				Boardfile boardfile = new Boardfile(); //
+				boardfile.setBoardId(board.getBoardId()); //롬북덕분에 getBoardId자동
+				// test.txt / test.TXT 대소문자 구분 -> newname.txt
+				String originalFilename = f.getOriginalFilename(); //원래파일의 이름을 가진다. ex kang.hye.txt
+				int p = originalFilename.lastIndexOf("."); // 배열의 요소"."가 가장 왼쪽에 있는 자릿수. ex kang.hye"." = 8
+				//인덱스. 기본값은 +Infinity입니다. fromIndex >= str.length인 경우 모든 문자열을 탐색합니다. 
+				//fromIndex < 0인 경우엔 0을 지정한 것과 동일합니다.
+				//'abab'.lastIndexOf('ab', 2)는 0이 아니고 2를 반환합니다. fromIndex는 탐색의 시작점만 제한하기 때문입니다.
+				String ext = originalFilename.substring(p).toLowerCase(); //숫자 p 뒤에서부터 잘라서~ 소문자 넣기 ex= ".txt" 확장자
+				String prename = UUID.randomUUID().toString().replace("-"," "); //API UUID = 겹칠수 없는 문자열x = 유효아이디
+				
+				String filename = prename+ext;
+				boardfile.setBoardfileName(filename); //중복
+				boardfile.setBoardfileSize(f.getSize());
+				boardfile.setBoardfileType(f.getContentType());
+				//2-1.
+				//boardfileMapper.insertBoardfile(boardfile);
+				
+				
+				//2-2.파일 저장
+				try {
+				f.transferTo( new File("D:\\upload\\"+ filename));
+				} catch (Exception e) {
+					throw new RuntimeException();
+				}
+			}
+		}
+		
 	}
 	
 	//상세보기+댓글목록

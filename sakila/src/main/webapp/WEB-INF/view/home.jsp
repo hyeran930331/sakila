@@ -60,11 +60,11 @@
 		</form>
 	</c:if>
 	
-	
+	<a href="${pageContext.request.contextPath}/admin/getBoardList">게시판 보기</a>
 	
 	<!-- 로그온시 -->
 	<c:if test="${loginStaff!= null}">
-		<a href="${pageContext.request.contextPath}/admin/getBoardList">게시판 보기</a>
+
 		<br>
 		<a href="${pageContext.request.contextPath}/admin/logout">로그아웃</a>
 	</c:if>

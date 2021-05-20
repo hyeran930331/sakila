@@ -19,7 +19,7 @@ public class HomeController {
 	
 	@PostMapping({"/login"})
 	public String login(HttpSession session, Staff staff) { //servlet 세션을 직접사용. 컨트롤러 메서드의 매개변수는 DI대상
-		log.debug ("login() parm staff "+staff.toString());
+		log.debug ("login() parm staff "+staff.toString()); 
 		
 		Staff loginStaff = staffService.login(staff);
 

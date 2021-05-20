@@ -7,6 +7,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.gd.sakila.vo.Board;
+import com.gd.sakila.vo.Boardfile;
 import com.gd.sakila.vo.Page;
 
 @Mapper
@@ -17,4 +18,6 @@ public interface BoardMapper {
 	int insertBoard(Board board);
 	int deleteBoard(Board board);
 	int updateBoard(Board board);
+	
+	void insertBoardfile(Boardfile boardfile);
 }

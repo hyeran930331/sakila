@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.gd.sakila.service.BoardService;
 import com.gd.sakila.service.CommentService;
 import com.gd.sakila.vo.Board;
+import com.gd.sakila.vo.BoardForm;
 import com.gd.sakila.vo.Comment;
 
 import lombok.extern.slf4j.Slf4j;
@@ -61,21 +62,21 @@ public class BoardController {
 		System.out.println("▷▷▷▷▷▷ post remove 끝");
 		return "redirect:/admin/getBoardList";
 	}
-	
+
 	@GetMapping("/addBoard")
 	public String addBoard() { //동일한 매핑 - 오버로딩 get post
 		return "addBoard"; 
 	}
 	@PostMapping("/addBoard")
-	public String addBoard(Board board) { //커멘드객체 폼 밸유오브젝트vs도메인
-		//System.out.println("▷▷▷▷▷ Post boardOne : "+map);
-		boardService.addBoard(board);
+	public String addBoard(BoardForm boardForm) { //커멘드객체 폼 밸유오브젝트vs도메인
+		System.out.println("▷▷▷▷▷ Post addboard : "+boardForm.toString());
+		boardService.addBoard(boardForm); //board에서 boardForm으로 바꿈 -> service
 		System.out.println("▷▷▷▷▷▷ post add 끝");
 		return "redirect:/admin/getBoardList";//리턴타입이 redirect: 이면 sendredirect로 처리
 		//retrun "view"는 view를 보여주는것
 		//return "redirect:/view"는 view주소로 url 요청을 다시하는것
 	}
-
+	
 	@GetMapping("/getBoardOne")
 	public String getBoardOne(Model model, @RequestParam(value="boardId", required=true) int boardId) {
 		Map<String, Object> map = boardService.getBoardOne(boardId);

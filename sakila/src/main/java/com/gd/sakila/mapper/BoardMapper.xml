@@ -53,6 +53,10 @@
 
 	<insert id="insertBoard" 
 			parameterType="com.gd.sakila.vo.Board">
+		<selectKey resultType="int"
+					keyProperty="boardId" order="AFTER">
+			SELECT LAST_INSERT_IDD()
+		</selectKey>
 		INSERT INTO board( 
 			staff_id, board_pw, board_title, board_content, insert_date
 		) VALUES (
