@@ -26,19 +26,19 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Transactional //try catch, 자동 rollback
 public class BoardService {
-	@Autowired	BoardMapper boardMapper;
+	@Autowired BoardMapper boardMapper;
 	@Autowired BoardfileMapper boardfileMapper;
 	@Autowired CommentMapper commentMapper;
 	
 	//수정
 	public int modifyBoard(Board board){
-		log.debug("▶▶▶▶▶▶ modifyBoard param: "+ board.toString());
+		log.debug("ⓢBoardServiceⓢ modifyBoard param: "+ board.toString());
 		return boardMapper.updateBoard(board);
 	}
 	
 	//삭제
 	public int removeBoard(Board board) {
-		log.debug("▶▶▶▶▶▶ removeBoard param: "+ board.toString());
+		log.debug("ⓢBoardServiceⓢ removeBoard param: "+ board.toString());
 		//1게시글 삭제
 		int boardRow = boardMapper.deleteBoard(board);
 		
@@ -49,7 +49,7 @@ public class BoardService {
 		//2 게시글 삭제 (FK 외래키 지정이 없기때문에),
 		//2-1 댓글삭제 (board_id 외래키 noAction)
 		int commentRow = commentMapper.deleteCommentByBoard(board.getBoardId()); //게시글삭제시
-		log.debug("▶▶▶▶▶▶ removeBoard commentMapper: "+ commentRow);
+		log.debug("ⓢBoardServiceⓢ removeBoard commentMapper: "+ commentRow);
 
 		/* board_id 외래키 CasCast
 		if (boardRow == 0) {
@@ -73,19 +73,19 @@ public class BoardService {
 		//2-2 파일도 삭제(파일 table의 행을 삭제)
 		int boardfileRow = boardfileMapper.deleteBoardfileByBoardId(board.getBoardId());
 
-		log.debug("▶▶▶▶▶▶removeBoard deleteBoard: "+ boardRow);
+		log.debug("ⓢBoardServiceⓢremoveBoard deleteBoard: "+ boardRow);
 		return commentRow+boardRow;
 	}
 	
 	//추가
 	public void addBoard(BoardForm boardForm) {
-		log.debug("▶▶▶▶▶▶addBoard param: "+ boardForm); //이건 왜toString()안쓰지?
+		log.debug("ⓢBoardServiceⓢaddBoard param: "+ boardForm); //이건 왜toString()안쓰지?
 		//1. 받아온 boardForm에서 private board추출
 		Board board =boardForm.getBoard();
-		log.debug("▶▶▶▶▶▶ board : " + board.getBoardId());
+		log.debug("ⓢBoardServiceⓢ board : " + board.getBoardId());
 		// board추출값을 가지고 insertBoard를 만듦.
 		boardMapper.insertBoard(board);
-		log.debug("▶▶▶▶▶▶ board : " + board.getBoardId());
+		log.debug("ⓢBoardServiceⓢ board : " + board.getBoardId());
 		
 		//2. 파일 리스트
 		List<MultipartFile> list = boardForm.getBoardfile();
@@ -125,12 +125,13 @@ public class BoardService {
 		
 	}
 	
-	//상세보기+댓글목록
+	//상세보기
 	public Map<String, Object> getBoardOne(int boardId){
-		log.debug("▶▶▶▶▶▶ getBoardOne param: "+ boardId);
+		log.debug("ⓢBoardServiceⓢ getBoardOne param: "+ boardId);
+		
 		//상세보기
 		Map<String, Object> boardMap = boardMapper.selectBoardOne(boardId);
-		log.debug("▶▶▶▶▶▶ boardMap: "+ boardMap);
+		log.debug("ⓢBoardServiceⓢ boardMap: "+ boardMap);
 		//파일목록
 		List<Boardfile> boardfileList = boardfileMapper.selectBoardfileByBoardId(boardId);
 		

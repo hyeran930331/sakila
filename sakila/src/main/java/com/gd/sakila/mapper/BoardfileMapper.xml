@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gd.sakila.mapper.BoardfileMapper"> <!-- 자바만 package / namespace-->
+	<!--  -->
+	<delete id="deleteBoardfileOne"
+			parameterType="int">
+		DELETE FROM
+			boardfile
+		WHERE
+			boardfile_id = #{boardfileId}
+	</delete>
+	
 	<!-- 게시글 삭제시 참조되는 모든파일 삭제 -->
 	<delete id="deleteBoardfileByBoardId"
 			parameterType="int">
@@ -10,7 +19,7 @@
 			board_id = #{boardId}
 	</delete>
 
-	<!-- 하나의 게시글에 참조되는 boardfile select -->
+	<!-- 하나의 게시글에 참조되는 boardfile 목록 select -->
 	<select id="selectBoardfileByBoardId"
 			parameterType="int"
 			resultType="com.gd.sakila.vo.Boardfile"> 

@@ -17,9 +17,9 @@ public class CommentController {
 	
 	@PostMapping("/addComment") //get은 없음
 	public String addComment(Comment comment) {
-		log.debug("▷▷▷▷▷▷ post addComment : " +comment.toString());
+		log.debug("ⓒⓒⓒⓒⓒⓒ post addComment : " +comment.toString());
 		int row = commentService.addComment(comment);
-		log.debug("▷▷▷▷▷▷ post addComment :" + row);
+		log.debug("ⓒⓒⓒⓒⓒⓒ post addComment :" + row);
 		return "redirect:/admin/getBoardOne?boardId="+comment.getBoardId(); //어떻게 다시 돌아오지? +로 ㅎㅎ
 	}
 }

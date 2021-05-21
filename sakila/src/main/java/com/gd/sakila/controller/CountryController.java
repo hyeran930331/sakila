@@ -13,8 +13,7 @@ import com.gd.sakila.vo.Country;
 
 @Controller
 public class CountryController {
-	@Autowired//
-	private CountryService countryService;
+	@Autowired private CountryService countryService;
 	
 	@GetMapping("/countryList")//
 	public String countryList(Model model, 

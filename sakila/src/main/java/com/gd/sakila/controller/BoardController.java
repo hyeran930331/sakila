@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.gd.sakila.service.BoardService;
+import com.gd.sakila.service.BoardfileService;
 import com.gd.sakila.service.CommentService;
 import com.gd.sakila.vo.Board;
 import com.gd.sakila.vo.BoardForm;
@@ -22,13 +24,25 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @RequestMapping("/admin") //공통 매핑추가 post든 get이든~~
 public class BoardController {
-	@Autowired
-	BoardService boardService;
+	@Autowired BoardfileService boardfileService;
+	@Autowired BoardService boardService;
+	
+	@GetMapping("/addBoardfile")
+	public String addBoardfile(Model model, @RequestParam(value="boardId", required = true) int boardId) {
+		model.addAttribute("boardId", boardId);
+		return "addBoardfile";
+	}
+	@PostMapping("/addBoardfile")
+	public String addBoard(MultipartFile multipartFile, @RequestParam(value="boardId", required=true) int boardId) {
+		System.out.println("ⓒBoardControllerⓒ▷addBoard \t multipartfile: "+multipartFile +"\t boardId:"+boardId);
+		boardfileService.addBoardfile(multipartFile, boardId);
+		return "redirect:/admin/getBoardOne?boardId="+boardId;
+	}
 
 	@GetMapping("/modifyBoard")
 	public String modifyBoard(Model model, @RequestParam(value="boardId", required=true) int boardId) {
 		//getMapping 의 return type = 문자열 (뷰)
-		System.out.println("▷▷▷▷▷▷ get modify : "+boardId); //slf4j.log 로 쓰임. 대문자 아님
+		System.out.println("ⓒBoardControllerⓒ▷ get modify : "+boardId); //slf4j.log 로 쓰임. 대문자 아님
 		Map<String, Object> map = boardService.getBoardOne(boardId);
 		model.addAttribute("boardMap", map.get("boardMap"));
 		return "modifyBoard"; //jsp로 이동
@@ -36,30 +50,30 @@ public class BoardController {
 	@PostMapping("/modifyBoard")
 	public String modifyBoard(Board board) {
 		int row = boardService.modifyBoard(board);
-		System.out.println("▷▷▷▷▷ post modify: "+row);
+		System.out.println("ⓒBoardControllerⓒ post modify: "+row);
 		if(row == 0) { //만약 보드서비스에서 모디파이 한 값이 0 이라면, 
 			return "redirect:/admin/getBoardOne?boardId="+board.getBoardId(); //보드원 값으로
 		}
-		System.out.println("▷▷▷▷▷▷ post modify 끝");
+		System.out.println("ⓒBoardControllerⓒ▷ post modify 끝");
 		return "redirect:/admin/getBoardList"; // row가 0이 아니라면, 보드리스트로
 	}
 	
 	@GetMapping("/removeBoard")
 	public String removeBoard(Model model, @RequestParam(value="boardId", required=true) int boardId) {
 		//getMapping 의 return type = 문자열 (뷰)
-		System.out.println("▷▷▷▷▷ get remove : "+boardId);
+		System.out.println("ⓒBoardControllerⓒ get remove : "+boardId);
 		model.addAttribute("boardId",boardId);
 		return "removeBoard"; //jsp로 이동
 	}
 	@PostMapping("/removeBoard")
 	public String removeBoard(Board board) {
-		System.out.println("▷▷▷▷▷ post remove : "+ board.toString());
+		System.out.println("ⓒBoardControllerⓒ post remove : "+ board.toString());
 		int row = boardService.removeBoard(board);
-		System.out.println("▷▷▷▷▷ removeBoard(): "+row);
+		System.out.println("ⓒBoardControllerⓒ removeBoard(): "+row);
 		if(row == 0) {
 			return "redirect:/admin/getBoardOne?boardId="+board.getBoardId();
 		}
-		System.out.println("▷▷▷▷▷▷ post remove 끝");
+		System.out.println("ⓒBoardControllerⓒ▷ post remove 끝");
 		return "redirect:/admin/getBoardList";
 	}
 
@@ -69,9 +83,9 @@ public class BoardController {
 	}
 	@PostMapping("/addBoard")
 	public String addBoard(BoardForm boardForm) { //커멘드객체 폼 밸유오브젝트vs도메인
-		System.out.println("▷▷▷▷▷ Post addboard : "+boardForm.toString());
+		System.out.println("ⓒBoardControllerⓒ Post addboard : "+boardForm.toString());
 		boardService.addBoard(boardForm); //board에서 boardForm으로 바꿈 -> service
-		System.out.println("▷▷▷▷▷▷ post add 끝");
+		System.out.println("ⓒBoardControllerⓒ▷ post add 끝");
 		return "redirect:/admin/getBoardList";//리턴타입이 redirect: 이면 sendredirect로 처리
 		//retrun "view"는 view를 보여주는것
 		//return "redirect:/view"는 view주소로 url 요청을 다시하는것
@@ -80,7 +94,7 @@ public class BoardController {
 	@GetMapping("/getBoardOne")
 	public String getBoardOne(Model model, @RequestParam(value="boardId", required=true) int boardId) {
 		Map<String, Object> map = boardService.getBoardOne(boardId);
-		System.out.println("▷▷▷▷▷ get boardOne : "+map);
+		System.out.println("ⓒBoardControllerⓒ get boardOne : "+map);
 		//log.debug("commentList size() : "+map.get("commentLsit").size()));
 		model.addAttribute("boardMap", map.get("boardMap"));
 		model.addAttribute("boardfileList", map.get("boardfileList"));

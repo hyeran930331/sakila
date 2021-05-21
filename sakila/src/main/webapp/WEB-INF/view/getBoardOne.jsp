@@ -76,12 +76,12 @@
                    <td>boardfile :</td>
                    <td>
                    <div>
-                  		<a href=""><button type="button">파일추가</button></a>
+                  		<a href="${pageContext.request.contextPath}/admin/addBoardfile?boardId=${boardMap.boardId}"><button type="button">파일추가</button></a>
                    </div>
-                   <c:forEach var="i" items="${boardfileList }">
+                   <c:forEach var="i" items="${boardfileList}">
                    <div>
                    		<a href="${pageContext.request.contextPath}/resource/${f.boardfileName}">${f.boardfileName}</a>
-                   		<a >파일삭제</a>
+                   		<a href="${pageContext.request.contextPath}/admin/admin/removeBoardfile?boardId=${boardMap.boardId}&boardfileId=${f.boardfileId}">파일삭제</a>
                    </div>
                    </c:forEach>
                    </td>
