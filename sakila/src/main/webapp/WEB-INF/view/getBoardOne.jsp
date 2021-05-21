@@ -71,8 +71,25 @@
                    <td>insert_date :</td>
                    <td>${boardMap.insertDate}</td>
             </tr>
+            
+            <tr>
+                   <td>boardfile :</td>
+                   <td>
+                   <div>
+                  		<a href=""><button type="button">파일추가</button></a>
+                   </div>
+                   <c:forEach var="i" items="${boardfileList }">
+                   <div>
+                   		<a href="${pageContext.request.contextPath}/resource/${f.boardfileName}">${f.boardfileName}</a>
+                   		<a >파일삭제</a>
+                   </div>
+                   </c:forEach>
+                   </td>
+            </tr>
         </tbody>
     </table>
+    
+    <!-- 버튼들 -->
     <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/modifyBoard?boardId=${boardMap.boardId}">수정</a>
     <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/removeBoard?boardId=${boardMap.boardId}">삭제</a>
     <br>

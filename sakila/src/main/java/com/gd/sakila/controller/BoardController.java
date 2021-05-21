@@ -83,6 +83,7 @@ public class BoardController {
 		System.out.println("▷▷▷▷▷ get boardOne : "+map);
 		//log.debug("commentList size() : "+map.get("commentLsit").size()));
 		model.addAttribute("boardMap", map.get("boardMap"));
+		model.addAttribute("boardfileList", map.get("boardfileList"));
 		model.addAttribute("commentList", map.get("commentList"));
 		model.addAttribute("boardTotal", map.get("boardTotal"));
 		return "getBoardOne";

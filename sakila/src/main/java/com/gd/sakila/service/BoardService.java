@@ -39,13 +39,15 @@ public class BoardService {
 	//삭제
 	public int removeBoard(Board board) {
 		log.debug("▶▶▶▶▶▶ removeBoard param: "+ board.toString());
-		//게시글 삭제
+		//1게시글 삭제
 		int boardRow = boardMapper.deleteBoard(board);
 		
-		if (boardRow == 0) {
+		if (boardRow == 0) { //지운게 없으면
 			return 0; // 강제 종료.
 		}
-		// 게시글 삭제가 있으면, 댓글삭제 (board_id 외래키 noAction)
+		
+		//2 게시글 삭제 (FK 외래키 지정이 없기때문에),
+		//2-1 댓글삭제 (board_id 외래키 noAction)
 		int commentRow = commentMapper.deleteCommentByBoard(board.getBoardId()); //게시글삭제시
 		log.debug("▶▶▶▶▶▶ removeBoard commentMapper: "+ commentRow);
 
@@ -55,6 +57,22 @@ public class BoardService {
 			throw new RuntimeException(); 
 		}
 		*/
+		
+		//2-2 파일도 삭제(물리적 파일 삭제)
+		List<Boardfile> boardfileList = boardfileMapper.selectBoardfileByBoardId(board.getBoardId());
+		if(boardfileList != null) {
+			for(Boardfile f : boardfileList) {
+				File temp = new File("");
+				//프로젝트 폴더에 빈파일temp가 만들어진다.
+				String path = temp.getAbsolutePath();
+				//temp의 위치를 저장한다.
+				File file = new File(path+"\\src\\main\\webapp\\resource\\"+f.getBoardfileName());
+				file.delete();
+			}
+		}
+		//2-2 파일도 삭제(파일 table의 행을 삭제)
+		int boardfileRow = boardfileMapper.deleteBoardfileByBoardId(board.getBoardId());
+
 		log.debug("▶▶▶▶▶▶removeBoard deleteBoard: "+ boardRow);
 		return commentRow+boardRow;
 	}
@@ -94,7 +112,11 @@ public class BoardService {
 				
 				//2-2.파일 저장
 				try {
-				f.transferTo( new File("D:\\upload\\"+ filename));
+					File temp = new File("");
+					//프로젝트 폴더에 빈파일temp가 만들어진다.
+					String path = temp.getAbsolutePath();
+					//temp의 위치를 저장한다.
+					f.transferTo( new File(path+"\\src\\main\\webapp\\resource\\"+filename));
 				} catch (Exception e) {
 					throw new RuntimeException();
 				}
@@ -109,14 +131,19 @@ public class BoardService {
 		//상세보기
 		Map<String, Object> boardMap = boardMapper.selectBoardOne(boardId);
 		log.debug("▶▶▶▶▶▶ boardMap: "+ boardMap);
+		//파일목록
+		List<Boardfile> boardfileList = boardfileMapper.selectBoardfileByBoardId(boardId);
+		
 		//댓글목록
 		List<Comment> commentList = commentMapper.selectCommentListByBoard(boardId);
 	    log.debug("commentList size() : "+ commentList.size());
-
+	    
+	    
 	    int boardTotal = boardMapper.selectBoardTotal(null);
 	    		
 	    Map<String, Object> map = new HashMap<>();
 	      map.put("boardMap", boardMap);
+	      map.put("boardfileList", boardfileList);
 	      map.put("commentList", commentList);
 	      map.put("boardTotal", boardTotal);
 	      return map;

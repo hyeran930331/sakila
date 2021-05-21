@@ -1,5 +1,7 @@
 package com.gd.sakila.controller;
 
+import java.io.File;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +42,11 @@ public class HomeController {
 	public String home() {
 		//System.out.println("홈");
 		log.debug("home"); //@Slf4j를 했기때문에 Logger log = 하지 않고도 사용가능.
+		
+		File file = new File("");
+		String path = file.getAbsolutePath();
+		log.debug(path);
+		
 		return "home";
 	}
 }
