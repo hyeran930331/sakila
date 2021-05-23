@@ -1,4 +1,6 @@
 # sakila
+자리옮기고 origin 브랜치 이용합니당~ merge
+
 DTO -(중재자 : 서비스)- domain
 
 
