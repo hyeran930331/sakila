@@ -17,7 +17,7 @@ import com.gd.sakila.vo.Page;
 public class CountryService {
 	@Autowired 
 	private CountryMapper countryMapper;	
-	public Map<String, Object> getCountryList(int currentPage, int rowPerPage) {
+	public HashMap<String, Object> getCountryList(int currentPage, int rowPerPage) {
 		Page pageParam = new Page();
 		// 1.컨트롤러에서 넘겨져 온 값parameter매개값들을 가공. beginRow 구하기
 		int beginRow = (currentPage-1) * rowPerPage;
@@ -35,7 +35,7 @@ public class CountryService {
 			lastPage +=1;
 		}
 		
-		Map<String, Object> map = new HashMap<String, Object>();
+		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("list", list);
 		map.put("lastPage", lastPage);
 		return map;

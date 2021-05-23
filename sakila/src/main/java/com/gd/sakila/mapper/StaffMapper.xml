@@ -12,4 +12,42 @@
 		WHERE email = #{email} <!-- getEmail() -->
 		AND password = PASSWORD(#{password}) <!-- getPassword() -->
 	</select>
+	
+	<select id="selectStaffList"
+			parameterType="com.gd.sakila.vo.Page"
+			resultType="HashMap">
+			
+		SELECT 
+			ID staffId
+			, SID storeId
+			, name username
+			, address address
+			, city city
+			, country country
+			, phone phone
+		FROM staff_list
+		<where>
+			<if test="searchWord != null">
+				name LIKE CONCAT('%',#{searchWord},'%')
+			</if>
+		</where>
+		Order BY
+			SID ASC
+		LIMIT
+			#{beginRow}, #{rowPerPage}
+	</select>
+	
+	<select id="selectStaffListForCount"
+			parameterType="String"
+			resultType="int">
+		SELECT 
+			COUNT(ID)
+		FROM staff_list		
+		<where>
+			<if test="searchWord != null">
+				name LIKE CONCAT('%',#{searchWord},'%')
+			</if>
+		</where>
+	</select>
+	
 </mapper>

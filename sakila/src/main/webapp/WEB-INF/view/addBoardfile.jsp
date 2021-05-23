@@ -26,12 +26,25 @@
     crossorigin="anonymous"></script>
  
 <script>
-	$(document).ready(function(){
-		$('#btn').click(function(){
-			console.log("btn클릭");
-			$('#addForm').submit();
-		});
-	});
+$(document).ready(function() {
+    $('#btn').click(function() { 
+    	console.log('btn 클릭');
+    	// 파일들중 하나라도 첨부되지 않으면 empty = true;
+    	
+    	//let empty = false;
+
+		//if($('multipartFile').val() == '') {
+		//	empty = true;
+		//	console.log('empty');
+		//}
+        
+    	//if(empty) { // if(empty == true)
+    	//	alert('첨부되지 않은 파일이 있습니다.');
+    	//} else if (empty != true) {
+            $('#addForm').submit();
+       // }
+    });
+});
 </script>
 <title>add Boardfile</title>
 </head>
@@ -51,7 +64,7 @@
 			<input type="file" id="multipartFile" name="multipartFile">
 		</div>
 		<div>
-			<button type="button" id="btn" >파일추가</button>
+			<button type="button" id="btn" >게시글에 추가</button>
 		</div>
 	</form>
 </body>

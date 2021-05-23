@@ -47,6 +47,6 @@ public class HomeController {
 		String path = file.getAbsolutePath();
 		log.debug(path);
 		
-		return "home";
+		return "/home";
 	}
 }

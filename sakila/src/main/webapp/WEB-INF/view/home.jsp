@@ -52,21 +52,24 @@
 	<!-- 로그오프시 -->
 	<c:if test="${loginStaff == null}">
 		<form id ="loginForm" action="${pageContext.request.contextPath}/login" method="post">
-			<div> mail :</div>
-			<input type="text" id="email" name="email">
-			<div> password : </div>
-			<input type="password" id="password" name="password">
+			<div> mail :
+				<input type="text" id="email" name="email">
+			</div>
+			<div> password :
+				<input type="password" id="password" name="password">
+			</div>
 			<input type="button" id="btn" name="btn" type="button" value="로그인">
 			<!-- button type="submit"이 아니고 input type="button" <script>활용 -->
 		</form>
 	</c:if>
-	
-	<a href="${pageContext.request.contextPath}/admin/getBoardList">게시판 보기</a>
-	
+	<div>
+		<a href="${pageContext.request.contextPath}/admin/getBoardList">게시판 보기</a>
+	</div>
+	<div>
+		<a href="${pageContext.request.contextPath}/admin/getStaffList">직원 보기</a>
+	</div>
 	<!-- 로그온시 -->
 	<c:if test="${loginStaff!= null}">
-
-		<br>
 		<a href="${pageContext.request.contextPath}/admin/logout">로그아웃</a>
 	</c:if>
 </body>

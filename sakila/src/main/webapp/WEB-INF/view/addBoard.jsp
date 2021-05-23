@@ -30,18 +30,18 @@
         $('#addButton').click(function() { 
         	console.log('addButton 클릭');
         	// 파일들중 하나라도 첨부되지 않으면 ck = true;
-        	let ck = false;
+        	let empty = false;
             let boardfile = $('.boardfile'); // 배열
             // break키워드 사용을 위해 for반복문 사용 <-- boardfile.each()메서드 사용 X
 			for(let item of boardfile) {
 				if($(item).val() == '') {
-					ck = true;
-					console.log('첨부되지 않은 파일이 있습니다.');
+					empty = true;
+					alert('첨부되지 않은 파일이 있습니다.');
 					break;
 				}
 			}
             
-        	if(ck) { // if(ck == true)
+        	if(empty) { // if(ck == true)
         		alert('첨부되지 않은 파일이 있습니다.');
         	} else if ($('#boardPw').val().length < 4) {
                 alert('boardPw는 4자이상 이어야 합니다');
