@@ -1,44 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gd.sakila.mapper.FilmMapper">
-<select statementType="CALLABLE" 
-			resultType="String" 
-			parameterType="java.util.Map" 
-			id="selectFilmInStock">
+	<select id ="selectStoreForCount"
+			resultType="Integer"> <!-- 리스트는 안에 있는 속성으로... -->
+		SELECT 
+			store_id
+		FROM 
+			store;
+	</select>
+	
+	<select id="selectFilmInStock"
+			statementType="CALLABLE" 
+			parameterType="int"
+			resultType="Integer" >
 		<!--  Map : filmId, storeId, filmCount (mode=OUT) -->
 		{
 		call 
-			film_in_stack 
+			film_in_stock 
 			(
 			#{FID}
 			,#{storeId}
-			,#{filmCount, mode=OUT, jdbcType=DECIMAL, javaType=Integer}
+			,#{count, mode=OUT, jdbcType=DECIMAL, javaType=Integer}
 			)
 		}
 	</select>
 	
 	
 	<select id="selectStaffListForCount"
-			resultType="int" 
-			parameterType="String">
+			parameterType="java.util.Map"
+			resultType="int">
 		SELECT
 			COUNT(*)
 		FROM
 			film_list
 			
-		<where>
-			<if test="categoryName != null">
-				AND category = #{categoryName}
-			</if>
-			
-			<if test="price != null">
-				AND price = #{price}
-			</if>
-			
-			<if test="title != null">
-				AND title LIKE CONCAT('%', #{title}, '%')
-			</if>
-		</where>
+		<include refid="searchWords">
+		</include>	
 		
 	</select>
 	
@@ -54,21 +51,17 @@
 			, rating
 		FROM 
 			film_list
-		<where>
-			<if test="categoryName != null">
-				AND category = #{category}
-			</if>
-			
-			<if test="price != null">
-				AND price = #{price}
-			</if>
-			
-			<if test="title != null">
-				AND title LIKE CONCAT('%', #{title}, '%')
-			</if>
-		</where>
+
 		Order BY
-			FID ASC 		
+			FID ASC 	
+			
+			
+		<include refid="searchWords">
+		</include>	
+		
+		
+		LIMIT
+			#{beginRow}, #{rowPerPage}	
 	</select>
 
 	
@@ -90,4 +83,28 @@
 		WHERE
 			FID = #{FID} 
 	</select>
+	
+	<sql id="searchWords">
+		<where>
+			<if test="category != null">
+				AND category = #{category}
+			</if>
+			
+			<if test="price != null">
+				AND price = #{price}
+			</if>
+			
+			<if test="title != null">
+				AND title LIKE CONCAT('%', #{title}, '%')
+			</if>
+			
+			<if test="actor != null">
+				AND actor LIKE CONCAT('%', #{actor}, '%')
+			</if>
+			
+			<if test="rating != null">
+				AND rating = #{rating}
+			</if>
+		</where>
+	</sql>
 </mapper>

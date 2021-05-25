@@ -36,19 +36,17 @@
     <h1>Film VIEW</h1>
      <table class="table">
         <tr>
-          <td>FID :</td>
+          <td width="300">FID :</td>
           <td>${filmList.FID}</td>
         </tr>
         
+        <c:forEach var="f" varStatus="status" items="${FilmInStockStore }">
         <tr>
-          <td>store1<br>재고 :</td>
-          <td>${filmList.store1}</td>
+          <td>가게 ${status.count} 재고:</td>
+          <td>${f}</td>
+          
         </tr>
-        
-        <tr>
-          <td>store2<br>재고 :</td>
-          <td>${filmList.store2}</td>
-        </tr>
+        </c:forEach>
         
         <tr>
           <td>설명</td>
@@ -57,7 +55,13 @@
         
         <tr>
           <td>배우</td>
-          <td>${filmList.actors}</td>
+          <td>
+          	${filmList.actors } <br>
+          	<!-- 배우마다 한줄띄기 하고싶었습니다. 와 이게 한번에 되다니...-->
+			<c:forTokens var="temp" items="${filmList.actors } " delims=",">
+				<a href="${pageContext.request.contextPath}/admin/getActorOne?Actor=${temp}"> ${temp }</a><br>
+			</c:forTokens>
+          </td>
         </tr>
       
     </table>
@@ -71,7 +75,7 @@
     <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/getFilmOne?FilmId=${(filmList.FilmId)-1}">이전글</a>
     </c:if>
 -->
-    <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/getfilmList">처음으로</a>
+    <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/getFilmList">목록으로</a>
  <!-- 
     <c:if test="${((filmList.FilmId)+1)<FilmTotal}">
     <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/getFilmOne?FilmId=${(filmList.FilmId)+1}">다음글</a>

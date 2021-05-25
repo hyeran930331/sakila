@@ -25,10 +25,10 @@ public class FilmController {
 	public String getFilmList(Model model
 							, @RequestParam(value="currentPage", defaultValue="1") int currentPage
 							, @RequestParam(value="rowPerPage", defaultValue="10") int rowPerPage
-							, @RequestParam(value="category", required = false) String category
-							, @RequestParam(value="price", required = false) Double price
+							, @RequestParam(value="category",  required = false) String category
+							, @RequestParam(value="price",  required = false) Double price
 							, @RequestParam(value="searchTitle", required = false) String searchTitle
-							, @RequestParam(value="searchTitle", required = false) String searchActor
+							, @RequestParam(value="searchActor", required = false) String searchActor
 							, @RequestParam(value="rating", required = false) String rating) {
 		System.out.println(currentPage+"<--currentPage");
 		System.out.println(rowPerPage+"<--rowPerPage");
@@ -39,7 +39,7 @@ public class FilmController {
 		System.out.println("ⓒFilmControllerⓒ getFilmList 값 map.get(filmList) : "+ map.get("filmList").toString());
 
 		model.addAttribute("currentPage",currentPage); //받은 그대로 보내기
-		//model.addAttribute("lastPage", map.get("lastPage")); 계산안했기때문에 생략
+		model.addAttribute("lastPage", map.get("lastPage"));
 		model.addAttribute("filmList", map.get("filmList"));
 		return "getFilmList";
 	}
@@ -51,11 +51,15 @@ public class FilmController {
 		
 
 		Map<String,Object> map = filmService.getFilmOne(FID);
+		System.out.println("ⓒFilmControllerⓒ filmService.getFilmOne 실행 store1 : "+map.get("FilmInStockStore"));
+		System.out.println("ⓒFilmControllerⓒ filmService.getFilmOne 실행 filmList : "+map.get("filmList"));
+		System.out.println("ⓒFilmControllerⓒ filmService.getFilmOne 실행 actorsList : "+map.get("atorsList"));
+		System.out.println("ⓒFilmControllerⓒ filmService.getFilmOne 실행 categoryList : "+map.get("categoryList"));
 		
 		model.addAttribute("FID",FID);
-		model.addAttribute("store1",map.get("store1"));
-		model.addAttribute("store2",map.get("store2"));
+		model.addAttribute("FilmInStockStore",map.get("FilmInStockStore"));
 		model.addAttribute("filmList",map.get("filmList")); //map으로 받아야되나
+		//model.addAttribute("actorsList",map.get("actorsList")); 
 		model.addAttribute("categoryList",map.get("categoryList")); 
 		return "getFilmOne";
 	}

@@ -39,6 +39,8 @@ $(document).ready(function(){
 <title>get filmList</title>
 </head>
 <body>
+<div class="container">
+    <h1>getFilmList</h1>
 	<!-- 검색어 입력창 -->
     <form action="/getFilmList" method="get">
 			<div>
@@ -126,9 +128,9 @@ $(document).ready(function(){
 		    </div>
     	
         영화이름 :
-	        <input name="searchTitle" type="text">
+	        <input name="title" type="text">
 	    배우 :   
-	        <input name="searchActor" type="text">
+	        <input name="actor" type="text">
 	        <button type="submit">검색</button>
  
 
@@ -157,18 +159,20 @@ $(document).ready(function(){
 	</table>
    </form>
    
- <!-- 페이징
+ <!-- 페이징 검색어 적용전-->
     <ul class="pager">
-         <<c:if test="${currentPage > 1}">
+         <c:if test="${currentPage > 1}">
              <li class="previous"><a href="${pageContext.request.contextPath}/admin/getFilmList?currentPage=${currentPage-1}">이전</a></li>
         </c:if>
-         <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/getFilmList?currentPage=1">첫페이지로</a>
-        
+        <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/getFilmList?currentPage=1">첫페이지로</a>
+        <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/getFilmList?currentPage=(int)(Math.ceil((double)currentPage/ rowPerPage))}">목록 페이지로</a>
+        <!-- ex 32페이지다 32/10 = 3.xx -> (int)3.xx => 3 --> 
         <c:if test="${currentPage < lastPage}">
              <li class="next"><a href="${pageContext.request.contextPath}/admin/getFilmList?currentPage=${currentPage+1}">다음</a></li>
          </c:if>
         <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/getFilmList?currentPage=${lastPage}">마지막 페이지로</a>
     </ul>
--->
+
+</div>
 </body>
 </html>

@@ -5,8 +5,8 @@
 	<select id="selectCategoryNameList"
 			resultType="java.lang.String">
 		SELECT 
-			DISTINCT category
+			name
 		FROM 
-			film_list;
+			category;
 	</select>
 </mapper>
