@@ -5,16 +5,15 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.gd.sakila.vo.Film;
 import com.gd.sakila.vo.Page;
 
 @Mapper
 public interface FilmMapper {
-	List<Integer> selectFilmInStock(Map<String, Object> map);
+	List<Integer> selectFilmInStock(int FID, int storeId, String count);
 
 	int selectStaffListForCount(String searchWord);
 
-	List<Film> selectFilmList(Page page);
+	List<Map<String, Object>> selectFilmList(Map<String, Object> map);
 	
-	List<Film> selectFilmOne(int filmId);
+	Map<String, Object> selectFilmOne(int FID);
 }

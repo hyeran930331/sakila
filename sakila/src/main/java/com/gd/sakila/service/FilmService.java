@@ -10,8 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.gd.sakila.mapper.CategoryMapper;
 import com.gd.sakila.mapper.FilmMapper;
-import com.gd.sakila.vo.Film;
-import com.gd.sakila.vo.Page;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -22,43 +20,64 @@ public class FilmService {
 	@Autowired FilmMapper filmMapper;
 	@Autowired CategoryMapper categoryMapper;
 	
-	//Map <- film , 재고량 filmCount
-	public Map<String, Object> getFilmOne(int filmId, int storeId){
-		Map<String, Object> paramMap = new HashMap<String, Object>();
-		paramMap.put("filmId", filmId);
-		paramMap.put("storeId", storeId);
-		int filmCount = 0;
-		paramMap.put("filmCount", filmCount);
-		log.debug("ⓢFilmServiceⓢ getFilmOne() paramMap:"+paramMap.toString());
+	public Map<String, Object> getFilmList(int currentPage, int rowPerPage, String category, Double price, String searchTitle, String searchActor, String rating) {
+		log.debug("ⓢFilmServiceⓢ param확인 category :"+ category);
 		
-		List<Integer> list = filmMapper.selectFilmInStock(paramMap);
-		log.debug("ⓢFilmServiceⓢ getFilmOne() selectFilmInStock:"+list.toString());
-		log.debug("ⓢFilmServiceⓢ getFilmOne() selectFilmInStock:"+paramMap.get("filmCount"));
+		//선택하지 않고 검색했을때 버그수정
+		if(category != null && category.equals("")) {
+			category = null;
+		}
+		if(price != null && price == 0) {
+			price = null;
+		}	
 		
-		Map<String,Object> returnMap = new HashMap<String, Object>();
+		
+		HashMap<String, Object> paramMap = new HashMap<>();
+		paramMap.put("currentPage", currentPage);
+		paramMap.put("rowPerPage", rowPerPage);
+		
+		paramMap.put("category", category);
+		paramMap.put("price", price);
+		paramMap.put("searchTitle", searchTitle);
+		paramMap.put("searchActor", searchActor);
+		paramMap.put("rating", rating);
+		
+		List<Map<String, Object>> filmList = filmMapper.selectFilmList(paramMap);
+		log.debug("ⓢFilmServiceⓢ filmMapper.selectFilmList :"+ filmList.toString());
+		
+		List<String> categoryList = categoryMapper.selectCategoryNameList();
+		log.debug("ⓢFilmServiceⓢ categoryMapper.selectCategoryNameList :"+ categoryList.toString());
+			
+		Map<String, Object> returnMap = new HashMap<>();
+		returnMap.put("filmList", filmList);
+		returnMap.put("categoryList", categoryList);
+		
 		return returnMap;
 	}
-
-	public HashMap<String, Object> getFilmList(String categoryName, int currentPage, int rowPerPage, String searchWord) {
-		log.debug("ⓢFilmServiceⓢ getFilmList() param categoryName:"+categoryName); 
-		log.debug("ⓢFilmServiceⓢ getFilmList() param rowPerPage:"+rowPerPage); 
-		int total = filmMapper.selectStaffListForCount(searchWord);
+	
+	//Map <- film , 재고량 filmCount
+	public Map<String, Object> getFilmOne(int FID){
+		log.debug("ⓢFilmServiceⓢ getFilmOne() param FID:"+FID);
+		//Map<String, Object> paramMap = new HashMap<String, Object>();
+		//paramMap.put("FID", FID);
+		//paramMap.put("storeId", storeId);
+		//int filmCount = 0;
+		//paramMap.put("filmCount", filmCount);
+		//log.debug("ⓢFilmServiceⓢ getFilmOne() paramMap:"+paramMap.toString());
 		
-		int lastPage= (int)(Math.ceil((double)total / rowPerPage));
-		log.debug("ⓢFilmServiceⓢ getFilmList() param total, lastPage:"+rowPerPage); 
-		//Page page = null; "com.gd.sakila.vo.Page.setBeginRow(int)" because "page" is null
-		Page page = new Page();
-		page.setBeginRow( (currentPage-1)*rowPerPage );
-		page.setRowPerPage(rowPerPage);
-		page.setSearchWord(searchWord);
+		//int store1 = filmMapper.selectFilmInStock(FID,1,"count").size();
+		//int store2 = filmMapper.selectFilmInStock(FID,2,"count").size();
+		//log.debug("ⓢFilmServiceⓢ getFilmOne() selectFilmInStock store1 :"+store1);
+		//log.debug("ⓢFilmServiceⓢ getFilmOne() selectFilmInStock store2 :"+store2);
+		//log.debug("ⓢFilmServiceⓢ getFilmOne() selectFilmInStock:"+paramMap.get("filmCount"));
 		
-		List<Film> filmList = filmMapper.selectFilmList(page);
-		List<String> categoryList = categoryMapper.selectCategoryNameList();
 		
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("lastPage", lastPage);
-		map.put("filmList", filmList);
-		map.put("categoryList", categoryList);
-		return map; //6:03... 헝헝 map is null 이라구...
+		Map<String, Object> filmList = filmMapper.selectFilmOne(FID);
+		
+		Map<String,Object> returnMap = new HashMap<String, Object>();
+		//returnMap.put("store1", store1);
+		//returnMap.put("store2", store2);
+		returnMap.put("filmList", filmList);
+		return returnMap;
 	}
 }

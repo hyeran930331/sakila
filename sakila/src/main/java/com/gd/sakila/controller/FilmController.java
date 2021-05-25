@@ -1,6 +1,8 @@
 package com.gd.sakila.controller;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,32 +26,37 @@ public class FilmController {
 							, @RequestParam(value="currentPage", defaultValue="1") int currentPage
 							, @RequestParam(value="rowPerPage", defaultValue="10") int rowPerPage
 							, @RequestParam(value="category", required = false) String category
-							, @RequestParam(value="searchWord", required = false) String searchWord) {
+							, @RequestParam(value="price", required = false) Double price
+							, @RequestParam(value="searchTitle", required = false) String searchTitle
+							, @RequestParam(value="searchTitle", required = false) String searchActor
+							, @RequestParam(value="rating", required = false) String rating) {
 		System.out.println(currentPage+"<--currentPage");
 		System.out.println(rowPerPage+"<--rowPerPage");
-		System.out.println(searchWord+"<--searchWord");
-		
-		//카테고리를 선택하지 않고 검색했을때 버그수정
-		if(category.equals("")) {
-			category = null;
-		}
-		
-		HashMap<String,Object> map = filmService.getFilmList(currentPage, rowPerPage, searchWord);
+		System.out.println(searchTitle+"<--searchTitle");
+			
+		Map<String,Object> map = filmService.getFilmList(currentPage, rowPerPage, category, price, searchTitle, searchActor, rating);
 		System.out.println("ⓒFilmControllerⓒ getFilmList 실행"); //성공
 		System.out.println("ⓒFilmControllerⓒ getFilmList 값 map.get(filmList) : "+ map.get("filmList").toString());
-		System.out.println("ⓒFilmControllerⓒ getFilmList 값 map.get(filmList) : "+ map.get("filmList"));
 
-		model.addAttribute("currentPage",currentPage); 
-		model.addAttribute("searchWord", searchWord);
-		model.addAttribute("lastPage", map.get("lastPage"));
-		model.addAttribute("staffList", map.get("filmList"));
+		model.addAttribute("currentPage",currentPage); //받은 그대로 보내기
+		//model.addAttribute("lastPage", map.get("lastPage")); 계산안했기때문에 생략
+		model.addAttribute("filmList", map.get("filmList"));
 		return "getFilmList";
 	}
 	
 	@GetMapping ("/getFilmOne")
-	public String getFilmOne() {
-		System.out.println("ⓒFilmControllerⓒ getFilmOne 실행");
-		filmService.getFilmOne(1, 1);
+	public String getFilmOne(Model model
+							, @RequestParam(value="FID", required= true) int FID) {
+		System.out.println("ⓒFilmControllerⓒ getFilmOne 실행"+FID);
+		
+
+		Map<String,Object> map = filmService.getFilmOne(FID);
+		
+		model.addAttribute("FID",FID);
+		model.addAttribute("store1",map.get("store1"));
+		model.addAttribute("store2",map.get("store2"));
+		model.addAttribute("filmList",map.get("filmList")); //map으로 받아야되나
+		model.addAttribute("categoryList",map.get("categoryList")); 
 		return "getFilmOne";
 	}
 }
