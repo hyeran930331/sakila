@@ -1,3 +1,94 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.gd.sakila.mapper.FilmMapper"></mapper>
+<?xml version="1.0" encoding="UTF8"?>
+<!DOCTYPE mapper PUBLIC "//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis3mapper.dtd">
+<mapper namespace="com.gd.sakila.mapper.FilmMapper">
+	
+	<!--  Map : filmId, storeId, filmCount (mode=OUT) -->
+	<select statementType="CALLABLE" 
+			resultType="int" 
+			parameterType="java.util.Map" 
+			id="selectFilmInStock">
+			
+		{
+		call 
+			film_in_stack 
+			(
+			#{filmId}
+			,#{storeId}
+			,#{filmCount, mode=OUT, jdbcType=DECIMAL, javaType=Integer}
+			)
+		}
+	</select>
+	
+	
+	<select resultType="int" parameterType="String" id="selectStaffListForCount">
+		SELECT
+			COUNT(*)
+		FROM
+			film_list
+			
+		<where>
+		<if test="#{searchWord} !=null">
+		title LIKE CONCAT('%',#{searchWord},'%') 
+		</if>		
+		</where>
+		
+	</select>
+	
+	
+	<select resultType="com.gd.sakila.vo.Film" 
+			parameterType="com.gd.sakila.vo.Page" 
+			id="selectFilmList">
+	
+		<!-- film이랑 film_list left join (3개는 카테고리없이)drama -->
+		
+		SELECT
+			FID filmId
+			, title title
+			, description description
+			
+		FROM
+			film_list 
+		
+		<where>
+		<if test="#{category} != null">
+		category LIKE CONCAT('%',#{category},'%') 
+		</if>
+		
+		<if test="searchWord !=null">
+		title LIKE CONCAT('%',#{searchWord},'%')
+		</if>
+		
+		</where>
+		Order BY
+			FID DESC
+		LIMIT
+			#{beginRow}, #{rowPerPage} 
+		
+	</select>
+	
+	
+	<select resultType="com.gd.sakila.vo.Film" 
+			parameterType="int" 
+			id="selectFilmOne">
+	
+		<! film이랑 film_list left join (3개는 카테고리없이)drama >
+		
+		SELECT
+			FID filmId
+			, title title
+			, description description
+			, length length
+			, price replacementCost
+			, actors actors
+		FROM
+			film_list 
+
+		<where>
+		film_Id =#{filmId} 
+		<if test="searchWord !=null">title LIKE CONCAT('%',#{searchWord},'%') </if>
+		
+		</where>
+		Order BY
+			FID ASC 
+	</select>
+</mapper>
