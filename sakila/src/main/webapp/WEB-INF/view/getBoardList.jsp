@@ -36,8 +36,8 @@
         </tbody>
     </table>
 
-    <!-- 검색어 입력창 -->
-    <form action="/getBoardList" method="get">
+    <!-- 검색어 입력창 어드민...어드민을 빠뜨렸다니!-->
+    <form action="/admin/getBoardList" method="get">
         <label for="searchWord">검색어(제목) :</label> 
         <input name="searchWord" type="text">
         <button type="submit">검색</button>

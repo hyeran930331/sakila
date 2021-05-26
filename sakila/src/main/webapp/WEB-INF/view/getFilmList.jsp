@@ -42,7 +42,7 @@ $(document).ready(function(){
 <div class="container">
     <h1>getFilmList</h1>
 	<!-- 검색어 입력창 -->
-    <form action="${pageContext.request.contextPath}/admin/getFilmList" method="get">
+    <form action="/admin/getFilmList" method="get">
 			<div>
 			카테고리
 				<select id="category" name="category">

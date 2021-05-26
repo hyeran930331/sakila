@@ -41,7 +41,7 @@
     </table>
     
    <!-- 검색어 입력창 -->
-    <form action="/getStaffList" method="get">
+    <form action="admin/getStaffList" method="get">
         <label for="searchWord">검색어(이름) :</label> 
         <input name="searchWord" type="text">
         <button type="submit">검색</button>

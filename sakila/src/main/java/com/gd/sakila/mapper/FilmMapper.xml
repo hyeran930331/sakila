@@ -51,13 +51,14 @@
 			, rating
 		FROM 
 			film_list
-
+		<include refid="searchWords">
+		</include>
+		<!-- 조건절이 order보다 앞에 있어야 됩니다 -->
 		Order BY
 			FID ASC 	
 			
 			
-		<include refid="searchWords">
-		</include>	
+			
 		
 		
 		LIMIT
@@ -87,23 +88,24 @@
 	
 	<sql id="searchWords">
 		<where>
-			<if test="category != null">
+			<!-- 조건에 null 이거나 ''일때 -->
+			<if test="category != null and category != ''">
 				AND category = #{category}
 			</if>
 			
-			<if test="price != null">
+			<if test="price != null and price != ''">
 				AND price = #{price}
 			</if>
 			
-			<if test="title != null">
+			<if test="title != null and title != ''">
 				AND title LIKE CONCAT('%', #{title}, '%')
 			</if>
 			
-			<if test="actor != null">
+			<if test="actor != null and actor != ''">
 				AND actor LIKE CONCAT('%', #{actor}, '%')
 			</if>
 			
-			<if test="rating != null">
+			<if test="rating != null and rating != ''">
 				AND rating = #{rating}
 			</if>
 		</where>

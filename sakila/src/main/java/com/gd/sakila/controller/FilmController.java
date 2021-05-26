@@ -39,6 +39,7 @@ public class FilmController {
 		System.out.println("ⓒFilmControllerⓒ getFilmList 값 map.get(filmList) : "+ map.get("filmList").toString());
 
 		model.addAttribute("currentPage",currentPage); //받은 그대로 보내기
+		model.addAttribute("categoryList", map.get("categoryList")); //view에서 쓰려면 여기에서 보내줘야한다.
 		model.addAttribute("lastPage", map.get("lastPage"));
 		model.addAttribute("filmList", map.get("filmList"));
 		return "getFilmList";
