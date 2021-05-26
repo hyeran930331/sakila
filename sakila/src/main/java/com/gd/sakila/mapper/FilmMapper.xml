@@ -88,7 +88,6 @@
 	
 	<sql id="searchWords">
 		<where>
-			<!-- 조건에 null 이거나 ''일때 -->
 			<if test="category != null and category != ''">
 				AND category = #{category}
 			</if>
