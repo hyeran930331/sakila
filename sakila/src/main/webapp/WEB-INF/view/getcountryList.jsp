@@ -10,7 +10,7 @@
 
 </head>
 <body>
-	<h1>countryList</h1>
+	<h1>countryList</h1> <jsp:include page="/WEB-INF/view/nav.jsp"/>
 	<table border="1">
 		<thead>
 			<tr>

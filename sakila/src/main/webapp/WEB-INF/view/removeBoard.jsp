@@ -43,7 +43,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>remove BOARD(spring mvc 방식)</h1>
+        <h1>remove BOARD(spring mvc 방식)</h1> <jsp:include page="/WEB-INF/view/nav.jsp"/>
         <form id="removeForm"
             action="${pageContext.request.contextPath}/admin/removeBoard" method="post">
             <div class="form-group">

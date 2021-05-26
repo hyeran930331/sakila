@@ -77,7 +77,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>BOARD ADD</h1>
+        <h1>BOARD ADD</h1> <jsp:include page="/WEB-INF/view/nav.jsp"/>
         <form id="addForm" 
         		action="${pageContext.request.contextPath}/admin/addBoard" 
         		method="post"

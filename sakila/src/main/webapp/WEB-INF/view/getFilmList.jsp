@@ -40,7 +40,7 @@ $(document).ready(function(){
 </head>
 <body>
 <div class="container">
-    <h1>getFilmList</h1>
+    <h1>getFilmList</h1> <jsp:include page="/WEB-INF/view/nav.jsp"/>
 	<!-- 검색어 입력창 -->
     <form action="/admin/getFilmList" method="get">
 			<div>

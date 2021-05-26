@@ -49,7 +49,7 @@ $(document).ready(function() {
 <title>add Boardfile</title>
 </head>
 <body>
-	<h1>파일추가</h1>
+	<h1>파일추가</h1> <jsp:include page="/WEB-INF/view/nav.jsp"/>
 	<form id="addForm"
 			method="post"
 			enctype="multipart/form-data"

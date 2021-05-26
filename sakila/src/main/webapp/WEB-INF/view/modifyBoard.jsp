@@ -61,7 +61,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>modify BOARD(spring mvc 방식)</h1>
+        <h1>modify BOARD(spring mvc 방식)</h1> <jsp:include page="/WEB-INF/view/nav.jsp"/>
         <form id="modifyForm"
             action="${pageContext.request.contextPath}/admin/modifyBoard" method="post">
             <div class="form-group">

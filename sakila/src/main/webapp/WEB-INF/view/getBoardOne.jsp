@@ -53,7 +53,7 @@
 </head>
 <body>
 <div class="container text-center">
-    <h1>BOARD VIEW</h1>
+    <h1>BOARD VIEW</h1> <jsp:include page="/WEB-INF/view/nav.jsp"/>
      <table class="table table-dark">
          <tbody>
              <tr>

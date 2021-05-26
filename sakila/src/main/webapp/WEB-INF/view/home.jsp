@@ -62,18 +62,7 @@
 			<!-- button type="submit"이 아니고 input type="button" <script>활용 -->
 		</form>
 	</c:if>
-	<div>
-		<a href="${pageContext.request.contextPath}/admin/getBoardList">게시판 보기</a>
-	</div>
-	<div>
-		<a href="${pageContext.request.contextPath}/admin/getStaffList">직원 보기</a>
-	</div>
-	<div>
-		<a href="${pageContext.request.contextPath}/admin/getFilmList">영화 보기</a>
-	</div>
-	<div>
-		<a href="${pageContext.request.contextPath}/admin/getActorList">배우 보기</a>
-	</div>
+<jsp:include page="/WEB-INF/view/nav.jsp"/>
 	<!-- 로그온시 -->
 	<c:if test="${loginStaff!= null}">
 		<a href="${pageContext.request.contextPath}/admin/logout">로그아웃</a>

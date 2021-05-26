@@ -16,7 +16,7 @@
 </head>
 <body>
 <div class="container">
-    <h1>getActorList</h1>
+    <h1>getActorList</h1> <jsp:include page="/WEB-INF/view/nav.jsp"/>
     <table class="table table-striped">
         
 		<tr>
