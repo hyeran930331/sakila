@@ -32,8 +32,8 @@
 	
 	<insert id = "insertActor"
 			parameterType = "com.gd.sakila.vo.Actor">
-		INSERT INTO 
-			actor (first_name, last_name)
+		INSERT IGNORE INTO 
+			actor_info (first_name, last_name)
 			VALUES (UPPER(#{firstName}), UPPER(#{lastName}))
 	</insert>
 	

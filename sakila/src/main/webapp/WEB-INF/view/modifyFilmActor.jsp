@@ -29,11 +29,11 @@
  
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
-<title>Film One VIEW(spring mvc 방식)</title>
+<title>modify film actor VIEW(spring mvc 방식)</title>
 </head>
 <body>
 <div class="container text-center">
-    <h1>Film One VIEW</h1>
+    <h1>modify film actor VIEW</h1>
      <table class="table">
         <tr>
           <td width="300">FID :</td>
@@ -83,9 +83,7 @@
         <tr>
           <td>배우</td>
           <td>
-          	<a class="btn btn-default" href="${pageContext.request.contextPath}/admin/modifyFilmActor?FilmId=${filmList.FID}">배우수정하기</a>
-  
-          	<!-- 배우마다 한줄띄기 하고싶었습니다. 와 이게 한번에 되다니...-->
+			<!-- 배우마다 한줄띄기 하고싶었습니다. 와 이게 한번에 되다니...-->
 			<c:forTokens var="temp" items="${filmList.actors } " delims=",">
 				<a href="${pageContext.request.contextPath}/admin/getActorOne?Actor=${temp}"> ${temp }</a><br>
 			</c:forTokens>
