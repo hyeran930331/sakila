@@ -42,7 +42,7 @@ $(document).ready(function(){
 <div class="container">
     <h1>getFilmList</h1>
 	<!-- 검색어 입력창 -->
-    <form action="/getFilmList" method="get">
+    <form action="${pageContext.request.contextPath}/admin/getFilmList" method="get">
 			<div>
 			카테고리
 				<select id="category" name="category">
@@ -123,8 +123,7 @@ $(document).ready(function(){
 					<c:if test="${rating != 'NC-17'}">
 						<option value="NC-17">NC-17</option>
 					</c:if>
-
-	    	</select>							    
+			</select>							    
 		    </div>
     	
         영화이름 :

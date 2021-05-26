@@ -71,6 +71,9 @@
 	<div>
 		<a href="${pageContext.request.contextPath}/admin/getFilmList">영화 보기</a>
 	</div>
+	<div>
+		<a href="${pageContext.request.contextPath}/admin/getActorList">배우 보기</a>
+	</div>
 	<!-- 로그온시 -->
 	<c:if test="${loginStaff!= null}">
 		<a href="${pageContext.request.contextPath}/admin/logout">로그아웃</a>

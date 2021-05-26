@@ -63,7 +63,9 @@ public class FilmService {
 		int total = filmMapper.selectStaffListForCount(paramMap);//전체 갯수구하기
 		log.debug("ⓢStaffServiceⓢ getFilmList() filmMapper.selectStaffListForCount:"+total);
 		int lastPage= (int)(Math.ceil((double)total / rowPerPage));//마지막 페이지구하기
-		int beginRow = ((currentPage-1)*rowPerPage);
+		int beginRow = ((currentPage-1)*rowPerPage); 
+		//현재페이지가 rowPage의 어디에 있는지.
+		//ex 1페이지면 0부터 10개 9페이지면 80부터~10개
 		log.debug("ⓢStaffServiceⓢ getFilmList() param BeginRow:"+beginRow);
 		
 		paramMap.put("beginRow",beginRow);
