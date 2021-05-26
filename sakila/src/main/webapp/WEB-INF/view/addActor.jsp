@@ -35,12 +35,6 @@
             } else if ($('#lastName').val() == '') {
                 alert('lastName을 입력하세요');
                 $('#lastName').focus();
-            } else if ($('#boardContent').val() == '') {
-                alert('boardContent을 입력하세요');
-                $('#boardContent').focus();
-            } else if ($('#staffId').val() == '') {
-                alert('staffId을 입력하세요');
-                $('#staffId').focus();
             } else {
                 $('#addForm').submit();
             }
@@ -49,7 +43,8 @@
         // #inputFile에 input type="file" 마지막에 추가
         $('#addFilmBtn').click(function(){
         	console.log('#addFilmBtn click!');
-        	$('#inputFile').append('<input type="text" name="film" class="filmList">');
+        	$('#inputFilm').append('<input type="text" name="filmLine" class="filmLine" placeholder="film"> <br>');
+        	//카테고리랑 한줄로 만들어서 넣고 싶은데... 힘드려나요.
         });
         
      	// #inputFile에 input type="file" 마지막 태그를 삭제
@@ -73,7 +68,7 @@
             		<button id="addFilmBtn" type="button">영화추가</button>
             		<button id="delFilmBtn" type="button">영화삭제</button>
             	</div>
-            	<div id="inputFile">
+            	<div id="inputFilm">
             	</div>
             </div>
             

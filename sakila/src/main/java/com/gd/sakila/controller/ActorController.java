@@ -30,9 +30,12 @@ public class ActorController {
 	public String addActor(Model model
 							, @RequestParam(value="firstName", required = true)String firstName
 							, @RequestParam(value="lastName", required=true) String lastName
-							, @RequestParam(value="filmName", required=false) String filmList) {
+							, @RequestParam(value="filmLine", required=false) String filmLine) {
+		System.out.println(firstName+"<--firstName");
+		System.out.println(lastName+"<--lastName");
+		System.out.println(filmLine+"<--filmLine");
 		
-		int row = actorService.addActor(firstName, lastName, filmList);
+		int row = actorService.addActor(firstName, lastName, filmLine);
 		
 		return "redirect:/admin/getActorList"; //:/였다
 	}
