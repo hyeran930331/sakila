@@ -29,15 +29,40 @@
  
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
-<title>Film VIEW(spring mvc 방식)</title>
+<title>Film One VIEW(spring mvc 방식)</title>
 </head>
 <body>
 <div class="container text-center">
-    <h1>Film VIEW</h1>
+    <h1>Film One VIEW</h1>
      <table class="table">
         <tr>
           <td width="300">FID :</td>
           <td>${filmList.FID}</td>
+        </tr>
+        
+        <tr>
+          <td> title :</td>
+          <td>${filmList.title}</td>
+        </tr>
+        
+        <tr>
+          <td> rating :</td>
+          <td>${filmList.rating}</td>
+        </tr>
+        
+        <tr>
+          <td> length :</td>
+          <td>${filmList.length}</td>
+        </tr>
+        
+         <tr>
+          <td> price :</td>
+          <td>${filmList.price}</td>
+        </tr>
+        
+        <tr>
+          <td> category :</td>
+          <td>${filmList.category}</td>
         </tr>
         
         <c:forEach var="f" varStatus="status" items="${FilmInStockStore }">
@@ -47,6 +72,8 @@
           
         </tr>
         </c:forEach>
+        
+        
         
         <tr>
           <td>설명</td>
@@ -63,6 +90,7 @@
 			</c:forTokens>
           </td>
         </tr>
+        
       
     </table>
     
