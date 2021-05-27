@@ -21,6 +21,15 @@ public class FilmService {
 	@Autowired FilmMapper filmMapper;
 	@Autowired CategoryMapper categoryMapper;
 	
+	public List<Map<String,Object>> getFilmActorListByFilm(int filmId){
+		log.debug("ⓢFilmServiceⓢ param확인 filmId :"+ filmId);
+		
+		List<Map<String,Object>> Filmlist = filmMapper.selectFilmActorListByFilm(filmId);
+		log.debug("ⓢFilmServiceⓢ map확인:"+ Filmlist.size());
+		
+		return Filmlist;
+	}
+	
 	public Map<String, Object> getFilmList(int currentPage, int rowPerPage, String category, Double price, String title, String actor, String rating) {
 		/*map으로 받으면 한번에 할수 있지만... controller에서는 최대한 정보처리를 안하기 위해서... 서비스에서 복붙+ctrl f 찾아바꾸기 하는걸로 흙흑*/
 		log.debug("ⓢFilmServiceⓢ param확인 currentPage :"+ currentPage);

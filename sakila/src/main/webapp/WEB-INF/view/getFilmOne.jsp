@@ -83,7 +83,8 @@
         <tr>
           <td>배우</td>
           <td>
-          	<a class="btn btn-default" href="${pageContext.request.contextPath}/admin/modifyFilmActor?FilmId=${filmList.FID}">배우수정하기</a>
+          	<a class="btn btn-default" href="${pageContext.request.contextPath}/admin/getFilmActorListByFilm?filmId=${filmList.FID}">배우수정하기</a> 
+          	<br>
   
           	<!-- 배우마다 한줄띄기 하고싶었습니다. 와 이게 한번에 되다니...-->
 			<c:forTokens var="temp" items="${filmList.actors } " delims=",">

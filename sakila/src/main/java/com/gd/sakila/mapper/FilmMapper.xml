@@ -1,6 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gd.sakila.mapper.FilmMapper">
+	<select id ="selectFilmActorListByFilm"
+			parameterType="int"
+			resultType="Map">
+		SELECT 
+	   		a.actor_id actorId
+	   		,  CONCAT(first_name,' ',last_name) name
+	   		, t.actor_id cast
+		FROM
+	         actor a
+	         LEFT JOIN 
+	         	(SELECT * 
+	        	 FROM film_actor fa
+	        	 WHERE film_id = ${filmId}) t
+	       	<!-- actor는 다나오게 하고 = left  join-->
+			ON a.actor_id = t.actor_id
+			<!-- 기준은 두 테이블의 actor Id가 같을때 -->
+			<!--  null = 출연하지 않는 배우 -->
+		ORDER BY
+			first_name ASC
+	</select>
+
 	<select id ="selectStoreForCount"
 			resultType="Integer"> <!-- 리스트는 안에 있는 속성으로... -->
 		SELECT 
@@ -34,8 +55,7 @@
 		FROM
 			film_list
 			
-		<include refid="searchWords">
-		</include>	
+		<include refid="searchWords"></include>	
 		
 	</select>
 	
@@ -51,16 +71,11 @@
 			, rating
 		FROM 
 			film_list
-		<include refid="searchWords">
-		</include>
+		<include refid="searchWords"> </include>
 		<!-- 조건절이 order보다 앞에 있어야 됩니다 -->
 		Order BY
 			FID ASC 	
-			
-			
-			
-		
-		
+
 		LIMIT
 			#{beginRow}, #{rowPerPage}	
 	</select>

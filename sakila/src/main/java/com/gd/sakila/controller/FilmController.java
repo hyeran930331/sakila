@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -20,6 +21,34 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/admin") //공통 매핑추가 post든 get이든~~
 public class FilmController {
 	@Autowired FilmService filmService;
+	
+	@GetMapping("/getFilmActorListByFilm")
+	public String getFilmActorListByFilm(Model model
+										, @RequestParam(value="filmId") int filmId ) {
+		List<Map<String,Object>> castingListByFilm = filmService.getFilmActorListByFilm(filmId);
+		System.out.println("resultmap size() :"+castingListByFilm.toString());
+		
+		model.addAttribute("castingListByFilm", castingListByFilm);
+		model.addAttribute("filmId", filmId);
+
+		return "getFilmActorListByFilm";
+	}
+	
+	@PostMapping("/modifyFilmActor")
+	public String modifyFilmActor (Model model
+								, @RequestParam(value="filmId") int filmId
+								, @RequestParam(value="cast") int[] cast) {
+		System.out.println("film Id :"+filmId);
+		System.out.println("cast length"+cast.length);
+		/*
+		service - mapper
+		delete from film_actor where film_id = #{}
+		for{
+		insert into(actor_id, film_id) values(#Pck[0]}. #{fimlId})
+		}
+		*/
+		return "redirect:/admin/getFilmOne?FID="+filmId;
+	}
 	
 	@GetMapping ("/getFilmList")
 	public String getFilmList(Model model
