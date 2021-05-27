@@ -12,7 +12,7 @@
     </span>
     
     <span class="navbar-text"> 
-      <a class="nav-link" href="${pageContext.request.contextPath}/admin/getstaffList">staffList</a>
+      <a class="nav-link" href="${pageContext.request.contextPath}/admin/getStaffList">staffList</a>
     </li>
      </span>
      

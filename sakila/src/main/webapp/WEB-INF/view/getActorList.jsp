@@ -20,9 +20,11 @@
     <table class="table table-striped">
         
 		<tr>
-			<td> actorID</td>
-			<td> name</td>
-			<td> filmInfo</td>
+			<thead>
+			<th> actorID</th>
+			<th width="200"> name</th>
+			<th> filmInfo</th>
+			</thead>
 		</tr>
 		
 		<c:forEach var="a" items="${actorList}">
