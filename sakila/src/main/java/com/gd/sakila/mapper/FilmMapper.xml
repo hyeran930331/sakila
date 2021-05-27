@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gd.sakila.mapper.FilmMapper">
+	<insert id="insertFilmActor" 
+			parameterType="java.util.Map">
+		INSERT INTO film_actor(
+			actor_id,
+			film_id
+		) VALUES (
+			#{actorId},
+			#{filmId}
+		)
+	</insert>
+	<delete id="deleteFilmActor"
+			parameterType="int">
+		DELETE FROM film_actor
+		WHERE film_id = #{filmId}
+	</delete>
+
 	<select id ="selectFilmActorListByFilm"
 			parameterType="int"
 			resultType="Map">
@@ -80,8 +96,6 @@
 			#{beginRow}, #{rowPerPage}	
 	</select>
 
-	
-	
 	<select id="selectFilmOne"
 			parameterType="int"
 			resultType="java.util.Map">

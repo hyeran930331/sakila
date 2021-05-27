@@ -33,20 +33,26 @@ public class FilmController {
 
 		return "getFilmActorListByFilm";
 	}
-	
 	@PostMapping("/modifyFilmActor")
 	public String modifyFilmActor (Model model
 								, @RequestParam(value="filmId") int filmId
-								, @RequestParam(value="cast") int[] cast) {
+								, @RequestParam(value="cast") int[] actorId) {
 		System.out.println("film Id :"+filmId);
-		System.out.println("cast length"+cast.length);
-		/*
-		service - mapper
-		delete from film_actor where film_id = #{}
-		for{
-		insert into(actor_id, film_id) values(#Pck[0]}. #{fimlId})
+		System.out.println("cast length"+actorId.length);
+
+		Map<String, Object> parmMap = new HashMap<>();
+		
+		if(actorId != null) {
+			for(int a : actorId) {
+				log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶FilmController.modifyFilmActor 매개변수 actor : " + a);
+			}
+			parmMap.put("actorId", actorId);
 		}
-		*/
+		
+		parmMap.put("filmId", filmId);
+		
+		filmService.modifyFilmActor(parmMap);
+		
 		return "redirect:/admin/getFilmOne?FID="+filmId;
 	}
 	

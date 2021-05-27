@@ -29,7 +29,7 @@
 <div class="container text-center">
     <h1>영화 출연진 수정</h1> <jsp:include page="/WEB-INF/view/nav.jsp"/>
     
-    <form action="/admin/modifyFilmActor" id="modifyFilmActor">
+    <form action="/admin/modifyFilmActor" id="modifyFilmActor" method="post">
 	<table class="table">
         <tr>
           <td>${filmId}번 film 출연배우 수정 	<button id="btn" name="btn"> 제출</button>

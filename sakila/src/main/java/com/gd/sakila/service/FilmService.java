@@ -116,4 +116,22 @@ public class FilmService {
 
 		return returnMap;
 	}
+
+	public void modifyFilmActor(Map<String, Object> map) {
+		log.debug("ⓢFilmServiceⓢ FilmService.modifyFilmActor 매개변수 map:" +map);
+		
+		int deleteRow = filmMapper.deleteFilmActor((int)map.get("filmId"));
+		log.debug("ⓢFilmServiceⓢ FilmService.modifyFilmActor deleteRow:" + deleteRow);
+		if(map.get("actorId") != null) {
+			for(int a : (int[])map.get("actorId")) {
+				log.debug("ⓢFilmServiceⓢ FilmService.modifyFilmActor  actorId:" + a);
+				
+				Map<String,Object> parmMap = new HashMap<String, Object>();
+				parmMap.put("actorId", a);
+				parmMap.put("filmId", map.get("filmId"));
+				int insertRow = filmMapper.insertFilmActor(parmMap);
+				log.debug("ⓢFilmServiceⓢ FilmService.modifyFilmActor insertRow:" + insertRow);
+			}
+		}
+	}
 }
