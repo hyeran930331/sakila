@@ -36,12 +36,13 @@ public class FilmController {
 	@PostMapping("/modifyFilmActor")
 	public String modifyFilmActor (Integer filmId
 								, int[] actorId) {
-		System.out.println("film Id :"+filmId);
-		System.out.println("cast length"+actorId.length);
+		System.out.println("\n1 film Id :"+filmId);
+		System.out.println("2 cast length :"+actorId.length);
+		System.out.println("2 cast :"+actorId);
 
 		Map<String, Object> parmMap = new HashMap<>();
-		parmMap.put("actorIdList", actorId);
 		parmMap.put("filmId", filmId);
+		parmMap.put("actorIdArr", actorId);		
 		
 		filmService.modifyFilmActor(parmMap);
 		

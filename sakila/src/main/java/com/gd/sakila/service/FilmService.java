@@ -118,22 +118,27 @@ public class FilmService {
 	}
 
 	public void modifyFilmActor(Map<String, Object> map) {
-		log.debug("ⓢFilmServiceⓢ FilmService.modifyFilmActor 매개변수 map:" +map);
+		log.debug("3 ⓢFilmServiceⓢ FilmService.modifyFilmActor 매개변수 map:" +map);
 		
+		//출연진 수만큼 받아서 0이면 안하게 해야겟다.
 		int deleteRow = filmMapper.deleteFilmActor((int)map.get("filmId"));
-		log.debug("ⓢFilmServiceⓢ FilmService.modifyFilmActor deleteRow:" + deleteRow);
-		//전체 삭제
+		log.debug("4 ⓢFilmServiceⓢ FilmService.modifyFilmActor deleteRow:" + deleteRow);
+		//전체 삭제까지 성공
 		
-		if(map.get("actorId") != null) { //전체 배우 아이지가 null이 아니면,
-			for(int a : (int[])map.get("actorId") ) {
-				log.debug("ⓢFilmServiceⓢ FilmService.modifyFilmActor  actorId:" + a);
+		//전체 배우 아이지가 null이 아니면, 
+		if(map.get("actorIdArr") != null || map.get("actorIdArr") !="") { //"java.util.Map.get(Object)" is null 5/28 10:35 왜 안걸러지지?
+			log.debug("5 ⓢFilmServiceⓢ FilmService.modifyFilmActor actorId not null:" + map.get("actorIdArr"));
+			int i=6;
+			for(int a : (int[])map.get("actorIdArr") ) {
+				log.debug(i+"ⓢFilmServiceⓢ FilmService.modifyFilmActor  actorId:" + a);
 				
 				Map<String,Object> paramMap = new HashMap<String, Object>();
 				paramMap.put("actorId", a);
 				paramMap.put("filmId", map.get("filmId"));
-				
+				i=i+1;
 				int insertRow = filmMapper.insertFilmActor(paramMap);
-				log.debug("ⓢFilmServiceⓢ FilmService.modifyFilmActor  actorId insert?:" + insertRow);
+				log.debug(i+"ⓢFilmServiceⓢ FilmService.modifyFilmActor  actorId insert?:" + insertRow);
+				i=i+1;
 			}
 		}
 	}
