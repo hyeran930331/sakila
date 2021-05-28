@@ -11,6 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.gd.sakila.mapper.CategoryMapper;
 import com.gd.sakila.mapper.FilmMapper;
+import com.gd.sakila.vo.Category;
+import com.gd.sakila.vo.Film;
+import com.gd.sakila.vo.FilmForm;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,6 +23,25 @@ import lombok.extern.slf4j.Slf4j;
 public class FilmService {
 	@Autowired FilmMapper filmMapper;
 	@Autowired CategoryMapper categoryMapper;
+
+	/*
+	 * param : film입력폼을 통해
+	 * return : 입력된 filmId값
+	 */
+	
+
+	
+	public int addFilm(FilmForm filmForm) {
+		Film film = filmForm.getFilm();
+		int row = filmMapper.insertFilm(film); //filmId는 초기화된 0으로 생성 -> sql에서 auto increase됨 film.setFilmId(생성된 값)호출
+		
+		Map<String, Object> map =  new HashMap<String, Object>();
+		map.put("categoryId", filmForm.getCategory().getCategoryId());
+		map.put("filmId", film.getFilmId());
+		
+		filmMapper.insertFilmCategory(map);
+		return row;
+	}
 	
 	public List<Map<String,Object>> getFilmActorListByFilm(int filmId){
 		log.debug("ⓢFilmServiceⓢ param확인 filmId :"+ filmId);
@@ -82,7 +104,7 @@ public class FilmService {
 		List<Map<String, Object>> filmList = filmMapper.selectFilmList(paramMap);
 		log.debug("ⓢFilmServiceⓢ filmMapper.selectFilmList :"+ filmList.toString());
 		
-		List<String> categoryList = categoryMapper.selectCategoryNameList();
+		List<Category> categoryList = categoryMapper.selectCategoryList();
 		log.debug("ⓢFilmServiceⓢ categoryMapper.selectCategoryNameList :"+ categoryList.toString());
 			
 		Map<String, Object> returnMap = new HashMap<>();
@@ -126,7 +148,7 @@ public class FilmService {
 		//전체 삭제까지 성공
 		
 		//전체 배우 아이지가 null이 아니면, 
-		if(map.get("actorIdArr") != null || map.get("actorIdArr") !="") { //"java.util.Map.get(Object)" is null 5/28 10:35 왜 안걸러지지?
+		if(map.get("actorIdArr") != null || map.get("actorIdArr") !="") { //"java.util.Map.get(Object)" is null 5/28 10:35 왜 안걸러지지? 11:
 			log.debug("5 ⓢFilmServiceⓢ FilmService.modifyFilmActor actorId not null:" + map.get("actorIdArr"));
 			int i=6;
 			for(int a : (int[])map.get("actorIdArr") ) {

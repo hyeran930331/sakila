@@ -1,5 +1,6 @@
 package com.gd.sakila.vo;
 
+import java.util.List;
 import java.util.Set;
 
 import lombok.Data;
@@ -10,14 +11,17 @@ public class Film {
 	private String title;
 	private String description;
 	private String releaseYear;
+	private int languageId;
 	private int originalLanguageId;
 	private int reantalDuration;
 	private double rantalRate;
 	private int length;
 	private int replacementCost;
-	private String rationg;
-	private Set<String> specialFeatures;/* "Trailers","Commentaries","Deleted Scenes","Behind the Scenes"
+	private String rating;
+	private String specialFeatures;	
+
 	
+	/*
 	 * Copyright 2021 the original author or authors.
 	 *
 	 * Licensed under the Apache License, Version 2.0 (the "License");

@@ -49,14 +49,14 @@ $(document).ready(function(){
 					<option value="">모두보기</option>
 					<c:forEach var="c" items="${categoryList}">
 					
-					<c:if test = "${c.equals(category)}" >
-						<option selected="selected" value="${c}">${c}</option>
-					</c:if>
-					
-					<c:if test="${!c.equals(category)}">
-						<option value="${c}">${c}</option>
-					</c:if>
-					
+						<c:if test = "${c.equals(category)}" >
+							<option selected="selected" value="${c.categoryId}">${c.name}</option>
+						</c:if>
+						
+						<c:if test="${!c.equals(category)}">
+							<option value="${c.categoryId}">${c.name}</option>
+						</c:if>
+						
 					</c:forEach>
 				</select>
 
@@ -171,7 +171,10 @@ $(document).ready(function(){
          </c:if>
         <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/getFilmList?currentPage=${lastPage}">마지막 페이지로</a>
     </ul>
-
+    <div>
+    
+        <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/addFilm">영화 입력</a>
+    </div>
 </div>
 </body>
 </html>

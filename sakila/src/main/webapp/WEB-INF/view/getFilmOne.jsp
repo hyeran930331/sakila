@@ -36,7 +36,7 @@
     <h1>Film One VIEW</h1> <jsp:include page="/WEB-INF/view/nav.jsp"/>
      <table class="table">
         <tr>
-          <td width="300">FID :</td>
+          <td >FID :</td>
           <td>${filmList.FID}</td>
         </tr>
         
@@ -81,14 +81,15 @@
         </tr>
         
         <tr>
-          <td>배우</td>
-          <td>
-          	<a class="btn btn-default" href="${pageContext.request.contextPath}/admin/getFilmActorListByFilm?filmId=${filmList.FID}">배우수정하기</a> 
-          	<br>
-  
+          <td>배우
+          <br>
+          <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/getFilmActorListByFilm?filmId=${filmList.FID}">배우수정하기</a> 
+          </td>
+          
+          <td class="text-left">
           	<!-- 배우마다 한줄띄기 하고싶었습니다. 와 이게 한번에 되다니...-->
-			<c:forTokens var="temp" items="${filmList.actors } " delims=",">
-				<a href="${pageContext.request.contextPath}/admin/getActorOne?Actor=${temp}"> ${temp }</a><br>
+			<c:forTokens var="temp" items="${filmList.actors } " delims="," varStatus="status">
+				<a href="${pageContext.request.contextPath}/admin/getActorOne?Actor=${temp}">${status.count} ${temp }</a><br>
 			</c:forTokens>
           </td>
         </tr>

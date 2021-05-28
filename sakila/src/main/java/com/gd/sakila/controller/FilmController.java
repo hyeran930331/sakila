@@ -12,7 +12,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.gd.sakila.service.CategoryService;
 import com.gd.sakila.service.FilmService;
+import com.gd.sakila.service.LanguageService;
+import com.gd.sakila.vo.Category;
+import com.gd.sakila.vo.FilmForm;
+import com.gd.sakila.vo.Language;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -21,6 +26,28 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/admin") //공통 매핑추가 post든 get이든~~
 public class FilmController {
 	@Autowired FilmService filmService;
+	@Autowired CategoryService categoryService;
+	@Autowired LanguageService laguageService;
+	
+	@GetMapping("/addFilm")
+	public String addFilm (Model model) {
+		List<Category> categoryList =categoryService.getCategoryList();
+		List<Language> languageList =laguageService.getLanguageList();
+		model.addAttribute("categoryList", categoryList);
+		model.addAttribute("languageList", languageList);
+		return "addFilm";
+	}
+	@PostMapping("/addFilm")
+	public String addFilm(FilmForm filmForm) { 
+		//갑타입으로 매개변수의 이름과 도메인이 같으면 매핑
+		//다르면  requestParam
+		//참조타입 = 피드명과 도메인의 이 같으면 command type 
+		int filmId = filmService.addFilm(filmForm);
+		System.out.println("1. addfilm Controller post param 확인" +filmForm.toString());
+		categoryService.getCategoryList();//categoryService에
+		laguageService.getLanguageList();
+		return "redirect:/admin/getFilmOne?FID="+filmId;
+	}
 	
 	@GetMapping("/getFilmActorListByFilm")
 	public String getFilmActorListByFilm(Model model

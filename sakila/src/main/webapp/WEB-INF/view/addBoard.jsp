@@ -27,8 +27,8 @@
  
 <script>
     $(document).ready(function() {
-        $('#addButton').click(function() { 
-        	console.log('addButton 클릭');
+        $('#btn').click(function() { 
+        	console.log('btn 클릭');
         	// 파일들중 하나라도 첨부되지 않으면 ck = true;
         	let empty = false;
             let boardfile = $('.boardfile'); // 배열
@@ -106,7 +106,7 @@
                 <input class="form-control" name="board.staffId" id="staffId" type="text" />
             </div>
             <div>
-                <input class="btn btn-default" id="addButton" type="button" value="글입력" /> 
+                <input class="btn btn-default" id="btn" type="button" value="글입력" /> 
                 <input class="btn btn-default" type="reset" value="초기화" /> 
                 <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/getBoardList">글목록</a>
             </div>
