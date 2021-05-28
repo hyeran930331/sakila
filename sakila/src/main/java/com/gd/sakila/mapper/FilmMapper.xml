@@ -3,13 +3,15 @@
 <mapper namespace="com.gd.sakila.mapper.FilmMapper">
 	<insert id="insertFilmActor" 
 			parameterType="java.util.Map">
-		INSERT INTO film_actor(
-			actor_id,
-			film_id
-		) VALUES (
-			#{actorId},
-			#{filmId}
-		)
+		<if test="actorId != null and actorId != ''">
+			INSERT INTO film_actor(
+				actor_id,
+				film_id
+			) VALUES (
+				#{actorId},
+				#{filmId}
+			)
+		</if>
 	</insert>
 	<delete id="deleteFilmActor"
 			parameterType="int">

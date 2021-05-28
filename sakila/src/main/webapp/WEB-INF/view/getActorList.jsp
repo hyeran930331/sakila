@@ -24,6 +24,7 @@
 			<th> actorID</th>
 			<th width="200"> name</th>
 			<th> filmInfo</th>
+			<th> filmInfoNum</th>
 			</thead>
 		</tr>
 		
@@ -31,7 +32,12 @@
 		<tr>
 			<td>${a.actorId}</td>
 			<td>${a.name}</td>
-			<td>${a.filmInfoNum}</td>
+			<td>
+			${a.filmInfo}
+			</td>
+			<td>
+			${a.filmInfoNum }
+			</td>
 		</tr>
 		</c:forEach>
 	</table>

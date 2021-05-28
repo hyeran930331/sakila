@@ -50,6 +50,8 @@ public class ActorController {
 		System.out.println(searchWord+"<--searchWord");
 		
 		Map<String,Object> map = actorService.getActorInfoList(currentPage, rowPerPage, searchWord);
+		System.out.println(map.get("lastPage")+"<--map.get(\"lastPage\")");
+		
 		
 		model.addAttribute("currentPage", currentPage);
 		model.addAttribute("rowPerPage", rowPerPage);

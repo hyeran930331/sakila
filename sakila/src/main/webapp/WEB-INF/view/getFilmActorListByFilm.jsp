@@ -15,6 +15,17 @@
 
 <script>
 	$(document).ready(function() {
+		function checkboxArr() {
+		    var actorId = new Array();     // 배열 초기화
+		 	// 체크된 체크박스의 value 값을 가지고 온다.
+		    $("input[name='actorId']:checked").each(function(i) { 
+		        actorId.push(this.value);     // 체크된 것만 값을  배열에 push
+		    });
+		    $('#hiddenValue').val(actorId);
+	        
+	        alert($('#hiddenValue').val()); // 팝업창으로 띄운다
+		}
+		
 	    $('#btn').click(function() { 
 	    	console.log('btn 클릭');
 	        $('#modifyFilmActor').submit();
@@ -29,11 +40,11 @@
 <div class="container text-center">
     <h1>영화 출연진 수정</h1> <jsp:include page="/WEB-INF/view/nav.jsp"/>
     
-    <form action="/admin/modifyFilmActor" id="modifyFilmActor" method="post">
+     <form id="modifyFilmActor" name="modifyFilmActor" action="${pageContext.request.contextPath}/admin/modifyFilmActor" method="post">
 	<table class="table">
         <tr>
           <td>${filmId}번 film 출연배우 수정 	<button id="btn" name="btn"> 제출</button>
-          <input hidden="hidden" id="filmId" value="${filmId}">
+          <input type = "hidden" name = "filmId" value = "${filmId}">
           </td>
         </tr> 
          
@@ -48,12 +59,14 @@
 					</c:if>
 					
 						<td>
+						<!-- checkbox 의 name을 동일하게 일치시켜주면 동일한 name의 value를 배열로 묶어서 넘길 수 있다. 
+							출처: https://beanice.tistory.com/152 [잡다세상] -->
 							<c:if test="${c.cast !=null}">
-								<input name="cast[${status.index}]" type="checkbox" checked="checked" value="${c.actorId}">
+								<input name="actorId" type="checkbox" checked="checked" value="${c.actorId}">
 							</c:if>
 							
 							<c:if test="${c.cast ==null}">
-								<input name="cast[${status.index}]" type="checkbox" value="${c.actorId}">
+								<input name="actorId" type="checkbox" value="${c.actorId}">
 							</c:if>
 							${status.count}. ${c.name}
 						</td>
@@ -78,7 +91,7 @@
     <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/getFilmOne?FilmId=${(filmList.FilmId)-1}">이전글</a>
     </c:if>
 -->
-    <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/getFilmList">목록으로</a>
+    <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/getFilmOne?filmId=${filmId}">뒤로가기</a>
  <!-- 
     <c:if test="${((filmList.FilmId)+1)<FilmTotal}">
     <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/getFilmOne?FilmId=${(filmList.FilmId)+1}">다음글</a>

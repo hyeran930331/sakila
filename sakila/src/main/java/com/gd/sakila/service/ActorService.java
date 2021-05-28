@@ -25,6 +25,7 @@ public class ActorService {
 		Page page = new Page();
 		int beginRow = ((currentPage-1)*rowPerPage);
 		int total = (actorMapper.selectActorForCount(searchWord));
+		log.debug("ⓢActorServiceⓢ Param total : "+ total);
 		int lastPage = (int)(Math.ceil((double)total / rowPerPage));
 		page.setBeginRow(beginRow);
 		page.setRowPerPage(rowPerPage);

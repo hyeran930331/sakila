@@ -34,21 +34,13 @@ public class FilmController {
 		return "getFilmActorListByFilm";
 	}
 	@PostMapping("/modifyFilmActor")
-	public String modifyFilmActor (Model model
-								, @RequestParam(value="filmId") int filmId
-								, @RequestParam(value="cast") int[] actorId) {
+	public String modifyFilmActor (Integer filmId
+								, int[] actorId) {
 		System.out.println("film Id :"+filmId);
 		System.out.println("cast length"+actorId.length);
 
 		Map<String, Object> parmMap = new HashMap<>();
-		
-		if(actorId != null) {
-			for(int a : actorId) {
-				log.debug("▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶FilmController.modifyFilmActor 매개변수 actor : " + a);
-			}
-			parmMap.put("actorId", actorId);
-		}
-		
+		parmMap.put("actorIdList", actorId);
 		parmMap.put("filmId", filmId);
 		
 		filmService.modifyFilmActor(parmMap);

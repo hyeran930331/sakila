@@ -153,14 +153,14 @@ public class BoardService {
 	
 	public Map<String, Object> getBoardList(int currentPage, int rowPerPage, String searchWord) {
 		//1 전체갯수 구하기 (feat.검색어)
-		int boardTotal = boardMapper.selectBoardTotal(searchWord); // searchWord
+		int total = boardMapper.selectBoardTotal(searchWord); // searchWord
 		/*
 		int lastPage = boardTotal / rowPerPage;
 		if(boardTotal % rowPerPage != 0) {
 			lastPage++;
 		}
 		*/
-		int lastPage = (int)(Math.ceil((double)boardTotal / rowPerPage));
+		int lastPage = (int)(Math.ceil((double)total / rowPerPage));
 		
 		//2 페이징
 		Page page = new Page();

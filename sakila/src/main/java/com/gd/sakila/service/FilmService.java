@@ -122,15 +122,18 @@ public class FilmService {
 		
 		int deleteRow = filmMapper.deleteFilmActor((int)map.get("filmId"));
 		log.debug("ⓢFilmServiceⓢ FilmService.modifyFilmActor deleteRow:" + deleteRow);
-		if(map.get("actorId") != null) {
-			for(int a : (int[])map.get("actorId")) {
+		//전체 삭제
+		
+		if(map.get("actorId") != null) { //전체 배우 아이지가 null이 아니면,
+			for(int a : (int[])map.get("actorId") ) {
 				log.debug("ⓢFilmServiceⓢ FilmService.modifyFilmActor  actorId:" + a);
 				
-				Map<String,Object> parmMap = new HashMap<String, Object>();
-				parmMap.put("actorId", a);
-				parmMap.put("filmId", map.get("filmId"));
-				int insertRow = filmMapper.insertFilmActor(parmMap);
-				log.debug("ⓢFilmServiceⓢ FilmService.modifyFilmActor insertRow:" + insertRow);
+				Map<String,Object> paramMap = new HashMap<String, Object>();
+				paramMap.put("actorId", a);
+				paramMap.put("filmId", map.get("filmId"));
+				
+				int insertRow = filmMapper.insertFilmActor(paramMap);
+				log.debug("ⓢFilmServiceⓢ FilmService.modifyFilmActor  actorId insert?:" + insertRow);
 			}
 		}
 	}
