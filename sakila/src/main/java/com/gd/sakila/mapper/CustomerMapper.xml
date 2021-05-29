@@ -6,15 +6,9 @@
 			resultType="Integer">
 		SELECT
 			Count(*)
-	FROM customer
-		<where>
-			<if test="searchWord != null and searchWord !='' ">
-				AND name LIKE CONCAT('%',#{searchWord},'%')
-			</if>
-			<if test="storeId != null and storeId !=''">
-				AND store_id = ${storeId}
-			</if>
-		</where>
+		FROM 
+			customer
+		<include refid="searchWords"> </include>
 	</select>
 	
 	<select id="selectCustomerList"
@@ -26,36 +20,53 @@
 		   , email
 		   , store_id storeId
 		   <!-- if 만약에 (조건12~17 , 18 참이면'black', 거짓이면'') VIP칼럼으로 출력 -->
-		   <!-- IN연산자 - 괄호 내의 값 중 일치하는 것이 있으면 TRUE -->
 		   , if(customer_id IN(SELECT p.customer_id  
-		   <!-- customer_id가 IN(페이먼트의 customer_id)랑 같다면 -->
-			                     FROM payment p LEFT JOIN rental r ON p.rental_id=r.rental_id JOIN inventory i 
-			                     <!--  -->
-			                     ON r.inventory_id=i      .inventory_id JOIN film f ON i.film_id=f.film_id 
+		   <!-- IN연산자 - 괄호 내의 값 중 일치하는 것이 있으면 TRUE -->
+		   <!-- customer_id가 IN(join한 페이먼트의 customer_id)랑 같다면 -->
+			                     FROM payment p LEFT JOIN rental r ON p.rental_id=r.rental_id  
+			                     <!-- 페이먼트 테이블의 rentalId를 기준으로 렌탈테이블을 붙인다.  -->
+			                     	JOIN inventory i ON r.inventory_id=i.inventory_id 
+			                     	<!-- 렌탈테이블의 inventoryID 마다 인벤토리 테이블을 붙인다. -->
+			                     		JOIN film f ON i.film_id=f.film_id 
+			                     		<!-- 인벤토리 테이블의 filmID마다 필름 테이블을 붙인다. -->
+			                     <!-- 페이먼트전체 (rental_id 기준으로) 렌탈테이블 (inventory_id 기준으로) 인벤토리테이블 (film_id 기준으로) -->
 			                     WHERE DATEDIFF(r.return_date, r.rental_date) > f.rental_duration
+			                     <!-- 위 테이블에서 렌탕부분의 값이 필름테이블의 기간보다 클때(연체반납 아이디)만 남긴다.-->
 			                     GROUP BY p.customer_id
+			                     <!-- 위 테이블에서                 having절                customer_id(연체반납 아이디)를 묶는다. -->
 			                     HAVING COUNT(p.customer_id)>=10),
+			                     <!-- 위 테이블에서 customer_id(연체반납 아이디)가 10번 초과할는 -->
 			'BLACK', '') blackList
+			<!-- if 조건 (in 일치하는 것이 있으면) black이라 출력하는게 blackList라고 한다. -->
 		   , if(customer_id IN(SELECT p.customer_id
-			                     FROM payment AS p
+		   <!-- customer_id가 IN(join한 페이먼트의 customer_id)랑 같다면 -->
+			                     FROM payment p
+			                     <!-- 페이먼트 테이블에서 -->
 			                     WHERE DATE(p.payment_date) BETWEEN DATE_SUB('2005-06-25', INTERVAL 1 MONTH) AND LAST_DAY('2005-06-25')
+			                     <!-- 페이먼트 날짜가 (2005-06-25에서 date_sub 1개월 뺀값)~에서부터 (2005-06-25의 마지막 날까지)만 남긴다. -->
 			                     GROUP BY customer_id
-			                     HAVING SUM(p.amount) > 10
-			                     AND COUNT(customer_id) > 5),
-			 'VIP','') VIP <!-- 대문자 인걸 깜빡 -->
+			                     <!-- 위 테이블에서                 having절                customer_id를 남긴다. -->
+			                     HAVING SUM(p.amount) > 10 AND COUNT(customer_id) > 5),
+			                     <!-- 위 테이블에서 거래량이 10달러 이상이고 customer_id가 5번이 넘는 -->
+			 'VIP','') vipList <!-- 대문자 인걸 깜빡 -->
+			 <!-- if 조건 (in 일치하는 것이 있으면) VIP이라 출력하는게 VIPList라고 한다. -->
 		FROM customer
-		<where>
-			<if test="searchWord != null and searchWord !='' ">
-				AND name LIKE CONCAT('%',#{searchWord},'%')
-			</if>
-			<if test="storeId != null and storeId !=''">
-				AND store_id = ${storeId}
-			</if>
-		</where>
+		<include refid="searchWords"> </include>
 		ORDER BY
 			customer_id
 		LIMIT
 			${beginRow}, ${rowPerPage}
 		
 	</select>
+	
+	<sql id="searchWords">
+		<where>
+			<if test="searchWord != null and searchWord !='' ">
+				AND CONCAT(first_name, ' ' , last_name) LIKE CONCAT('%',#{searchWord},'%')
+			</if>
+			<if test="storeId != null and storeId !=''">
+				AND store_id = ${storeId}
+			</if>
+		</where>
+	</sql>
 </mapper>

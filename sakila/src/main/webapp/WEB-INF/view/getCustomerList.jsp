@@ -81,7 +81,7 @@ $(document).ready(function(){
 					<td><a href="${pageContext.request.contextPath}/admin/getCustomerOne?FID=${c.customerId}">${c.name}</a></td>
 					<td>${c.email}</td>
 					<td>${c.blackList}</td>
-					<td>${c.VIP}</td>
+					<td>${c.vipList}</td>
 				</tr>
 			</c:forEach>
 		</tbody>
