@@ -1,12 +1,21 @@
 package com.gd.sakila.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.gd.sakila.service.CustomerService;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@Transactional
 /*
  * DB에 엑세스하는 여러 연산을 하나의 트랜잭션으로 처리하여 오류가 발생한 경우 롤백을 도와주는것
  * (timeout=초)단위로 시간을 정할수도 있다
@@ -24,6 +33,33 @@ import lombok.extern.slf4j.Slf4j;
 하지만, 대부분의 상황에서 우리는 @Repository, @Service, @Controller 어노테이션을 사용하는게 좋다.
 @Component 어노테이션은 Controller, Service, Dao 세가지 카테고리 이외의 클래스에만 사용해야 한다. ???
  */
+@RequestMapping("/admin")
 public class CustomerController {
-
+	@Autowired CustomerService customerService;
+	
+	@GetMapping("/getCustomerList")
+	public String getCustomerList(Model model
+								 ,@RequestParam(value="currentPage", defaultValue ="1") int currentPage
+								 ,@RequestParam(value="rowPerPage", defaultValue="10") int rowPerPage
+								 ,@RequestParam(value="searchWord", required = false) String searchWord
+								 ,@RequestParam(value="storeId",  required = false) Integer storeId) {
+		log.debug("\n0. 콘트롤러에서 보낼 paramMap 확인 currentPage"+currentPage);
+		Map<String,Object> paramMap = new HashMap<String,Object>();
+		paramMap.put("currentPage", currentPage);
+		paramMap.put("rowPerPage", rowPerPage);
+		paramMap.put("searchWord", searchWord);
+		paramMap.put("storeId", storeId);
+		log.debug("1. 콘트롤러에서 보낼 paramMap 확인"+paramMap);
+		
+		Map<String,Object> resultMap = customerService.getCustomerList(paramMap);
+		log.debug("5. 서비스에서 보낸 resultMap 확인"+resultMap);
+		
+		model.addAttribute("currentPage", currentPage);
+		model.addAttribute("searchWord", searchWord);
+		model.addAttribute("storeId", storeId);
+		model.addAttribute("lastPage", resultMap.get("lastPage"));
+		model.addAttribute("customerList", resultMap.get("customerList"));
+		log.debug("6. 뷰로 보내기");
+		return "/getCustomerList";
+	}
 }

@@ -25,5 +25,10 @@
       <a class="nav-link" href="${pageContext.request.contextPath}/admin/getActorList">actorList</a>
     </li>
     </span>
+    
+    <span class="navbar-text"> 
+      <a class="nav-link" href="${pageContext.request.contextPath}/admin/getCustomerList">customerList</a>
+    </li>
+    </span>
 
 </nav>

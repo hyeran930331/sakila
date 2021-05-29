@@ -1,5 +1,8 @@
 package com.gd.sakila.mapper;
 
+import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
@@ -9,4 +12,6 @@ import org.apache.ibatis.annotations.Mapper;
  */
 public interface CustomerMapper {
 	int UpdateCustomerActiveByScheduler();
+	List<Map<String,Object>> selectCustomerList (Map<String,Object> map);
+	Integer selectCustomerTotal (Map<String,Object> map);
 }

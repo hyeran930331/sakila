@@ -1,5 +1,9 @@
 package com.gd.sakila.service;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,9 +26,28 @@ import lombok.extern.slf4j.Slf4j;
 public class CustomerService {
 	@Autowired CustomerMapper customerMapper;
 	
+	public Map<String,Object> getCustomerList (Map<String,Object> paramMap) {
+		log.debug("2. 콘트롤러에서 온 paramMap확인"+paramMap.toString());
+		//paramMap에서 curentPage, rowPerPage, searchWord, storeId 받아옴
+		int total = customerMapper.selectCustomerTotal(paramMap);
+		int lastPage = (int)(Math.ceil(total/(int)paramMap.get("rowPerPage")));
+		int beginRow = ( ( (int)(paramMap.get("currentPage")) -1) * (int)(paramMap.get("rowPerPage")) );
+		
+		
+		//map에서 beginRow rowPerPage, searchWord, storeId 줘야함
+		paramMap.put("beginRow", beginRow);
+		log.debug("3. 매퍼에 줄 paramMap확인"+paramMap.toString());
+		
+		List<Map<String,Object>> customerList = customerMapper.selectCustomerList(paramMap);
+		log.debug("4. 매퍼에서 받은 List 확인"+paramMap.toString());
+		
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap.put("lastPage", lastPage);
+		resultMap.put("customerList", customerList);
+		return resultMap;
+	}
+
 	public void modifyCustomerActiveByScheduler() {
-		log.debug("ⓢCustomerServiceⓢ: modifyCustomerActiveByScheduler() 실행");
-		int row = customerMapper.UpdateCustomerActiveByScheduler();
-		log.debug("ⓢCustomerServiceⓢ: 실행결과 "+row);
+		// TODO Auto-generated method stub
 	}
 }
