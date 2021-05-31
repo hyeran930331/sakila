@@ -29,7 +29,46 @@ public class FilmService {
 	 * return : 입력된 filmId값
 	 */
 	
+	//Map <- film , 재고량 filmCount
+	public Map<String, Object> modifyFilm(int filmId){
+		log.debug("ⓢFilmServiceⓢ modifyFilm() param filmId:"+filmId); //파라미터 확인
+		
+		Map<String, Object> filmList = filmMapper.selectFilmOne(filmId); //필름정보를 저장하는 리스트 = mapper
+		log.debug("ⓢFilmServiceⓢ getFilmOne()  filmMapper.selectFilmOne :"+ filmList); //필름리스트 확인
 
+		
+		List<Category> categoryList = categoryMapper.selectCategoryList();
+		log.debug("ⓢFilmServiceⓢ categoryMapper.selectCategoryNameList :"+ categoryList.toString());
+			
+		
+		Map<String,Object> returnMap = new HashMap<String, Object>();
+		returnMap.put("filmList", filmList);
+
+		return returnMap;
+	}
+
+	
+	public int updateFilm(FilmForm filmForm){
+		log.debug("1 FilmServiceⓢ param확인  filmForm :"+ filmForm.toString());
+		
+		Film film = filmForm.getFilm();
+		int row1 = filmMapper.updateFilm(film);
+		log.debug("3 FilmServiceⓢ 리스트에서 받은 row1확인 :"+ row1);
+		
+		Map<String, Object> map = new HashMap <String, Object>();
+		map.put("categoryId", filmForm.getCategory().getCategoryId());
+		map.put("filmId", filmForm.getFilm().getFilmId());
+		log.debug("2 FilmServiceⓢ 리스트에 보낼 map 확인 :"+ map.toString());
+		
+		int row2 = filmMapper.updateFilmCategory (map);
+		log.debug("3 FilmServiceⓢ 리스트에서 받은 row1확인 :"+ row1);
+		
+		int resultNum = 0;
+		if (row1 != 0 && row2 !=0) {
+			resultNum = row1 + row2;
+		}
+		return resultNum;
+	}
 	
 	public int addFilm(FilmForm filmForm) {
 		Film film = filmForm.getFilm();
@@ -116,20 +155,20 @@ public class FilmService {
 	}
 	
 	//Map <- film , 재고량 filmCount
-	public Map<String, Object> getFilmOne(int FID){
-		log.debug("ⓢFilmServiceⓢ getFilmOne() param FID:"+FID); //파라미터 확인
+	public Map<String, Object> getFilmOne(int filmId){
+		log.debug("ⓢFilmServiceⓢ getFilmOne() param filmId:"+filmId); //파라미터 확인
 		List<Integer> FilmInStockStore = new ArrayList<Integer>(); //재고를 저장할 리스트 초기화
 		
 		List<Integer> StoreNum = filmMapper.selectStoreForCount(); //스토어 번호를 불러오는 mapper
 		for ( int num : StoreNum) { //스토어 번호가 있으면
 			int count = 0; // 카운트를 초기화 하고
 			
-			FilmInStockStore.add(filmMapper.selectFilmInStock(FID,num,count).get(count)); //재고에 넣는다(재고를 불러오는 mapper에서 저장한 count를)
+			FilmInStockStore.add(filmMapper.selectFilmInStock(filmId,num,count).get(count)); //재고에 넣는다(재고를 불러오는 mapper에서 저장한 count를)
 		}
 		System.out.println("ⓢFilmServiceⓢ  getFilmOne FilmInStockStore:"+FilmInStockStore);//재고 리스트 확인
 	
 		
-		Map<String, Object> filmList = filmMapper.selectFilmOne(FID); //필름정보를 저장하는 리스트 = mapper
+		Map<String, Object> filmList = filmMapper.selectFilmOne(filmId); //필름정보를 저장하는 리스트 = mapper
 		log.debug("ⓢFilmServiceⓢ getFilmOne()  filmMapper.selectFilmOne :"+ filmList); //필름리스트 확인
 		
 		Map<String,Object> returnMap = new HashMap<String, Object>();

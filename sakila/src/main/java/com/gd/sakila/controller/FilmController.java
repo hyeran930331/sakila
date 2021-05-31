@@ -30,6 +30,26 @@ public class FilmController {
 	@Autowired CategoryService categoryService;
 	@Autowired LanguageService laguageService;
 	
+	@GetMapping("/modifyFilm")
+	public String modifyFilm (Model model
+			, @RequestParam(value="filmId", required= true) int filmId) {
+		System.out.println("ⓒFilmControllerⓒ getFilmOne 실행"+filmId);
+		
+
+		Map<String,Object> map = filmService.getFilmOne(filmId);
+		System.out.println("ⓒFilmControllerⓒ filmService.modifyFilm 실행 filmList : "+map.get("filmList"));
+		List<Category> categoryList =categoryService.getCategoryList();
+		System.out.println("ⓒFilmControllerⓒ filmService.modifyFilm 실행 categoryList : "+categoryList);
+		
+		model.addAttribute("filmList",map.get("filmList")); //map으로 받아야되나
+		//model.addAttribute("actorsList",map.get("actorsList")); 
+		model.addAttribute("categoryList",categoryList);
+		
+		return "modifyFilm";
+	}
+	
+	@PostMapping
+	
 	@GetMapping("/addFilm")
 	public String addFilm (Model model) {
 		List<Category> categoryList =categoryService.getCategoryList();
@@ -47,7 +67,7 @@ public class FilmController {
 		System.out.println("1. addfilm Controller post param 확인" +filmForm.toString());
 		categoryService.getCategoryList();//categoryService에
 		laguageService.getLanguageList();
-		return "redirect:/admin/getFilmOne?FID="+filmId;
+		return "redirect:/admin/getFilmOne?filmId="+filmId;
 	}
 	
 	@GetMapping("/getFilmActorListByFilm")
@@ -74,7 +94,7 @@ public class FilmController {
 		
 		filmService.modifyFilmActor(parmMap);
 		
-		return "redirect:/admin/getFilmOne?FID="+filmId;
+		return "redirect:/admin/getFilmOne?filmId="+filmId;
 	}
 	
 	@GetMapping ("/getFilmList")
@@ -103,17 +123,17 @@ public class FilmController {
 	
 	@GetMapping ("/getFilmOne")
 	public String getFilmOne(Model model
-							, @RequestParam(value="FID", required= true) int FID) {
-		System.out.println("ⓒFilmControllerⓒ getFilmOne 실행"+FID);
+							, @RequestParam(value="filmId", required= true) int filmId) {
+		System.out.println("ⓒFilmControllerⓒ getFilmOne 실행"+filmId);
 		
 
-		Map<String,Object> map = filmService.getFilmOne(FID);
+		Map<String,Object> map = filmService.getFilmOne(filmId);
 		System.out.println("ⓒFilmControllerⓒ filmService.getFilmOne 실행 store1 : "+map.get("FilmInStockStore"));
 		System.out.println("ⓒFilmControllerⓒ filmService.getFilmOne 실행 filmList : "+map.get("filmList"));
 		System.out.println("ⓒFilmControllerⓒ filmService.getFilmOne 실행 actorsList : "+map.get("atorsList"));
 		System.out.println("ⓒFilmControllerⓒ filmService.getFilmOne 실행 categoryList : "+map.get("categoryList"));
 		
-		model.addAttribute("FID",FID);
+		model.addAttribute("filmId",filmId);
 		model.addAttribute("FilmInStockStore",map.get("FilmInStockStore"));
 		model.addAttribute("filmList",map.get("filmList")); //map으로 받아야되나
 		//model.addAttribute("actorsList",map.get("actorsList")); 
