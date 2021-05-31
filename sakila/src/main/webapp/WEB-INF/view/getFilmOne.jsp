@@ -36,8 +36,8 @@
     <h1>Film One VIEW</h1> <jsp:include page="/WEB-INF/view/nav.jsp"/>
      <table class="table">
         <tr>
-          <td >FID :</td>
-          <td>${filmList.FID}</td>
+          <td >filmId :</td>
+          <td>${filmList.filmId}</td>
         </tr>
         
         <tr>
@@ -83,7 +83,7 @@
         <tr>
           <td>배우
           <br>
-          <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/getFilmActorListByFilm?filmId=${filmList.FID}">배우수정하기</a> 
+          <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/getFilmActorListByFilm?filmId=${filmList.filmId}">배우수정하기</a> 
           </td>
           
           <td class="text-left">
@@ -99,20 +99,8 @@
     
     
     <!-- 버튼들 -->
-<!--
-    <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/modifyFilm?FilmId=${filmList.FID}">수정(구현전404)</a>
-    <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/removeFilm?filmList=${filmList.FilmId}">삭제(구현전404))</a>
-    <br>
-    <c:if test="${((filmList.FilmId)-1)>0}">
-    <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/getFilmOne?FilmId=${(filmList.FilmId)-1}">이전글</a>
-    </c:if>
--->
     <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/getFilmList">목록으로</a>
- <!-- 
-    <c:if test="${((filmList.FilmId)+1)<FilmTotal}">
-    <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/getFilmOne?FilmId=${(filmList.FilmId)+1}">다음글</a>
-    </c:if>
-  -->
+	<a class="btn btn-default" href="${pageContext.request.contextPath}/admin/modifyFilm?filmId=${filmList.filmId}">영화수정</a>
 </div>
 </body>
 </html>

@@ -135,7 +135,7 @@
                <td>rentalRate</td>
                <td>
                   <select id="rentalRate" name="film.rentalRate" class="form-control">
-					<option value="">모두보기</option>
+               		<option value="">모두보기</option>
 					<option value="0.99">0.99</option>
 					<option value="2.99">2.99</option>
 					<option value="4.99">4.99</option>

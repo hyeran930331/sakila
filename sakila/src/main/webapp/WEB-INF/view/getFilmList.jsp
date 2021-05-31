@@ -137,7 +137,7 @@ $(document).ready(function(){
 	<table class="table">
 		<thead>
 			<tr>
-				<th>FID</th>
+				<th>filmId</th>
 				<th>title</th>
 				<th>category</th>
 				<th>price</th>
@@ -147,8 +147,8 @@ $(document).ready(function(){
 		<tbody>
 			<c:forEach var="f" items="${filmList}">
 				<tr>
-					<td>${f.FID}</td>
-					<td> <a href="${pageContext.request.contextPath}/admin/getFilmOne?FID=${f.FID}"> ${f.title}</a></td>
+					<td>${f.filmId}</td>
+					<td> <a href="${pageContext.request.contextPath}/admin/getFilmOne?filmId=${f.filmId}"> ${f.title}</a></td>
 					<td>${f.category}</td>
 					<td>${f.price}</td>
 					<td>${f.rating}</td>

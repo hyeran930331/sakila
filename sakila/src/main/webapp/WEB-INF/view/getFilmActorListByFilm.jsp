@@ -82,21 +82,9 @@
         </tr>
     </table>
     </form>
-    
-<!--
-    <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/modifyFilm?FilmId=${filmList.FID}">수정(구현전404)</a>
-    <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/removeFilm?filmList=${filmList.FilmId}">삭제(구현전404))</a>
-    <br>
-    <c:if test="${((filmList.FilmId)-1)>0}">
-    <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/getFilmOne?FilmId=${(filmList.FilmId)-1}">이전글</a>
-    </c:if>
--->
+
     <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/getFilmOne?filmId=${filmId}">뒤로가기</a>
- <!-- 
-    <c:if test="${((filmList.FilmId)+1)<FilmTotal}">
-    <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/getFilmOne?FilmId=${(filmList.FilmId)+1}">다음글</a>
-    </c:if>
-  -->
+ 
 </div>
 </body>
 </html>
