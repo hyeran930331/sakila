@@ -34,7 +34,7 @@
 </script> 
  
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>getFilmActorListByFilm(spring mvc 방식)</title>
+<title>modifyFilmActor(spring mvc 방식)</title>
 </head>
 <body>
 <div class="container text-center">

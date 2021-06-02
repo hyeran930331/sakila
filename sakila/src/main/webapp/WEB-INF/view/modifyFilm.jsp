@@ -107,11 +107,7 @@
         </tr>
         
         <tr>
-          <td>배우
-          <br>
-          <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/getFilmActorListByFilm?filmId=${filmList.filmId}">배우수정하기</a> 
-          </td>
-          
+          <td>배우</td>
           <td class="text-left">
 			<c:forTokens var="temp" items="${filmList.actors } " delims="," varStatus="status">
 				<a href="${pageContext.request.contextPath}/admin/getActorOne?Actor=${temp}">${status.count} ${temp }</a><br>

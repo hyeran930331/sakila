@@ -70,7 +70,7 @@ public class FilmController {
 		return "redirect:/admin/getFilmOne?filmId="+filmId;
 	}
 	
-	@GetMapping("/getFilmActorListByFilm")
+	@GetMapping("/modifyFilmActor")
 	public String getFilmActorListByFilm(Model model
 										, @RequestParam(value="filmId") int filmId ) {
 		List<Map<String,Object>> castingListByFilm = filmService.getFilmActorListByFilm(filmId);
@@ -79,7 +79,7 @@ public class FilmController {
 		model.addAttribute("castingListByFilm", castingListByFilm);
 		model.addAttribute("filmId", filmId);
 
-		return "getFilmActorListByFilm";
+		return "modifyFilmActor";
 	}
 	@PostMapping("/modifyFilmActor")
 	public String modifyFilmActor (Integer filmId

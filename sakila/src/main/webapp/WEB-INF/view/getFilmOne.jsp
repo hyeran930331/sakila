@@ -83,7 +83,7 @@
         <tr>
           <td>배우
           <br>
-          <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/getFilmActorListByFilm?filmId=${filmList.filmId}">배우수정하기</a> 
+          <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/modifyFilmActor?filmId=${filmList.filmId}">배우수정하기</a> 
           </td>
           
           <td class="text-left">
