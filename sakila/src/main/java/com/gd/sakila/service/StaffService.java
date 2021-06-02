@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.gd.sakila.mapper.AddressMapper;
 import com.gd.sakila.mapper.StaffMapper;
+import com.gd.sakila.vo.Address;
 import com.gd.sakila.vo.Board;
 import com.gd.sakila.vo.Page;
 import com.gd.sakila.vo.Staff;
@@ -21,6 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional
 public class StaffService {
 	@Autowired StaffMapper staffMapper; //@Autowired가 없으면 --> nullpointException
+	@Autowired AddressMapper addressMapper;
 	public Staff login(Staff staff) {
 		log.debug("ⓢStaffServiceⓢ login() param staff :"+staff);
 		return staffMapper.selectStaffByLogin(staff); //null or staff반환
@@ -51,8 +54,10 @@ public class StaffService {
 		return map;
 	}
 
-	public int addStaff(Staff staff) {
+	public int addStaff(Staff staff, Address address) {
 		log.debug("1 param확인 : "+ staff.toString());
+		log.debug("1 param확인 : "+ address.toString());
+		addressMapper.insertAddress(address);
 		int row = staffMapper.insertStaff(staff);
 		return row;
 	}

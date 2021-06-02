@@ -1,11 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gd.sakila.mapper.CustomerMapper">
+	<insert id="insertCustomer"
+			parameterType="com.gd.sakila.vo.Customer">
+		<selectKey resultType="int" keyProperty="addressId" order="BEFORE">
+			SELECT
+				MAX(address_id) addressId
+			FROM
+				address a
+				left join city c on a.city_id = c.city_id
+		</selectKey>
+		INSERT INTO
+			customer (active, first_name, last_name, address_id, email, store_id)
+			VALUES (1, #{firstName}, #{lastName}, #{addressId}, #{email}, #{storeId})	
+	</insert>
+	
 	<select id="selectCustomerOne"
 			parameterType="int"
 			resultType="Map">
 		SELECT 
-	      p.customer_id customerId
+	      cl.ID customerId
 	      , cl.SID storeId
 	      , cl.name
 	      , Sum(amount) amount
@@ -14,9 +28,12 @@
 	      , cl.address
 	      , cl.phone
 	      , cl.notes active
+	      , c.email email
+	      , cl.`zip code` zipCode
 	   FROM payment p
 	      left JOIN customer_list cl ON cl.ID = p.customer_id
-	   WHERE customer_id = #{customerId}
+	      	JOIN customer c ON cl.ID = c.customer_id
+	   WHERE cl.ID = #{customerId}
 	</select>
 	
 	<select id="selectRentalListByCustomer"
@@ -93,7 +110,7 @@
 		FROM customer
 		<include refid="searchWords"> </include>
 		ORDER BY
-			customer_id
+			customer_id DESC
 		LIMIT
 			${beginRow}, ${rowPerPage}
 		

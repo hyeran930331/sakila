@@ -8,7 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.gd.sakila.mapper.AddressMapper;
+import com.gd.sakila.mapper.CityMapper;
+import com.gd.sakila.mapper.CountryMapper;
 import com.gd.sakila.mapper.CustomerMapper;
+import com.gd.sakila.vo.Address;
+import com.gd.sakila.vo.City;
+import com.gd.sakila.vo.Country;
+import com.gd.sakila.vo.Customer;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -25,6 +32,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 public class CustomerService {
 	@Autowired CustomerMapper customerMapper;
+	@Autowired AddressMapper addressMapper;
 	
 	public Map<String,Object> getCustomerList (Map<String,Object> paramMap) {
 		log.debug("2. 콘트롤러에서 온 paramMap확인"+paramMap.toString());
@@ -62,5 +70,15 @@ public class CustomerService {
 		resultMap.put("customerOne", customerOne);
 		resultMap.put("rentalList", rentalList);
 		return resultMap;
+	}
+
+	public int addCustomer(Customer customer,Address address) {
+		log.debug("2. 콘트롤러에서 온 param확인" +customer);
+		log.debug("2. 콘트롤러에서 온 param확인" +address);
+		
+		addressMapper.insertAddress(address);
+		int row = customerMapper.insertCustomer(customer);
+		log.debug("3. 콘트롤러에 보낼 row 확인 : "+ row);
+		return row;
 	}
 }

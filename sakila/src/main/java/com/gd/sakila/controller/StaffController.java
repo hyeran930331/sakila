@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.gd.sakila.service.StaffService;
+import com.gd.sakila.vo.Address;
 import com.gd.sakila.vo.Staff;
 
 import lombok.extern.slf4j.Slf4j;
@@ -29,9 +30,10 @@ public class StaffController {
 		return "addStaff";
 	}
 	@PostMapping("/addStaff")
-	public String addStaff(Staff staff) {
+	public String addStaff(Staff staff, Address address) {
 		log.debug("0 param확인 : "+ staff.toString());
-		int row = staffService.addStaff(staff);
+		log.debug("0 param확인 : "+ address.toString());
+		int row = staffService.addStaff(staff, address);
 		log.debug("3. service에서 받은 값 확인 row : "+row);
 		return "redirect:/admin/getStaffList";
 	}

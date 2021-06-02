@@ -36,8 +36,9 @@
     <h1>Customer One VIEW</h1> <jsp:include page="/WEB-INF/view/nav.jsp"/>
      <table class="table">
      		<c:forEach var="co" items="${customerOne}">
+     		<c:set var="customerId" value="${co.customerId}"/>
 			<tr>
-				<th>storeId(customerId) name</th>
+				<th width="300">storeId(customerId) name</th>
 				<td>${co.storeId} (${co.customerId}) ${co.name}</td>
 			</tr>
 			<tr>
@@ -45,8 +46,8 @@
 				<td>${co.phone} (${co.email})</td>
 			</tr>
 			<tr>
-				<th>full address</th>
-				<td>${co.country}, ${co.city}, ${co.address}</td>
+				<th>full address (zip code)</th>
+				<td>${co.country}, ${co.city}, ${co.address} ( ${co.zipCode} )</td>
 			</tr>	
 			<tr>
 				<th>총 구매 금액</th>
@@ -55,17 +56,20 @@
 			</c:forEach>
 			<tr>
 				<th>대여목록</th>
-				<td>
-					<div class="container text-center">
-					<table class="table-striped text-center">
+				<td class="container">
+					<table class="table table-striped">
+						<thead class="center">
 						<tr>
-						<th width="100">rentalId</th>
-						<th width="100">inventoryId</th>
+						<th>rentalId</th>
+						<th>inventoryId</th>
 						<th>title</th>
-						<th width="300">rentalDate</th>
-						<th width="300">returnDate</th>
-						<th width="100">howLate</th>
+						<th>rentalDate</th>
+						<th>returnDate</th>
+						<th>howLate</th>
 						</tr>
+						</thead>
+						
+						<tbody>
 						<c:forEach var="rl" items="${rentalList}">
 							<tr>
 							<td>${rl.rentalId}</td>
@@ -78,16 +82,17 @@
 							</c:if>
 							</tr>
 						</c:forEach>
+						</tbody>
 					</table>
-					</div>
 				</td>
 			</tr>
 	</table>
     
     
     <!-- 버튼들 -->
-
-    <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/getcustomerList">목록으로</a>
+    <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/getCustomerOne?customerId="${customerId-1}>이전으로</a>
+    <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/getCustomerList">목록으로</a>
+	
 </div>
 </body>
 </html>

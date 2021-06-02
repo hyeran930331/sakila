@@ -9,10 +9,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.gd.sakila.service.CountryService;
 import com.gd.sakila.service.CustomerService;
+import com.gd.sakila.vo.Address;
+import com.gd.sakila.vo.City;
+import com.gd.sakila.vo.Country;
+import com.gd.sakila.vo.Customer;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -37,6 +43,24 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/admin")
 public class CustomerController {
 	@Autowired CustomerService customerService;
+	
+	@GetMapping("/addCustomer")
+	public String addCustomer() {
+		log.debug("\n1. 콘트롤러 시작");
+		return "addCustomer";
+	}
+	@PostMapping("/addCustomer")
+	public String addCustomer(Model model
+							,Customer customer
+							,Address address){
+		log.debug("\n.1. 콘트롤러에서 보낼 paramMap 확인 : "+customer);
+		log.debug("\n.1. 콘트롤러에서 보낼 paramMap 확인 : "+address);
+		
+		int row = customerService.addCustomer(customer, address);
+		log.debug("3. 서비스에서 받은 row 확인 : "+row);
+		
+		return "redirect:/admin/getCustomerList";
+	}
 	
 	@GetMapping("/getCustomerOne")
 	public String getCustomerOne(Model model

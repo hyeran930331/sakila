@@ -9,4 +9,6 @@ import com.gd.sakila.vo.Address;
 @Mapper
 public interface AddressMapper {
 	List<Address> selectAddress(int cityId);
+
+	void insertAddress(Address address);
 }
