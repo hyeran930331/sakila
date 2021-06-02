@@ -21,6 +21,12 @@ import lombok.extern.slf4j.Slf4j;
 public class StaffController {
 	@Autowired StaffService staffService;
 	
+	@GetMapping("/addStaff")
+	public String addActor() {
+		System.out.println("<--addStaff 실행");
+		return "addStaff";
+	}
+	
 	@GetMapping("/getStaffList")
 	public String getBoardList(Model model
 								, @RequestParam(value="currentPage", defaultValue="1") int currentPage

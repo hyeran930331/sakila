@@ -41,7 +41,7 @@
     </table>
     
    <!-- 검색어 입력창 -->
-    <form action="admin/getStaffList" method="get">
+    <form action="/admin/getStaffList" method="get">
         <label for="searchWord">검색어(이름) :</label> 
         <input name="searchWord" type="text">
         <button type="submit">검색</button>
@@ -59,7 +59,7 @@
         <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/getStaffList?currentPage=${lastPage}">마지막 페이지로</a>
     </ul>
     <div>
-        <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/">직원 추가</a>
+        <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/addStaff">직원 추가</a>
     </div>
 </div>
 </body>
