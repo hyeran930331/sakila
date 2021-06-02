@@ -7,7 +7,9 @@
 		SELECT
 			city_id cityId,
 			city
-		FROM city
-		WHERE country_id = #{countryId}	
+		FROM 
+			city
+		WHERE 
+			country_id = #{countryId}	
 	</select>
 </mapper>

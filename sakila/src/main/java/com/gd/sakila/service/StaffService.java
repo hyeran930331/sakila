@@ -50,4 +50,10 @@ public class StaffService {
 		map.put("lastPage", lastPage);
 		return map;
 	}
+
+	public int addStaff(Staff staff) {
+		log.debug("1 param확인 : "+ staff.toString());
+		int row = staffMapper.insertStaff(staff);
+		return row;
+	}
 }

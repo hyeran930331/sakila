@@ -4,16 +4,16 @@
 
 	<insert id="insertStaff"
 			parameterType="com.gd.sakila.vo.Staff">
-		<selectKey resultType="int" keyProperty="addressID" order="BEFORE">
+		<selectKey resultType="int" keyProperty="addressId" order="BEFORE">
 			SELECT 
-				MAX(address_id) 
+				MAX(address_id) addressId
 			FROM address a
-				left join city c on a.city_id = c.city_id        
+				left join city c on a.city_id = c.city_id   
 		</selectKey>    	
 			
 		INSERT INTO
-			staff (first_name, last_name, address_id, email, store_id, username, password)
-			VALUES (#{fistName}, #{lastName}, #{addressID}, #{email}, #{storeId}, #{username}, #{password})
+			staff (active, first_name, last_name, address_id, email, store_id, username, password)
+			VALUES (1, #{firstName}, #{lastName}, #{addressId}, #{email}, #{storeId}, #{username}, PASSWORD(#{password}))
 	</insert>
 	
 	<select id="selectStaffByLogin"

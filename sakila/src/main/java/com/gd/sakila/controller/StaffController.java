@@ -8,10 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.gd.sakila.service.StaffService;
+import com.gd.sakila.vo.Staff;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -22,9 +24,16 @@ public class StaffController {
 	@Autowired StaffService staffService;
 	
 	@GetMapping("/addStaff")
-	public String addActor() {
+	public String addStaff() {
 		System.out.println("<--addStaff 실행");
 		return "addStaff";
+	}
+	@PostMapping("/addStaff")
+	public String addStaff(Staff staff) {
+		log.debug("0 param확인 : "+ staff.toString());
+		int row = staffService.addStaff(staff);
+		log.debug("3. service에서 받은 값 확인 row : "+row);
+		return "redirect:/admin/getStaffList";
 	}
 	
 	@GetMapping("/getStaffList")
