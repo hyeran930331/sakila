@@ -78,7 +78,7 @@ $(document).ready(function(){
 				<tr>
 					<td>${c.storeId}</td>
 					<td>${c.customerId}</td>
-					<td><a href="${pageContext.request.contextPath}/admin/getCustomerOne?FID=${c.customerId}">${c.name}</a></td>
+					<td><a href="${pageContext.request.contextPath}/admin/getCustomerOne?customerId=${c.customerId}">${c.name}</a></td>
 					<td>${c.email}</td>
 					<td>${c.blackList}</td>
 					<td>${c.vipList}</td>

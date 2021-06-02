@@ -14,4 +14,6 @@ public interface CustomerMapper {
 	int UpdateCustomerActiveByScheduler();
 	List<Map<String,Object>> selectCustomerList (Map<String,Object> map);
 	Integer selectCustomerTotal (Map<String,Object> map);
+	List<Map<String,Object>> selectRentalListByCustomer(int customerId);
+	List<Map<String,Object>> selectCustomerOne (int customerId);
 }

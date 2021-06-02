@@ -30,11 +30,19 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
 <title>Film modify VIEW(spring mvc 방식)</title>
+<script>
+	$(document).ready(function(){
+		console.log("document ready!");
+		$('#btn').click(function() {
+        	console.log("btn clikc!");
+        	$('#modifyForm').submit();
+	});
+</script>
 </head>
 <body>
 <div class="container text-center">
     <h1>Film modify VIEW</h1> <jsp:include page="/WEB-INF/view/nav.jsp"/>
-     
+     <form action="/admin/modifyFilm" id="modifyForm" name="modifyForm" method="post">
      <table class="table">
         <tr>
           <td >filmId :</td>
@@ -105,17 +113,17 @@
           </td>
           
           <td class="text-left">
-          	<!-- 배우마다 한줄띄기 하고싶었습니다. 와 이게 한번에 되다니...-->
 			<c:forTokens var="temp" items="${filmList.actors } " delims="," varStatus="status">
 				<a href="${pageContext.request.contextPath}/admin/getActorOne?Actor=${temp}">${status.count} ${temp }</a><br>
 			</c:forTokens>
           </td>
         </tr>
-        
-      
     </table>
+    <div>
+     <button class="btn btn-defalut" type="button" name="btn" id="btn">제출</button>
+    </div>
     
-    
+    </form>
     <!-- 버튼들 -->
     <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/getFilmList">목록으로</a>
     <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/getFilmOne?filmId=${filmList.filmId}">상세페이지로</a>

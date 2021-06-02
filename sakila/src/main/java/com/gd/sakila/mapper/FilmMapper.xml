@@ -4,26 +4,26 @@
 	
 	<update id="updateFilm"
 			parameterType="com.gd.sakila.vo.Film">
-	UPDATE 
-		film 
-	SET 
-		title=#{title}
-		, description=#{description}
-		, length=#{length}
-		, rating=#{rating}
-		, rental_rate=#{rentalRate}
-	WHERE 
-		film_id=#{filmId}
+		UPDATE 
+			film 
+		SET 
+			title=#{title}
+			, description=#{description}
+			, length=#{length}
+			, rating=#{rating}
+			, rental_rate=#{rentalRate}
+		WHERE 
+			film_id=#{filmId}
 	</update>
 	
 	<update id="updateFilmCategory"
 			parameterType="Map">
-	UPDATE 
-		film_category 
-	SET 
-		category_id=#{categoryId}
-	WHERE 
-		film_id=#{filmId}
+		UPDATE 
+			film_category 
+		SET 
+			category_id=#{categoryId}
+		WHERE 
+			film_id=#{filmId}
 	</update>
 
 	<insert id="insertFilmCategory"
@@ -120,7 +120,7 @@
 	<select id="selectFilmInStock"
 			statementType="CALLABLE" 
 			parameterType="int"
-			resultType="Integer" >
+			resultType="int" >
 		<!--  Map : filmId, storeId, filmCount (mode=OUT) -->
 		{
 		call 
@@ -128,7 +128,7 @@
 			(
 			#{filmId}
 			,#{storeId}
-			,#{count, mode=OUT, jdbcType=DECIMAL, javaType=Integer}
+			,#{count, mode=OUT, jdbcType=DECIMAL, javaType=int}
 			)
 		}
 	</select>

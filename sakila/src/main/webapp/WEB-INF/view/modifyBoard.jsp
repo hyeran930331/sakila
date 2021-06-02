@@ -32,8 +32,8 @@
     $(document).ready(function() {
     	console.log("document ready!");
     	
-    	$('#modifyButton').click(function() {
-        	console.log("modifyButton clikc!");
+    	$('#btn').click(function() {
+        	console.log("btn clikc!");
         	
             if ($('#boardPw').val().length < 4) {
                 alert('boardPw는 4자이상 이어야 합니다');
@@ -52,7 +52,7 @@
                 $('#boardContent').focus();
                 
             } else {
-                $('#addForm').submit();
+                $('#modifyForm').submit();
             }
         });
     });
@@ -62,8 +62,7 @@
 <body>
     <div class="container">
         <h1>modify BOARD(spring mvc 방식)</h1> <jsp:include page="/WEB-INF/view/nav.jsp"/>
-        <form id="modifyForm"
-            action="${pageContext.request.contextPath}/admin/modifyBoard" method="post">
+        <form id="modifyForm" action="${pageContext.request.contextPath}/admin/modifyBoard" method="post">
             <div class="form-group">
                 <label for="boardId">boardId :</label> <input
                     class="form-control" readonly=readonly name="boardId" id="boardId" type="text" value="${boardMap.boardId}"/>
@@ -83,7 +82,7 @@
                     rows="5" cols="50">${boardMap.boardContent}</textarea>
             </div>
             <div>
-                <input class="btn btn-default" id="addButton" type="button" value="글수정" /> 
+                <button class="btn btn-default" id="btn" name="btn" type="button">제출</button>
                 <input class="btn btn-default" type="reset" value="초기화" />
                 <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/getBoardList">글목록</a>
             </div>

@@ -50,4 +50,17 @@ public class CustomerService {
 	public void modifyCustomerActiveByScheduler() {
 		// TODO Auto-generated method stub
 	}
+
+	public Map<String, Object> getCustomerOne(int customerId) {
+		log.debug("2. 콘트롤러에서 온 int 확인"+customerId);
+		List<Map<String,Object>> customerOne = customerMapper.selectCustomerOne(customerId);
+		log.debug("3. 매퍼에서 받은 List 확인"+customerOne.toString());
+		List<Map<String,Object>> rentalList = customerMapper.selectRentalListByCustomer(customerId);
+		log.debug("4. 매퍼에서 받은 List 확인"+rentalList.toString());
+		
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap.put("customerOne", customerOne);
+		resultMap.put("rentalList", rentalList);
+		return resultMap;
+	}
 }

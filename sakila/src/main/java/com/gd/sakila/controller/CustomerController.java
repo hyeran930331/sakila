@@ -1,6 +1,7 @@
 package com.gd.sakila.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,13 +38,26 @@ import lombok.extern.slf4j.Slf4j;
 public class CustomerController {
 	@Autowired CustomerService customerService;
 	
+	@GetMapping("/getCustomerOne")
+	public String getCustomerOne(Model model
+								,@RequestParam(value="customerId", required = true) Integer customerId) {
+		log.debug("\n1. 콘트롤러에서 보낼 paramMap 확인 customerId"+customerId);
+		
+		Map<String,Object> resultMap = customerService.getCustomerOne(customerId);
+		log.debug("5. 서비스에서 보낸 resultMap 확인"+resultMap);
+		
+		model.addAttribute("customerOne", resultMap.get("customerOne"));
+		model.addAttribute("rentalList", resultMap.get("rentalList"));
+		return "getCustomerOne";
+	}
+	
 	@GetMapping("/getCustomerList")
 	public String getCustomerList(Model model
 								 ,@RequestParam(value="currentPage", defaultValue ="1") int currentPage
 								 ,@RequestParam(value="rowPerPage", defaultValue="10") int rowPerPage
 								 ,@RequestParam(value="searchWord", required = false) String searchWord
 								 ,@RequestParam(value="storeId",  required = false) Integer storeId) {
-		log.debug("\n0. 콘트롤러에서 보낼 paramMap 확인 currentPage"+currentPage);
+		log.debug("\n0. 콘트롤러에서 보낼 requestParam 확인 currentPage"+currentPage);
 		Map<String,Object> paramMap = new HashMap<String,Object>();
 		paramMap.put("currentPage", currentPage);
 		paramMap.put("rowPerPage", rowPerPage);

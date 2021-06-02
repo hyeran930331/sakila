@@ -99,8 +99,15 @@
     
     
     <!-- 버튼들 -->
+    <c:if test="${filmList.filmId != 1}">
+    <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/getFilmOne?filmId=${filmList.filmId-1}">이전으로</a>
+    </c:if>
     <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/getFilmList">목록으로</a>
+    <c:if test="${filmList.filmId != lastPage}">
+    <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/getFilmOne?filmId=${filmList.filmId+1}">다음으로</a>
+    </c:if>
 	<a class="btn btn-default" href="${pageContext.request.contextPath}/admin/modifyFilm?filmId=${filmList.filmId}">영화수정</a>
+	
 </div>
 </body>
 </html>

@@ -1,6 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gd.sakila.mapper.CustomerMapper">
+	<select id="selectCustomerOne"
+			parameterType="int"
+			resultType="Map">
+		SELECT 
+	      p.customer_id customerId
+	      , cl.SID storeId
+	      , cl.name
+	      , Sum(amount) amount
+	      , cl.country
+	      , cl.city
+	      , cl.address
+	      , cl.phone
+	      , cl.notes active
+	   FROM payment p
+	      left JOIN customer_list cl ON cl.ID = p.customer_id
+	   WHERE customer_id = #{customerId}
+	</select>
+	
+	<select id="selectRentalListByCustomer"
+			parameterType="int"
+			resultType="Map">
+			
+		SELECT 
+		   r.rental_id rentalId, 
+		   i.inventory_id inventoryId,
+		   f.title title,
+		   f.film_id filmId,
+		   r.rental_date rentalDate, 
+		   r.return_date returnDate, 
+		   f.rental_duration rentalDuration,
+		   DATEDIFF(CURRENT_DATE(), r.rental_date)-f.rental_duration overdueDate,
+		   IF(r.return_date IS NULL AND DATEDIFF(CURRENT_DATE(), r.rental_date) > f.rental_duration , 'T', '') overdue
+		FROM rental r LEFT JOIN inventory i ON r.inventory_id=i.inventory_id JOIN film f ON f.film_id=i.film_id 
+		WHERE 
+		   customer_id=#{customerId}
+		ORDER BY
+		   return_date asc
+			
+	</select>
+	
 	<select id="selectCustomerTotal"
 			parameterType="Map"
 			resultType="Integer">
