@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gd.sakila.mapper.InventoryMapper">
+	<select id="selectInventoryList"
+			parameterType="Map"
+			resultType="Map">
+		SELECT
+			r.rental_id rentalId
+			, i.inventory_id inventoryId
+			, f.title title
+			, i.store_id storeId
+			, r.rental_date rentalDate
+			, r.return_date returnDate
+		FROM
+			inventory i
+			LEFT join
+		(
+			select
+				*
+			from rental
+			where (rental_date) in (
+				select max(rental_date)
+				from rental group by inventory_id
+			)
+		) r ON i.inventory_id = r.inventory_id
+				JOIN film f ON i.film_id = f.film_id
+		group by i.inventory_id
+		
+		<where>
+			<if test="title != null and title != ''">
+			AND f.title LIKE CONCAT('%', #{title}, '%')
+			</if>
+			
+			<if test="inventoryId !=null and inventoryId !=''">
+			AND i.inventory_id = #{inventoryId}
+			</if>
+		</where>
+		
+		order BY r.return_date ASC, i.inventory_id ASC
+		LIMIT
+			#{beginRow}, #{rowPerPage}
+	</select>
+	
+	<select id="selectInventoryTotal"
+			resultType="int">
+		SELECT 
+			COUNT(*)
+		FROM
+			inventory
+	</select>
+</mapper>
