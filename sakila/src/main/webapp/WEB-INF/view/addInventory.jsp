@@ -47,9 +47,9 @@
 </head>
 <body>
 <div class="container text-center">
-    <h1>Film One VIEW</h1> <jsp:include page="/WEB-INF/view/nav.jsp"/>
+    <h1>Add inventory VIEW</h1> <jsp:include page="/WEB-INF/view/nav.jsp"/>
     
-     <form action="${pageContext.request.contextPath}/admin/addInventory?filmId=${filmId}" name="addForm" id="addForm" method="post">
+     <form action="/admin/addInventory" name="addForm" id="addForm" method="post">
      <table class="table">
         <tr>
           <td >filmId :</td>
@@ -57,7 +57,7 @@
         </tr>
         
         <tr>
-          <td>${filmList.filmId}</td>
+          <td>${filmList.filmId} <input type="text" hidden="hidden" name="filmId" value="${filmList.filmId}"></td>
           <td>(${filmList.category})   ${filmList.title}</td>          
         </tr>
   		
@@ -85,16 +85,19 @@
         		<input type="text" id="num" name="num">
         	</td>
         </tr>
-   
     </table>
+    <div>
+    	<button id="btn" name="btn"> 제출 </button>
+    </div>
+    
     </form>
     
     <!-- 버튼들 -->
-    <c:if test="${filmId != 1}">
+    <c:if test="${filmList.filmId != 1}">
     <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/addInventory?filmId=${filmId-1}">이전필름 추가</a>
     </c:if>
     <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/getFilmList">목록으로</a>
-    <c:if test="${inventoryId != inventoryTotal}">
+    <c:if test="${filmList.filmId != lastPage}">
     <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/addInventory?filmId=${filmId+1}">다음필름 추가</a>
     </c:if>
 	

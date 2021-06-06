@@ -62,17 +62,20 @@ public class InventoryController {
 	
 	@GetMapping("/getInventoryOne")
 	public String getInventoryOne(Model model
-								,@RequestParam(value="inventoryId") Integer inventoryId) {
+								,@RequestParam(value="inventoryId") Integer inventoryId
+								, @RequestParam(value="title") String title) {
 		log.debug("0 getInventoryList Param 확인 : inventoryId "+ inventoryId);
 		log.debug("1 서비스에 줄 param : "+inventoryId);
 		
 		Map<String,Object> resultMap = inventoryService.getInventoryOne(inventoryId);
-		log.debug("6 서비스에 받은 map 확인 : "+ resultMap.toString());
+		log.debug("6 서비스에서 받은 resultMap 확인 : "+ resultMap.toString());
 
 		model.addAttribute("inventoryId", inventoryId);
 		model.addAttribute("currentPage", inventoryId);
 		model.addAttribute("lastPage", resultMap.get("inventoryTotal"));
 		model.addAttribute("rentalListByInventory", resultMap.get("rentalList"));
+		model.addAttribute("storeNum", resultMap.get("storeNum"));
+		model.addAttribute("title", title);
 		return "getInventoryOne";
 	}
 	

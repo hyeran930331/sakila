@@ -31,9 +31,6 @@
 
 <script>
 $(document).ready(function(){
-	if ($('#overdueDate').val() == '') {
-        $('#line').css("color","red");
-	}
 });
 </script>
 <title>get InventoryList</title>
@@ -64,23 +61,19 @@ $(document).ready(function(){
 		</thead>
 		<tbody>
 			<c:forEach var="i" items="${inventoryList}">
-				<tr id="line">
-					<span
-					<c:if test="${i.overdueDate !=''}">
-						style="red"
-					</c:if>
-					>
-					<td>${i.inventoryId}</td>
-					<td> <a href="${pageContext.request.contextPath}/admin/getInventoryOne?inventoryId=${i.inventoryId}"> ${i.title}</a></td>
-					<td>${i.storeId}</td>
-					<td><input type="text" hidden="hidden" value="${i.overdueDate}" id="overdueDate"> ${i.overdueDate}</td>
-					<td>
-					<c:if test="${i.overdueDate !=''}">
-						<button type="button" id="return" name="return">${i.customerName} 회원 반납</button>
-					</c:if>
-					</span>
-					</td>
-				</tr>
+				<font ${i.overdueDate != '' ? 'color="red"' : ''} > <!-- 왜 안될까욥 -->
+					<tr id="line" ${i.overdueDate != '' ? 'bgcolor="red"' : ''}>
+						<td>${i.inventoryId}</td>
+						<td> <a href="${pageContext.request.contextPath}/admin/getInventoryOne?inventoryId=${i.inventoryId}&title=${i.title}"> ${i.title}</a></td>
+						<td>${i.storeId}</td>
+						<td><input type="text" hidden="hidden" value="${i.overdueDate}" id="overdueDate"> ${i.overdueDate}</td>
+						<td>
+						<c:if test="${i.overdueDate !=''}">
+							<button type="button" id="return" name="return">${i.customerName} 회원 반납</button>
+						</c:if>
+						</td>
+					</tr>
+				</font>
 			</c:forEach>
 		</tbody>
 	</table>

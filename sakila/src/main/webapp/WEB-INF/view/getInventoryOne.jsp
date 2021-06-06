@@ -36,22 +36,30 @@ $(document).ready(function(){
 	}
 });
 </script>
-<title>get InventoryList</title>
+<title>get Inventory rental List</title>
 </head>
 <body>
 <div class="container">
-    <h1>getInventoryList</h1> <jsp:include page="/WEB-INF/view/nav.jsp"/>
+    <h1>get Inventory rental List</h1> <jsp:include page="/WEB-INF/view/nav.jsp"/>
 	<!-- 검색어 입력창 -->
-    <form action="/admin/getInventoryList" method="get">
+    <form action="/admin/addinventoryReturn?inventoryId=${inventoryId}" method="post">
 
 	<table class="table">
 		<tr>
-        	<td>가게1 대여 기록</td>
+			<th>inventoryId : ${inventoryId}</th>
+		</tr>
+		
+		<tr>
+			<th>title : ${title}</th>
+		</tr>
+		<c:forEach var="s" items="${storeNum}"> <!-- 가게마다 반복하기 위해 가게 list를 받아옴 -->
+		<tr>
+        	<td>가게${s} 대여 기록</td> <!-- 가게마다 -->
         </tr>
         <tr>
         	<td class="container">
 					<table class="table table-striped">
-						<thead class="center">
+						<thead class="center"> <!-- thead는 정보사항 -->
 						<tr>
 						<th>customerName</th>
 						<th>customerPhone</th>
@@ -59,96 +67,52 @@ $(document).ready(function(){
 						<th>rentalId</th>
 						<th>rentalDate</th>
 						<th>returnDate</th>
-						<th>연체사항</th>
+						<th>연체사항</th> <!-- 조건문 사항, 현재 overdue가 있으면 00일째 연체중. black이 있느면 연체반납/ 그냥 대여중, 정상반납 은 빈칸. -->
 						<th>sotreId</th>
 						<th>staffId</th>
 						<th>staffName</th>
 						</tr>
 						</thead>
 						
-						<tbody>
+						<tbody> <!-- tbodt는 반복문. -->
 						
 						<c:forEach var="rl" items="${rentalListByInventory}">
-							<c:if test="${rl.storeId == 1}">
-							<tr>
-							<td>${rl.customerName}</td>
-							<td>${rl.phone}</td>
-							<td>${rl.email}</td>
-							<td>${rl.rentalId}</td>
-							<td>${rl.rentalDate}</td>
-							<td>${rl.returnDate}</td>
-							<td>
-								<c:if test="${rl.overdueDate>0}">
-								${rl.overdueDate} 일 연제중
-							</c:if>
-							<c:if test="${rl.black > 0}">
-								연체반납 ( ${rl.black}일)
-							</c:if>
-							</td>
-							<td>${rl.storeId}</td>
-							<td>${rl.staffId}</td>
-							<td>${rl.staffName}</td>
-							</tr>
-							</c:if>
-						</c:forEach>
-						</tbody>
-					</table>
-				</td>
-        </tr>
-        
-        <tr>
-        </tr>
-        
-        <tr>
-            <td>가게2 대여 기록</td>
-        </tr>
-        <tr>
-        	<td class="container">
-					<table class="table table-striped">
-						<thead class="center">
-						<tr>
-						<th>customerName</th>
-						<th>customerPhone</th>
-						<th>customerEmail</th>
-						<th>rentalId</th>
-						<th>rentalDate</th>
-						<th>returnDate</th>
-						<th>연체사항</th>
-						<th>sotreId</th>
-						<th>staffId</th>
-						<th>staffName</th>
-						</tr>
-						</thead>
-						
-						<tbody>
-						
-						<c:forEach var="rl" items="${rentalListByInventory}">
-							<c:if test="${rl.storeId == 2}">
-							<tr>
-							<td>${rl.customerName}</td>
-							<td>${rl.phone}</td>
-							<td>${rl.email}</td>
-							<td>${rl.rentalId}</td>
-							<td>${rl.rentalDate}</td>
-							<td>${rl.returnDate}</td>
-							<td>
-								<c:if test="${rl.overdueDate>0}">
+							<c:if test="${rl.storeId == s}">
+							<span ${rl.overdueDate == '' ? 'color="black"' : 'color="red"'}>
+							<span ${rl.black == '' ? 'color="black"' : 'color="red"'}>
+								<tr>
+								<td>${rl.customerName}</td>
+								<td>${rl.phone}</td>
+								<td>${rl.email}</td>
+								<td>${rl.rentalId}</td>
+								<td>${rl.rentalDate}</td>
+								<td>${rl.returnDate}</td>
+								<td>
+									<c:if test="${rl.overdueDate>0}">
 									${rl.overdueDate} 일 연제중
 								</c:if>
 								<c:if test="${rl.black > 0}">
 									연체반납 ( ${rl.black}일)
 								</c:if>
-							</td>
-							<td>${rl.storeId}</td>
-							<td>${rl.staffId}</td>
-							<td>${rl.staffName}</td>
-							</tr>
+								</td>
+								<td>${rl.storeId}</td>
+								<td>${rl.staffId}</td>
+								<td>${rl.staffName}</td>
+								</tr>
+							</span>
+							</span>
 							</c:if>
 						</c:forEach>
+						
 						</tbody>
 					</table>
 				</td>
         </tr>
+        
+        <tr>
+        </tr>
+        </c:forEach>
+     
 	</table>
    </form>
    

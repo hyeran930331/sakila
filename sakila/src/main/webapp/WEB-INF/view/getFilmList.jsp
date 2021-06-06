@@ -172,8 +172,9 @@ $(document).ready(function(){
         <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/getFilmList?currentPage=${lastPage}">마지막 페이지로</a>
     </ul>
     <div>
-    
-        <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/addFilm">영화 입력</a>
+    	<form action="/admin/addFilm" method="get">
+       	 <button type="submit" class="btn btn-default">영화 입력</button>
+        </form>
     </div>
 </div>
 </body>

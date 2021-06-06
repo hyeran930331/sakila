@@ -120,7 +120,7 @@
 	<select id="selectFilmInStock"
 			statementType="CALLABLE" 
 			parameterType="int"
-			resultType="int" >
+			resultType="Integer" >
 		<!--  Map : filmId, storeId, filmCount (mode=OUT) -->
 		{
 		call 
@@ -128,7 +128,7 @@
 			(
 			#{filmId}
 			,#{storeId}
-			,#{count, mode=OUT, jdbcType=DECIMAL, javaType=int}
+			,#{count, mode=OUT, jdbcType=DECIMAL, javaType=Integer}
 			)
 		}
 	</select>

@@ -43,11 +43,11 @@
 <div class="container text-center">
     <h1>Film One VIEW</h1> <jsp:include page="/WEB-INF/view/nav.jsp"/>
     
-    <form action="${pageContext.request.contextPath}/admin/addInventory?filmId=${filmList.filmId}" id="addForm" name="addForm">
+    <form action="${pageContext.request.contextPath}/admin/addInventory" id="addForm" name="addForm" method="get">
      <table class="table">
         <tr>
           <td >filmId :</td>
-          <td>${filmList.filmId}</td>
+          <td>${filmList.filmId} <input type="text" hidden="hidden" value="${filmList.filmId}" name="filmId"></td>
         </tr>
         
         <tr>
