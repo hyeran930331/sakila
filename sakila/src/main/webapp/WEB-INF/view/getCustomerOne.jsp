@@ -34,6 +34,7 @@
 <body>
 <div class="container text-center">
     <h1>Customer One VIEW</h1> <jsp:include page="/WEB-INF/view/nav.jsp"/>
+     <form id="addForm" action="" method="post">
      <table class="table">
      		<c:forEach var="co" items="${customerOne}">
      		<c:set var="customerId" value="${co.customerId}"/>
@@ -65,21 +66,29 @@
 						<th>title</th>
 						<th>rentalDate</th>
 						<th>returnDate</th>
-						<th>howLate</th>
+						<th>연체일</th>
 						</tr>
 						</thead>
 						
 						<tbody>
+						
 						<c:forEach var="rl" items="${rentalList}">
+							<c:set var="count" value="0"/>
 							<tr>
 							<td>${rl.rentalId}</td>
 							<td>${rl.inventoryId}</td>
 							<td>${rl.title }</td>
 							<td>${rl.rentalDate}</td>
 							<td>${rl.returnDate}</td>
-							<c:if test="${rl.overdue == 'T'}">
-								<td>${rl.overdueDate} 일</td>
-							</c:if>
+							<td>
+								<c:if test="${rl.overdueDate>0}">
+									${rl.overdueDate} 일 연제중
+								</c:if>
+								<c:if test="${rl.black > 0}">
+									<c:set var="count" value="${count+1}"/>
+									${count}번째 : 연체반납 ( ${rl.black}일)
+								</c:if>
+							</td>
 							</tr>
 						</c:forEach>
 						</tbody>
@@ -87,6 +96,10 @@
 				</td>
 			</tr>
 	</table>
+	<div>
+		<button type="button" id="btn">대여하기</button>
+	</div>
+	</form>
     
     
     <!-- 버튼들 -->

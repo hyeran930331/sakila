@@ -30,10 +30,20 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
 <title>Film One VIEW(spring mvc 방식)</title>
+<script>
+	$(document).ready(function(){
+		$('#btn').click(function(){
+			console.log('addButton 클릭');
+			$('#addForm').submit();
+		});
+	});
+</script>
 </head>
 <body>
 <div class="container text-center">
     <h1>Film One VIEW</h1> <jsp:include page="/WEB-INF/view/nav.jsp"/>
+    
+    <form action="${pageContext.request.contextPath}/admin/addInventory?filmId=${filmList.filmId}" id="addForm" name="addForm">
      <table class="table">
         <tr>
           <td >filmId :</td>
@@ -93,10 +103,11 @@
 			</c:forTokens>
           </td>
         </tr>
-        
-      
     </table>
-    
+    <div>
+        <button type="button" id="btn" name="btn" class="btn btn-default">재고 추가</button>
+    </div>
+    </form>
     
     <!-- 버튼들 -->
     <c:if test="${filmList.filmId != 1}">

@@ -43,46 +43,112 @@ $(document).ready(function(){
     <h1>getInventoryList</h1> <jsp:include page="/WEB-INF/view/nav.jsp"/>
 	<!-- 검색어 입력창 -->
     <form action="/admin/getInventoryList" method="get">
-			<div>
-        영화이름 :
-	        <input name="title" type="text">
-	    inventory_id :   
-	        <input name="inventoryId" type="text">
-	        <button type="submit">검색</button>
- 			</div>
-
 
 	<table class="table">
-		<thead>
-			<tr>
-				<th>inventoryId</th>
-				<th>title</th>
-				<th>storeId</th>
-				<th>연체일</th>
-				<th></th>
-			</tr>
-		</thead>
-		<tbody>
-			<c:forEach var="i" items="${inventoryList}">
-				<tr id="line">
-					<span
-					<c:if test="${i.overdueDate !=''}">
-						style="red"
-					</c:if>
-					>
-					<td>${i.inventoryId}</td>
-					<td> <a href="${pageContext.request.contextPath}/admin/getInventoryOne?inventoryId=${i.inventoryId}"> ${i.title}</a></td>
-					<td>${i.storeId}</td>
-					<td><input type="text" hidden="hidden" value="${i.overdueDate}" id="overdueDate"> ${i.overdueDate}</td>
-					<td>
-					<c:if test="${i.overdueDate !=''}">
-						<button type="button" id="return" name="return">${i.customerName} 회원 반납</button>
-					</c:if>
-					</span>
-					</td>
-				</tr>
-			</c:forEach>
-		</tbody>
+		<tr>
+        	<td>가게1 대여 기록</td>
+        </tr>
+        <tr>
+        	<td class="container">
+					<table class="table table-striped">
+						<thead class="center">
+						<tr>
+						<th>customerName</th>
+						<th>customerPhone</th>
+						<th>customerEmail</th>
+						<th>rentalId</th>
+						<th>rentalDate</th>
+						<th>returnDate</th>
+						<th>연체사항</th>
+						<th>sotreId</th>
+						<th>staffId</th>
+						<th>staffName</th>
+						</tr>
+						</thead>
+						
+						<tbody>
+						
+						<c:forEach var="rl" items="${rentalListByInventory}">
+							<c:if test="${rl.storeId == 1}">
+							<tr>
+							<td>${rl.customerName}</td>
+							<td>${rl.phone}</td>
+							<td>${rl.email}</td>
+							<td>${rl.rentalId}</td>
+							<td>${rl.rentalDate}</td>
+							<td>${rl.returnDate}</td>
+							<td>
+								<c:if test="${rl.overdueDate>0}">
+								${rl.overdueDate} 일 연제중
+							</c:if>
+							<c:if test="${rl.black > 0}">
+								연체반납 ( ${rl.black}일)
+							</c:if>
+							</td>
+							<td>${rl.storeId}</td>
+							<td>${rl.staffId}</td>
+							<td>${rl.staffName}</td>
+							</tr>
+							</c:if>
+						</c:forEach>
+						</tbody>
+					</table>
+				</td>
+        </tr>
+        
+        <tr>
+        </tr>
+        
+        <tr>
+            <td>가게2 대여 기록</td>
+        </tr>
+        <tr>
+        	<td class="container">
+					<table class="table table-striped">
+						<thead class="center">
+						<tr>
+						<th>customerName</th>
+						<th>customerPhone</th>
+						<th>customerEmail</th>
+						<th>rentalId</th>
+						<th>rentalDate</th>
+						<th>returnDate</th>
+						<th>연체사항</th>
+						<th>sotreId</th>
+						<th>staffId</th>
+						<th>staffName</th>
+						</tr>
+						</thead>
+						
+						<tbody>
+						
+						<c:forEach var="rl" items="${rentalListByInventory}">
+							<c:if test="${rl.storeId == 2}">
+							<tr>
+							<td>${rl.customerName}</td>
+							<td>${rl.phone}</td>
+							<td>${rl.email}</td>
+							<td>${rl.rentalId}</td>
+							<td>${rl.rentalDate}</td>
+							<td>${rl.returnDate}</td>
+							<td>
+								<c:if test="${rl.overdueDate>0}">
+									${rl.overdueDate} 일 연제중
+								</c:if>
+								<c:if test="${rl.black > 0}">
+									연체반납 ( ${rl.black}일)
+								</c:if>
+							</td>
+							<td>${rl.storeId}</td>
+							<td>${rl.staffId}</td>
+							<td>${rl.staffName}</td>
+							</tr>
+							</c:if>
+						</c:forEach>
+						</tbody>
+					</table>
+				</td>
+        </tr>
 	</table>
    </form>
    

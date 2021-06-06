@@ -8,5 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface InventoryMapper {
 	List<Map<String, Object>> selectInventoryList(Map<String,Object> map);
-	int selectInventoryTotal();
+	int selectInventoryTotal(Map<String,Object> map);
+	List<Map<String,Object>> selectInventoryOne (int inventoryId);
+	int insertInventory(Map<String, Object> paramMap);
 }

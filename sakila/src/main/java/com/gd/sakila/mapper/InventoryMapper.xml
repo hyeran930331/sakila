@@ -1,16 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gd.sakila.mapper.InventoryMapper">
+	<insert id="insertInventory"
+			parameterType="java.util.Map">
+		INSERT INTO
+			inventory(film_id, store_id)
+			VALUES( #{filmId}, #{storeId} )
+	</insert>
+
+	<select id="selectInventoryOne"
+			parameterType="int"
+			resultType="java.util.Map">
+		SELECT
+			CONCAT(c.first_name,' ',c.last_name) customerName
+			,c.email email
+			,cl.phone phone
+			,rental_date rentalDate
+			,rental_id rentalId
+			,return_date returnDate
+			,s.store_id storeId
+			,r.staff_id staffId
+			,CONCAT(s.first_name,' ',s.last_name) staffName
+			,IF(r.return_date IS NOT NULL AND DATEDIFF(r.return_date, r.rental_date) > f.rental_duration ,DATEDIFF(r.return_date, r.rental_date) ,  '') black
+		  	,IF(r.return_date IS NULL AND DATEDIFF(CURRENT_DATE(), r.rental_date) > f.rental_duration , DATEDIFF(CURRENT_DATE(), r.rental_date)-f.rental_duration, '') overdueDate
+
+		FROM
+			rental r
+				LEFT JOIN staff s ON r.staff_id = s.staff_id
+				LEFT JOIN customer c ON r.customer_id = c.customer_id
+				LEFT JOIN customer_list cl ON c.customer_id = cl.ID
+				LEFT JOIN inventory i ON r.inventory_id = i.inventory_id
+				LEFT JOIN film f ON i.film_id = f.film_id
+		WHERE
+			r.inventory_id = #{inventoryId}
+		ORDER BY
+			rental_date DESC
+			
+	</select>
+	
 	<select id="selectInventoryList"
 			parameterType="Map"
 			resultType="Map">
 		SELECT
 			r.rental_id rentalId
+			, f.film_id filmId
 			, i.inventory_id inventoryId
 			, f.title title
 			, i.store_id storeId
-			, r.rental_date rentalDate
 			, r.return_date returnDate
+			, f.rental_rate rentalRate
+			, f.replacement_cost replacementCost
+			, CONCAT(c.first_name,' ',c.last_name) customerName
+			, IF(r.return_date IS NULL AND DATEDIFF(CURRENT_DATE(), r.rental_date) > f.rental_duration , DATEDIFF(CURRENT_DATE(), r.rental_date)-f.rental_duration, '') overdueDate
 		FROM
 			inventory i
 			LEFT join
@@ -23,6 +64,7 @@
 				from rental group by inventory_id
 			)
 		) r ON i.inventory_id = r.inventory_id
+				JOIN customer c On r.customer_id = c.customer_id
 				JOIN film f ON i.film_id = f.film_id
 		group by i.inventory_id
 		
@@ -36,16 +78,26 @@
 			</if>
 		</where>
 		
-		order BY r.return_date ASC, i.inventory_id ASC
+		order BY i.inventory_id ASC
 		LIMIT
 			#{beginRow}, #{rowPerPage}
 	</select>
 	
 	<select id="selectInventoryTotal"
+			parameterType="Map"
 			resultType="int">
 		SELECT 
 			COUNT(*)
 		FROM
-			inventory
+			inventory i LEFT JOIN film f ON i.film_id = f.film_id
+		<where>
+			<if test="title != null and title != ''">
+			AND f.title LIKE CONCAT('%', #{title}, '%')
+			</if>
+			
+			<if test="inventoryId !=null and inventoryId !=''">
+			AND i.inventory_id = #{inventoryId}
+			</if>
+		</where>
 	</select>
 </mapper>
