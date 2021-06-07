@@ -3,22 +3,17 @@
 <mapper namespace="com.gd.sakila.mapper.PaymentMapper">
 	<update id=" updatePaymentAmount"
 			parameterType="Map">
-		<selectKey resultType="int" keyProperty="rentalId" order="BEFORE">
+		<selectKey resultType="Map" keyProperty="rentalId" order="BEFORE">
 			SELECT 
 				MAX(r.rental_id) rentalId
-			FROM rental r
-			WHERE
-				inventory_id= 6 AND return_date IS null
-		</selectKey> 
-		<selectKey resultType="double" keyProperty="rentalRate" order="BEFORE">
-			SELECT 
-				f.rental_rate rantalRate
+				, f.rental_rate rantalRate
 			FROM rental r
 				left join inventory i ON r.inventory_id = i.inventory_id
 					left join film f ON i.film_id = f.film_id
 			WHERE
-				rental_id = ${rentalId}
+				inventory_id= ${rentalId} AND return_date IS null
 		</selectKey> 
+		
 		UPDATE
 			payment (rental_id, amount, staffId)
 			VALUES (${rentalId}, ${rentalRate+overdueDate}, 3)
