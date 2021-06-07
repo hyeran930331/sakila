@@ -31,14 +31,29 @@
 
 <script>
 $(document).ready(function(){
+	console.log('$(document).ready');	
 	$('#btnSearch').click(function(){
+		console.log('$(#btnSearch).click');	
 		if ('#title'.val !='' || 'inventoryId'.val !=''){
 			$('#searchForm').submit
 		}
 	});
 	
 	$('#btnReturn').click(function(){
-			$('#returnForm').submit
+		console.log('$(#btnReturn).click');	
+		console.log('#delFilmBtn click!');	
+		if ( this.host !== window.location.host ) {
+            if ( window.confirm( '연체금을 받았나요') ) {
+                // They clicked Yes
+                $('#returnForm').submit();
+                console.log('감사합니다.');
+            }
+            else {
+                // They clicked no
+                console.log('받아야 반납이 가능합니다.');
+                return false
+            }
+		}
 	});
 });
 </script>
@@ -58,8 +73,7 @@ $(document).ready(function(){
  		</div>
    </form>
 	
-	<form action="/admin/modifyReturnDate" id="returnForm" \
-	\name="returnForm" method="post">
+	
 	<table class="table">
 		<thead>
 			<tr>
@@ -73,22 +87,28 @@ $(document).ready(function(){
 		<tbody>
 			<c:forEach var="i" items="${inventoryList}">
 				<font ${i.overdueDate != '' ? 'color="red"' : ''} > <!-- 왜 안될까욥 -->
+				
 					<tr id="line" ${i.overdueDate != '' ? 'bgcolor="red"' : ''}>
-						<td>${i.inventoryId} <input type="text" hidden="hidden" name="inventoryId" value="${i.inventoryId}"></td>
+						<td>${i.inventoryId} </td>
 						<td> <a href="${pageContext.request.contextPath}/admin/getInventoryOne?inventoryId=${i.inventoryId}&title=${i.title}"> ${i.title}</a></td>
 						<td>${i.storeId}</td>
-						<td><input type="text" hidden="hidden" value="${i.overdueDate}" id="overdueDate"> ${i.overdueDate}</td>
+						<td>${i.overdueDate}  </td>
+						
+						<form action="${pageContext.request.contextPath}/admin/modifyRentalPayment" id="returnForm" name="returnForm" method="post">
 						<td>
 						<c:if test="${i.overdueDate !=''}">
-							<button type="button" id="btnReturn" name="btnReturn">${i.customerName} 회원 반납</button>
+							<input type="text" hidden="hidden" id="inventoryId" name="inventoryId" value="${i.inventoryId}">
+							<input type="text" hidden="hidden" id="overdueDate" name="overdueDate" value="${i.overdueDate}" >
+							<button type="button" id="btnReturn" >${i.customerName} 회원 반납</button>
 						</c:if>
 						</td>
+						</form>
 					</tr>
 				</font>
 			</c:forEach>
 		</tbody>
 	</table>
-   </form>
+  
    
  <!-- 페이징 검색어 적용전-->
     <ul class="pager">

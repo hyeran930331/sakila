@@ -23,18 +23,23 @@ import lombok.extern.slf4j.Slf4j;
 public class RentalController {
 	@Autowired RentalService rentalService;
 	@Autowired StaffService staffService;
+	@Autowired PaymentService paymentService;
 	
-	@GetMapping("/modifyReturnDate")
-	public String modifyReturnDate( @RequestParam(value="inventoryId") int inventoryId) {
+	@PostMapping("/modifyRentalPayment")
+	public String modifyRentalPayment( @RequestParam(value="inventoryId") int inventoryId
+								,@RequestParam(value="overdueDate", required=false) int overdueDate) {
 		log.debug("0 뷰에서 가져오 param확인 inventoryId : "+inventoryId);
+		log.debug("0 뷰에서 가져오 param확인 inventoryId : "+overdueDate);
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("inventoryId", inventoryId);
-		log.debug("1 서비스로 보낼 map확인 inventoryId : "+inventoryId);
+		map.put("overdueDate", overdueDate);
+		log.debug("1 서비스로 보낼 map확인 : "+map);
 		
 		rentalService.modifyReturnDate(map);
+		paymentService.modifyPaymentAmount(map);
 		log.debug("5 서비스에서온 result 없음 : ");
 		
-		return "redirect:/admin/getInventoryList?inventoryId="+inventoryId;
+		return "redirect:/admin/getInventoryOne?inventoryId="+inventoryId;
 	}
 }

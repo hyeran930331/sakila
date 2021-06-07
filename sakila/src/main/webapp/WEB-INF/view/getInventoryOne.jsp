@@ -68,9 +68,7 @@ $(document).ready(function(){
 						<th>rentalDate</th>
 						<th>returnDate</th>
 						<th>연체사항</th> <!-- 조건문 사항, 현재 overdue가 있으면 00일째 연체중. black이 있느면 연체반납/ 그냥 대여중, 정상반납 은 빈칸. -->
-						<th>sotreId</th>
-						<th>staffId</th>
-						<th>staffName</th>
+						<th>staffName (storeId-staffId)</th>
 						</tr>
 						</thead>
 						
@@ -86,18 +84,21 @@ $(document).ready(function(){
 								<td>${rl.email}</td>
 								<td>${rl.rentalId}</td>
 								<td>${rl.rentalDate}</td>
-								<td>${rl.returnDate}</td>
-								<td>
-									<c:if test="${rl.overdueDate>0}">
-									${rl.overdueDate} 일 연제중
-								</c:if>
-								<c:if test="${rl.black > 0}">
-									연체반납 ( ${rl.black}일)
+								<td>${rl.returnDate}
+								<c:if test="${rl.returnDate == null}">
+									<button type="button" name="btn">${rl.customerName} 반납</button>
 								</c:if>
 								</td>
-								<td>${rl.storeId}</td>
-								<td>${rl.staffId}</td>
-								<td>${rl.staffName}</td>
+								<td>
+								<c:if test="${rl.overdueDate>0}">
+									${rl.overdueDate}일 연제중
+								</c:if>
+								<c:if test="${rl.black > 0}">
+									연체반납  ( ${rl.black}일)
+								</c:if>
+								
+								</td>
+								<td>${rl.staffName} <br> (가게${rl.storeId} - ${rl.staffId} )</td>
 								</tr>
 							</span>
 							</span>
