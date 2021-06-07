@@ -31,6 +31,15 @@
 
 <script>
 $(document).ready(function(){
+	$('#btnSearch').click(function(){
+		if ('#title'.val !='' || 'inventoryId'.val !=''){
+			$('#searchForm').submit
+		}
+	});
+	
+	$('#btnReturn').click(function(){
+			$('#returnForm').submit
+	});
 });
 </script>
 <title>get InventoryList</title>
@@ -39,16 +48,17 @@ $(document).ready(function(){
 <div class="container">
     <h1>getInventoryList</h1> <jsp:include page="/WEB-INF/view/nav.jsp"/>
 	<!-- 검색어 입력창 -->
-    <form action="/admin/getInventoryList" method="get">
-			<div>
+    <form action="/admin/getInventoryList" name="searchForm" method="get">
+		<div>
         영화이름 :
 	        <input name="title" type="text">
 	    inventory_id :   
 	        <input name="inventoryId" type="text">
-	        <button type="submit">검색</button>
- 			</div>
-
-
+	        <button name="btnSearch" type="submit">검색</button>
+ 		</div>
+   </form>
+	
+	<form action="/admin/modifyReturnDate" id="returnForm" name="returnForm" method="post">
 	<table class="table">
 		<thead>
 			<tr>
@@ -63,13 +73,13 @@ $(document).ready(function(){
 			<c:forEach var="i" items="${inventoryList}">
 				<font ${i.overdueDate != '' ? 'color="red"' : ''} > <!-- 왜 안될까욥 -->
 					<tr id="line" ${i.overdueDate != '' ? 'bgcolor="red"' : ''}>
-						<td>${i.inventoryId}</td>
+						<td>${i.inventoryId} <input type="text" hidden="hidden" name="inventoryId" value="${i.inventoryId}"></td>
 						<td> <a href="${pageContext.request.contextPath}/admin/getInventoryOne?inventoryId=${i.inventoryId}&title=${i.title}"> ${i.title}</a></td>
 						<td>${i.storeId}</td>
 						<td><input type="text" hidden="hidden" value="${i.overdueDate}" id="overdueDate"> ${i.overdueDate}</td>
 						<td>
 						<c:if test="${i.overdueDate !=''}">
-							<button type="button" id="return" name="return">${i.customerName} 회원 반납</button>
+							<button type="button" id="btnReturn" name="btnReturn">${i.customerName} 회원 반납</button>
 						</c:if>
 						</td>
 					</tr>
