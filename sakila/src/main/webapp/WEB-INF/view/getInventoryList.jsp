@@ -58,7 +58,8 @@ $(document).ready(function(){
  		</div>
    </form>
 	
-	<form action="/admin/modifyReturnDate" id="returnForm" name="returnForm" method="post">
+	<form action="/admin/modifyReturnDate" id="returnForm" \
+	\name="returnForm" method="post">
 	<table class="table">
 		<thead>
 			<tr>
