@@ -1,4 +1,4 @@
-package com.gd.sakila.service;
+package com.gd.sakila.mapper;
 
 import java.util.Map;
 

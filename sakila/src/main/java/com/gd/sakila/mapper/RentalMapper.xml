@@ -3,11 +3,20 @@
 <mapper namespace="com.gd.sakila.mapper.RentalMapper">
 	<update id="updateRental"
 			parameterType="Map">
+		<selectKey resultType="Map" keyProperty="rentalId" order="BEFORE">
+			SELECT 
+				MAX(r.rental_id) rentalId
+			FROM rental r
+				left join inventory i ON r.inventory_id = i.inventory_id
+					left join film f ON i.film_id = f.film_id
+			WHERE
+				inventory_id= ${rentalId} AND return_date IS null
+		</selectKey> 
+			
 		UPDATE
-			rental (return_date)
-			value ( current_date())
+			rental SET(return_date = now() )
 		WHERE
-			inventory_id = ${inventoryID}
+			rental_id = ${rantalId}
 	</update>
 
 </mapper>

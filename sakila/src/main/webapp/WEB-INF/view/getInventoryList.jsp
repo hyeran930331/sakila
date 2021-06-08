@@ -45,7 +45,6 @@ $(document).ready(function(){
 		if ( this.host !== window.location.host ) {
             if ( window.confirm( '연체금을 받았나요') ) {
                 // They clicked Yes
-                $('#returnForm').submit();
                 console.log('감사합니다.');
             }
             else {
@@ -94,15 +93,11 @@ $(document).ready(function(){
 						<td>${i.storeId}</td>
 						<td>${i.overdueDate}  </td>
 						
-						<form action="${pageContext.request.contextPath}/admin/modifyRentalPayment" id="returnForm" name="returnForm" method="post">
 						<td>
 						<c:if test="${i.overdueDate !=''}">
-							<input type="text" hidden="hidden" id="inventoryId" name="inventoryId" value="${i.inventoryId}">
-							<input type="text" hidden="hidden" id="overdueDate" name="overdueDate" value="${i.overdueDate}" >
-							<button type="button" id="btnReturn" >${i.customerName} 회원 반납</button>
+							<a name="btnReturn" class="btn btn-default"  href="${pageContext.request.contextPath}/admin/modifyRentalPayment?inventoryId=${i.inventoryId}&overdueDate=${i.overdueDate}" >${i.customerName} 회원 반납</a>
 						</c:if>
 						</td>
-						</form>
 					</tr>
 				</font>
 			</c:forEach>

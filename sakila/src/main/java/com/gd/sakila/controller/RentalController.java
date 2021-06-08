@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.gd.sakila.service.PaymentService;
 import com.gd.sakila.service.RentalService;
 import com.gd.sakila.service.StaffService;
 
@@ -25,7 +26,7 @@ public class RentalController {
 	@Autowired StaffService staffService;
 	@Autowired PaymentService paymentService;
 	
-	@PostMapping("/modifyRentalPayment")
+	@GetMapping("/modifyRentalPayment")
 	public String modifyRentalPayment( @RequestParam(value="inventoryId") int inventoryId
 								,@RequestParam(value="overdueDate", required=false) int overdueDate) {
 		log.debug("0 뷰에서 가져오 param확인 inventoryId : "+inventoryId);
