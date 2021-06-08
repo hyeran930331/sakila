@@ -3,20 +3,24 @@
 <mapper namespace="com.gd.sakila.mapper.RentalMapper">
 	<update id="updateRental"
 			parameterType="Map">
-		<selectKey resultType="Map" keyProperty="rentalId" order="BEFORE">
+		<!-- 가장큰  rentalId를 int로 받는 셀렉트를 먼저실행-->
+		<selectKey resultType="int" keyProperty="rentalId" order="BEFORE">
 			SELECT 
 				MAX(r.rental_id) rentalId
 			FROM rental r
-				left join inventory i ON r.inventory_id = i.inventory_id
-					left join film f ON i.film_id = f.film_id
 			WHERE
-				inventory_id= ${rentalId} AND return_date IS null
+				r.return_date IS NULL and r.inventory_id= #{inventoryId}
+				<!-- 조건은 인벤토리가 받아온 map의 인벤토리랑 같고 return_date가 null인것 -->
 		</selectKey> 
 			
 		UPDATE
-			rental SET(return_date = now() )
+			rental 
+		<!-- 렌탈 테이블을 수정 -->	
+		SET
+			return_date = now() <!-- 반납날짜를 현재로 -->
 		WHERE
-			rental_id = ${rantalId}
+			rental_id = #{rentalId}
+			<!-- 조건은 셀렉트키로 받은  가장큰  rentalId-->
 	</update>
 
 </mapper>

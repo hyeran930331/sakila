@@ -95,7 +95,7 @@ $(document).ready(function(){
 						
 						<td>
 						<c:if test="${i.overdueDate !=''}">
-							<a name="btnReturn" class="btn btn-default"  href="${pageContext.request.contextPath}/admin/modifyRentalPayment?inventoryId=${i.inventoryId}&overdueDate=${i.overdueDate}" >${i.customerName} 회원 반납</a>
+							<a name="btnReturn" class="btn btn-default" href="${pageContext.request.contextPath}/admin/modifyRentalPayment?inventoryId=${i.inventoryId}&overdueDate=${i.overdueDate}" >${i.customerName} 회원 반납</a>
 						</c:if>
 						</td>
 					</tr>
