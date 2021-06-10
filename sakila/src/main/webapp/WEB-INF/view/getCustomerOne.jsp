@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -30,17 +31,29 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
 <title>Customer One VIEW(spring mvc 방식)</title>
+<script>
+    $(document).ready(function() {
+        $('#btn').click(function() { 
+        	console.log('btn 클릭');
+	        	if ( $('#overdueDate').val() == '') {
+	                alert('반납후 대여가 가능합니다.');
+	        	} else {   
+	         	   $('#addForm').submit();
+	        	}
+          });
+      });
+</script>
 </head>
 <body>
 <div class="container text-center">
     <h1>Customer One VIEW</h1> <jsp:include page="/WEB-INF/view/nav.jsp"/>
-     <form id="addForm" action="" method="post">
+     
      <table class="table">
      		<c:forEach var="co" items="${customerOne}">
      		<c:set var="customerId" value="${co.customerId}"/>
 			<tr>
-				<th width="300">storeId(customerId) name</th>
-				<td>${co.storeId} (${co.customerId}) ${co.name}</td>
+				<th>총 구매 금액</th>
+				<td>${co.amount}</td>
 			</tr>
 			<tr>
 				<th>phone (email)</th>
@@ -50,19 +63,32 @@
 				<th>full address (zip code)</th>
 				<td>${co.country}, ${co.city}, ${co.address} ( ${co.zipCode} )</td>
 			</tr>	
+
+			<tr bgcolor="yellow">
+				<th width="300">storeId : name(customerId) </th>
+				<td>가게${co.storeId} : ${co.name}(${co.customerId}) </td>
+			</tr>			
 			<tr>
-				<th>총 구매 금액</th>
-				<td>${co.amount}</td>
+				<th>대여하기</th>
+				<form id="addForm" action="${pageContext.request.contextPath}/admin/addRental" method="get">
+					<td>
+						<input type="text" hidden="hidden" name="customerId" value="${co.customerId}">
+						<input type="text" hidden="hidden" name="storeId" value="${co.storeId}">
+						<input type="text" hidden="hidden" name="name" value="${co.name}">
+						<button class="btn btn-default" type="button" id="btn">연체없는지 확인하고 대여하기</button>
+					</td>
+				</form>
 			</tr>
 			</c:forEach>
+			
 			<tr>
 				<th>대여목록</th>
 				<td class="container">
-					<table class="table table-striped">
+					<table class="table">
 						<thead class="center">
 						<tr>
 						<th>rentalId</th>
-						<th>inventoryId</th>
+						<th>inventoryId <br>반납하러 가기</th>
 						<th>title</th>
 						<th>rentalDate</th>
 						<th>returnDate</th>
@@ -74,21 +100,24 @@
 						
 						<c:forEach var="rl" items="${rentalList}">
 							<c:set var="count" value="0"/>
-							<tr>
-							<td>${rl.rentalId}</td>
-							<td>${rl.inventoryId}</td>
-							<td>${rl.title }</td>
-							<td>${rl.rentalDate}</td>
-							<td>${rl.returnDate}</td>
-							<td>
-								<c:if test="${rl.overdueDate>0}">
-									${rl.overdueDate} 일 연제중
-								</c:if>
-								<c:if test="${rl.black > 0}">
-									<c:set var="count" value="${count+1}"/>
-									${count}번째 : 연체반납 ( ${rl.black}일)
-								</c:if>
-							</td>
+							<tr id="line" ${rl.overdueDate != '' ? 'bgcolor="red"' : ''}>
+								<td>${rl.rentalId}</td>
+								<td>
+								<fmt:formatNumber type="number" var="currentPage" maxFractionDigits="0"  value="${(rl.inventoryId)/10}" />
+								<a href="${pageContext.request.contextPath}/admin/getInventoryList?currentPage=${currentPage+1}"> ${rl.inventoryId} </a></td>
+								<td>${rl.title }</td>
+								<td>${rl.rentalDate}</td>
+								<td>${rl.returnDate}</td>
+								<td>
+									<c:if test="${rl.overdueDate>0}">
+										<input type="text" hidden="hidden" name="overdueDate" value="${rl.overdueDate}">
+										${rl.overdueDate}일 연제중
+									</c:if>
+									<c:if test="${rl.black > 0}">
+										<c:set var="count" value="${count+1}"/>
+										${count}번째 : 연체반납 ( ${rl.black}일)
+									</c:if>
+								</td>
 							</tr>
 						</c:forEach>
 						</tbody>
@@ -96,10 +125,7 @@
 				</td>
 			</tr>
 	</table>
-	<div>
-		<button type="button" id="btn">대여하기</button>
-	</div>
-	</form>
+	
     
     
     <!-- 버튼들 -->

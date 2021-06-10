@@ -23,6 +23,20 @@ import lombok.extern.slf4j.Slf4j;
 public class RentalController {
 	@Autowired RentalService rentalService;
 	@Autowired StaffService staffService;
+	@GetMapping("/addRental")
+	public String addRental (Model model
+							, @RequestParam(value="customerId") int customerId
+							, @RequestParam(value="storeId") int storeId
+							, @RequestParam(value="name") String name) {
+		log.debug("0 뷰에서 가져오 param확인 : "+customerId);
+		log.debug("0 뷰에서 가져오 param확인 : "+storeId);
+		log.debug("0 뷰에서 가져오 param확인 : "+name);
+		
+		model.addAttribute("customerId", customerId);
+		model.addAttribute("storeId", storeId);
+		model.addAttribute("name", name);
+		return "addRental";
+	}
 	
 	@GetMapping("/modifyRentalPayment")
 	public String modifyRentalPayment( @RequestParam(value="inventoryId") int inventoryId

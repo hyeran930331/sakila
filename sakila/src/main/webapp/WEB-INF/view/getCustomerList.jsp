@@ -28,7 +28,7 @@
     crossorigin="anonymous"></script>
  
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-
+<title>get CustomerList</title>
 <script>
 $(document).ready(function(){
 	$('#btn').click(function() { 
@@ -38,7 +38,6 @@ $(document).ready(function(){
 
 });
 </script>
-<title>get CustomerList</title>
 </head>
 <body>
 <div class="container">
@@ -98,7 +97,7 @@ $(document).ready(function(){
         <c:if test="${currentPage < lastPage}">
              <li class="next"><a href="${pageContext.request.contextPath}/admin/getCustomerList?currentPage=${currentPage+1}&serchWord=${searchWord}&storeId=${storeId}">다음</a></li>
          </c:if>
-        <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/getCustomerList?currentPage=${lastPage}&serchWord=${searchWord}&storeId=${storeId}">마지막 페이지로</a>
+        <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/getCustomerList?currentPage=${lastPage+1}&serchWord=${searchWord}&storeId=${storeId}">마지막 페이지로</a>
     </ul>
     <div>
     

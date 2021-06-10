@@ -46,15 +46,15 @@ public class CustomerController {
 	
 	@GetMapping("/addCustomer")
 	public String addCustomer() {
-		log.debug("\n1. 콘트롤러 시작");
+		log.debug("1. 콘트롤러 시작");
 		return "addCustomer";
 	}
 	@PostMapping("/addCustomer")
 	public String addCustomer(Model model
 							,Customer customer
 							,Address address){
-		log.debug("\n.1. 콘트롤러에서 보낼 paramMap 확인 : "+customer);
-		log.debug("\n.1. 콘트롤러에서 보낼 paramMap 확인 : "+address);
+		log.debug(".1. 콘트롤러에서 보낼 paramMap 확인 : "+customer);
+		log.debug(".1. 콘트롤러에서 보낼 paramMap 확인 : "+address);
 		
 		int row = customerService.addCustomer(customer, address);
 		log.debug("3. 서비스에서 받은 row 확인 : "+row);
@@ -65,7 +65,7 @@ public class CustomerController {
 	@GetMapping("/getCustomerOne")
 	public String getCustomerOne(Model model
 								,@RequestParam(value="customerId", required = true) Integer customerId) {
-		log.debug("\n1. 콘트롤러에서 보낼 paramMap 확인 customerId"+customerId);
+		log.debug("1. 콘트롤러에서 보낼 paramMap 확인 customerId"+customerId);
 		
 		Map<String,Object> resultMap = customerService.getCustomerOne(customerId);
 		log.debug("5. 서비스에서 보낸 resultMap 확인"+resultMap);
@@ -81,7 +81,7 @@ public class CustomerController {
 								 ,@RequestParam(value="rowPerPage", defaultValue="10") int rowPerPage
 								 ,@RequestParam(value="searchWord", required = false) String searchWord
 								 ,@RequestParam(value="storeId",  required = false) Integer storeId) {
-		log.debug("\n0. 콘트롤러에서 보낼 requestParam 확인 currentPage"+currentPage);
+		log.debug("0. 콘트롤러에서 보낼 requestParam 확인 currentPage"+currentPage);
 		Map<String,Object> paramMap = new HashMap<String,Object>();
 		paramMap.put("currentPage", currentPage);
 		paramMap.put("rowPerPage", rowPerPage);
