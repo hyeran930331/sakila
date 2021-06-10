@@ -21,4 +21,5 @@ public interface StaffMapper { //class 아니고 interface
 	int selectStaffListForCount(String searchWord);
 	List<Object> selectStaffList(Page page);
 	int insertStaff(Staff staff);
+	List<Staff> selectStaff(int storeId);
 }

@@ -26,18 +26,49 @@
     src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
     integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
     crossorigin="anonymous"></script>
- 
+    
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>add Rental</title>
 <script>
+	$(document).ready(function(){
+		console.log('레디');
+		
+		$(document).on('keyup', '#inventoryId', function() {
+			console.log('엔터');
 
+			$.ajax({
+				type:'get',
+				url:'/inventory',
+				data : { inventoryId : $('#inventoryId').val() },
+				success: function(jsonData){
+					$('#title').empty();
+					$('#amount').empty();
+					$('#duration').empty();
+					console.log('비우기완료');
+					$(jsonData).each(function(index, item){
+						$('#title').text(item.title);
+						$('#amount').append('<input class="form-control" type="text" name="amount" value="'+item.amount+'"/>');
+						$('#duration').text(item.duration);
+						console.log('받기완료');
+					});//jsonData
+				} //success
+			}); //ajax
+
+		});//inventoryId
+
+		$('#btn').click(function(){
+			console.log('btn click');	
+			 $('#addForm').submit();
+		});//click
+		
+	});//document
 </script>
 </head>
 <body>
 	<div class="container text-center">
 	<h1>add Rental</h1> <jsp:include page="/WEB-INF/view/nav.jsp"/>
 	
-	<form name="addForm" action="" method="post">
+	<form name="addForm" action="${pageContext.request.contextPath}/admin/addRental" method="post">
 	<table class="table">
 		<tr><td colspan="2">　</td></tr>
 		<tr><th colspan="2">　</th></tr>
@@ -47,30 +78,47 @@
 			<td width="900">가게${storeId} : ${name}(${customerId}) </td>
 		</tr>
 		
-		<tr><td colspan="2"> <button class="btn btn-default" type="button" name="btn"> 추가</button></td></tr>
+		<tr><td></td>
+			<td><button class="btn btn-default" type="button" name="btn"> 추가</button></td></tr>
 		
 		<tr>
 			<td>직원</td>
-			<td><input type="text" name="staff">스태프 리스트 출력</td>
+			<td>
+				<select class="form-control" name="staffId" id="staffId">
+					<option value=""> 선택하세요 </option>
+					
+					<c:forEach var="sl" items="${staffList}">
+					<option value="${sl.staffId}">${sl.username }</option>
+					</c:forEach>
+				</select>
+			</td>
 		</tr>
 		
 		<tr>
 			<td>인벤토리(바코드)</td>
-			<td><input type="text" name="staff">바코드 리스트 선택</td>
+			<td colspan="2">
+			<input class="form-control" type="text" id="inventoryId" placeholder="바코드 입력후 엔터">
+			<span id="title"> </span>
+			</td>
 		</tr>
 		
 		<tr>
-			<td>금액</td>
-			<td><input type="text" name="amount">총금액</td>
+			<td>금액 (달러)</td>
+			<td><span id="amount"></span></td>
 		</tr>
 		
 		<tr>
-			<td>대여기간</td>
-			<td><input type="text" name="amount">기간</td>
+			<td>대여기간 (일)</td>
+			<td><span id="duration"></span></td>
 		</tr>
 		
+		<tr>
+			<td></td>
+			<td> <input type="reset"/>초기화</td>
+		</tr>
 	</table>
 	</form>
+	
 	</div>
 </body>
 </html>

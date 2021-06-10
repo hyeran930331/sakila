@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.gd.sakila.service.RentalService;
 import com.gd.sakila.service.StaffService;
+import com.gd.sakila.vo.Staff;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -32,9 +33,14 @@ public class RentalController {
 		log.debug("0 뷰에서 가져오 param확인 : "+storeId);
 		log.debug("0 뷰에서 가져오 param확인 : "+name);
 		
+		log.debug("1 서비스에 줄 param값 확인 : "+storeId);
+		List<Staff> staffList = staffService.getStaffList(storeId);
+		log.debug("5 서비스에서 온 값 확인 : "+storeId);
+		
 		model.addAttribute("customerId", customerId);
 		model.addAttribute("storeId", storeId);
 		model.addAttribute("name", name);
+		model.addAttribute("staffList",staffList);
 		return "addRental";
 	}
 	

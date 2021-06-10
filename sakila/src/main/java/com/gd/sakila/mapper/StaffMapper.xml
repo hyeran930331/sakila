@@ -2,6 +2,20 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gd.sakila.mapper.StaffMapper">
 
+	<select id="selectStaff"
+			parameterType="int"
+			resultType="com.gd.sakila.vo.Staff">
+			
+		SELECT 
+			ID staffId
+			, name username
+		FROM staff_list
+		WHERE
+			SID = #{storeId}
+		Order BY
+			staffId ASC
+	</select>
+
 	<insert id="insertStaff"
 			parameterType="com.gd.sakila.vo.Staff">
 		<selectKey resultType="int" keyProperty="addressId" order="BEFORE">

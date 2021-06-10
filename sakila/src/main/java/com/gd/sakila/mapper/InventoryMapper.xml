@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gd.sakila.mapper.InventoryMapper">
+	<select id="selectInventoryforRental"
+			parameterType="int"
+			resultType="Map">
+	SELECT
+			f.film_id filmId
+			, f.title title
+			, f.rental_duration duration
+			, f.rental_rate amount
+		FROM
+			inventory i	
+				LEFT JOIN film f ON i.film_id = f.film_id
+		WHERE
+			i.inventory_id = #{inventoryId}	
+	</select>
+	
 	<insert id="insertInventory"
 			parameterType="java.util.Map">
 		INSERT INTO

@@ -53,10 +53,18 @@ public class StaffService {
 		map.put("lastPage", lastPage);
 		return map;
 	}
+	
+	public List<Staff> getStaffList(int storeId){
+		log.debug("2 param확인 : "+ storeId);
+		log.debug("3 매퍼에게 줄 param확인 : "+ storeId);
+		List<Staff> staffList = staffMapper.selectStaff(storeId);
+		log.debug("4 매퍼에게 받은 값 확인 : "+ staffList.toString());
+		return staffList;
+	}
 
 	public int addStaff(Staff staff, Address address) {
-		log.debug("1 param확인 : "+ staff.toString());
-		log.debug("1 param확인 : "+ address.toString());
+		log.debug("2 param확인 : "+ staff.toString());
+		log.debug("2 param확인 : "+ address.toString());
 		addressMapper.insertAddress(address);
 		int row = staffMapper.insertStaff(staff);
 		return row;
