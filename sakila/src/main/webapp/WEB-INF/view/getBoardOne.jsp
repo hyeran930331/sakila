@@ -101,7 +101,7 @@
     <c:if test="${((boardMap.boardId)-1)>0}">
     <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/getBoardOne?boardId=${(boardMap.boardId)-1}">이전글</a>
     </c:if>
-    <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/getBoardList?currentPage=${1}">처음으로</a>
+    <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/getBoardList?currentPage=${1}">목록으로</a>
     <!-- ${((boardMap.boardId)/10)} 소수점 버림처리 어떻게 한담? -->
     <c:if test="${((boardMap.boardId)+1)<boardTotal}">
     <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/getBoardOne?boardId=${(boardMap.boardId)+1}">다음글</a>

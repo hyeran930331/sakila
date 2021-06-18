@@ -1,5 +1,6 @@
 package com.gd.sakila.controller;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,22 +21,44 @@ import lombok.extern.slf4j.Slf4j;
 public class ActorController {
 	@Autowired ActorService actorService;
 
+	@GetMapping("/getActorOne")
+	public String getActorOne( Model model
+								, @RequestParam(value="firstName") String firstName
+								, @RequestParam(value="lastName") String lastName ) {
+		log.debug("0 view에서 넘어온 param firstName 확인"+firstName);
+		log.debug("0 view에서 넘어온 param lastName 확인"+lastName);
+		
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("firstName", firstName);
+		map.put("lastName", lastName);
+		log.debug("1 service로 보낸 map 확인: "+map.toString());
+		
+		Map<String,Object> resultMap = actorService.getActorOne(map);
+		log.debug("5 service 에서 넘어온 row 확인 "+resultMap.toString());
+		
+		
+		model.addAttribute("actorList", resultMap.get("actorList"));
+		model.addAttribute("total", resultMap.get("total"));
+		return "getActorOne";
+	}
+	
 	@GetMapping("/addActor")
 	public String addActor() {
-		System.out.println("<--addActor 실행");
+		log.debug("0 view에서 넘어온 param 없음 "+"");
 		return "addActor";
 	}
 	
 	@PostMapping("/addActor")
 	public String addActor(Model model
-							, @RequestParam(value="firstName", required = true)String firstName
-							, @RequestParam(value="lastName", required=true) String lastName
+							, @RequestParam(value="firstName") String firstName
+							, @RequestParam(value="lastName") String lastName
 							, @RequestParam(value="filmLine", required=false) String filmLine) {
-		System.out.println(firstName+"<--firstName");
-		System.out.println(lastName+"<--lastName");
-		System.out.println(filmLine+"<--filmLine");
+		log.debug("0 view에서 넘어온 param 확인 firstName"+firstName);
+		log.debug("0 view에서 넘어온 param 확인 lastName"+lastName);
+		log.debug("0 view에서 넘어온 param 확인 filmLine"+filmLine);
 		
 		int row = actorService.addActor(firstName, lastName, filmLine);
+		log.debug("5 service 에서 넘어온 row 확인 "+row);
 		
 		return "redirect:/admin/getActorList"; //:/였다
 	}
@@ -45,18 +68,18 @@ public class ActorController {
 							, @RequestParam(value="currentPage", defaultValue = "1") int currentPage
 							, @RequestParam(value="rowPerPage", defaultValue="10") int rowPerPage
 							, @RequestParam(value="searchWord", required=false) String searchWord) {
-		System.out.println(currentPage+"<--currentPage");
-		System.out.println(rowPerPage+"<--rowPerPage");
-		System.out.println(searchWord+"<--searchWord");
+		log.debug(currentPage+"<--currentPage");
+		log.debug(rowPerPage+"<--rowPerPage");
+		log.debug(searchWord+"<--searchWord");
 		
-		Map<String,Object> map = actorService.getActorInfoList(currentPage, rowPerPage, searchWord);
-		System.out.println(map.get("lastPage")+"<--map.get(\"lastPage\")");
+		Map<String,Object> resultMap = actorService.getActorList(currentPage, rowPerPage, searchWord);
+		log.debug(resultMap.get("lastPage")+"<--map.get(\"lastPage\")");
 		
 		
 		model.addAttribute("currentPage", currentPage);
 		model.addAttribute("rowPerPage", rowPerPage);
-		model.addAttribute("lastPage", map.get("lastPage"));
-		model.addAttribute("actorList", map.get("actorList"));
+		model.addAttribute("lastPage", resultMap.get("lastPage"));
+		model.addAttribute("actorList", resultMap.get("actorList"));
 		return "getActorList"; //마지막에 ; 마침표!
 	}
 }

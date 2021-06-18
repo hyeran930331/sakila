@@ -167,7 +167,7 @@
 			#{beginRow}, #{rowPerPage}	
 	</select>
 
-	<select id="selectFilmOne"
+	<select id="selectFilmOneForFilmId"
 			parameterType="int"
 			resultType="java.util.Map">
 	
@@ -184,6 +184,25 @@
 			film_list 
 		WHERE
 			FID = #{filmId} 
+	</select>
+	
+	<select id="selectFilmOneForTitle"
+			parameterType="String"
+			resultType="java.util.Map">
+	
+		SELECT
+			FID filmId
+			, title
+			, description
+			, category
+			, price
+			, rating
+			, length
+			, actors
+		FROM
+			film_list 
+		WHERE
+			title = #{title}
 	</select>
 	
 	<sql id="searchWords">

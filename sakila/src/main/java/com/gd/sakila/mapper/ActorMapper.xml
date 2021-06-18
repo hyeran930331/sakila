@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gd.sakila.mapper.ActorMapper">
+	<select id="selectActorOne"
+			parameterType="Map"
+			resultType="Map">
+		SELECT
+			actor_id actorId
+			, CONCAT(first_name,' ',last_name) name
+			, film_info filmInfo
+		FROM
+			actor_info
+		WHERE
+			first_name = #{firstName} AND last_name =#{lastName}
+	</select>
+	
 	<select id="selectActorForCount"
 			parameterType ="String"
 			resultType="int">
@@ -22,14 +35,15 @@
 			VALUES (UPPER(#{firstName}), UPPER(#{lastName}))
 	</insert>
 	
-	<select id="selectActorInfoList"
+	<select id="selectActorList"
 			parameterType="com.gd.sakila.vo.Page"
 			resultType="Map">
 		SELECT
 			actor_id actorId
 			, CONCAT(first_name,' ',last_name) name
 			, film_info filmInfo
-			, film_info filmInfoNum
+			, (LENGTH(film_info)-LENGTH(REPLACE(REPLACE(film_info,';',''),',',''))+1)filmNum
+			, (LENGTH(film_info)-LENGTH(REPLACE(film_info,';',''))+1) gerneNum
 		FROM
 			actor_info
 		ORDER BY

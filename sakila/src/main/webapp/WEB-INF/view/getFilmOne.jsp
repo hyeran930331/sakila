@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -47,7 +48,18 @@
      <table class="table">
         <tr>
           <td >filmId :</td>
-          <td>${filmList.filmId} <input type="text" hidden="hidden" value="${filmList.filmId}" name="filmId"></td>
+          <td>
+          <!-- paging -->
+		    <ul class="pager">	
+		    <c:if test="${filmList.filmId != 1}">
+		   		<li class="previous"><a href="${pageContext.request.contextPath}/admin/getFilmOne?filmId=${filmList.filmId-1}">이전으로</a></li>
+		    </c:if>
+          	${filmList.filmId}
+          	 <c:if test="${filmList.filmId != lastPage}">
+		    	<li class="next"><a href="${pageContext.request.contextPath}/admin/getFilmOne?filmId=${filmList.filmId+1}">다음으로</a></li>
+		    </c:if>
+		    </ul>
+          	 <input type="text" hidden="hidden" value="${filmList.filmId}" name="filmId"></td>
         </tr>
         
         <tr>
@@ -75,6 +87,11 @@
           <td>${filmList.category}</td>
         </tr>
         
+        <tr>
+        <td>　</td>
+        <td>　</td>
+        </tr>
+        
         <c:forEach var="f" varStatus="status" items="${FilmInStockStore }">
         <tr>
           <td>가게 ${status.count} 재고:</td>
@@ -82,7 +99,10 @@
           
         </tr>
         </c:forEach>
-        
+        <tr>
+        	<td>재고추가</td>
+        	<td><button type="button" id="btn" name="btn" class="btn btn-default">재고 추가</button></td>
+        </tr>
         
         
         <tr>
@@ -98,26 +118,29 @@
           
           <td class="text-left">
           	<!-- 배우마다 한줄띄기 하고싶었습니다. 와 이게 한번에 되다니...-->
-			<c:forTokens var="temp" items="${filmList.actors } " delims="," varStatus="status">
-				<a href="${pageContext.request.contextPath}/admin/getActorOne?Actor=${temp}">${status.count} ${temp }</a><br>
+			<c:forTokens var="temp0" items="${filmList.actors } " delims="," varStatus="status">
+				<c:set var="temp1" value=""/>
+				<c:forTokens var="temp2" items="${temp0} " delims=" " varStatus="g">
+					<c:if test="${g.count==1}">
+						<c:set var="temp1" value="firstName=${temp2}"/>
+					</c:if>
+					<c:if test="${g.count==2}">
+						<c:set var="temp1" value="${temp1}&lastName=${temp2}"/>
+					</c:if>
+				</c:forTokens>
+				<a href="${pageContext.request.contextPath}/admin/getActorOne?${temp1}">${status.count} ${temp0}</a><br>
 			</c:forTokens>
           </td>
         </tr>
     </table>
     <div>
-        <button type="button" id="btn" name="btn" class="btn btn-default">재고 추가</button>
+        <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/modifyFilm?filmId=${filmList.filmId}">영화수정</a>
     </div>
     </form>
     
-    <!-- 버튼들 -->
-    <c:if test="${filmList.filmId != 1}">
-    <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/getFilmOne?filmId=${filmList.filmId-1}">이전으로</a>
-    </c:if>
+	<div>
     <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/getFilmList">목록으로</a>
-    <c:if test="${filmList.filmId != lastPage}">
-    <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/getFilmOne?filmId=${filmList.filmId+1}">다음으로</a>
-    </c:if>
-	<a class="btn btn-default" href="${pageContext.request.contextPath}/admin/modifyFilm?filmId=${filmList.filmId}">영화수정</a>
+	</div>
 	
 </div>
 </body>

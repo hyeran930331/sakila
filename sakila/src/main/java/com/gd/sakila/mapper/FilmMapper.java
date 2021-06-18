@@ -22,11 +22,11 @@ public interface FilmMapper {
 
 	List<Map<String, Object>> selectFilmList(Map<String, Object> map);
 	
-	Map<String, Object> selectFilmOne(int filmId); //4
-
+	Map<String, Object> selectFilmOneForFilmId(int filmId); //4
+	Map<String, Object> selectFilmOneForTitle(String title);
 	List<Map<String, Object>> selectFilmActorListByFilm(int filmId); //6
 	int deleteFilmActor(int filmId);
-	int insertFilmActor(Map<String, Object> parmMap);
+	int insertFilmActor(Map<String, Object> paramMap);
 	
 	int updateFilm(Film film);
 	int updateFilmCategory (Map<String,Object> map);

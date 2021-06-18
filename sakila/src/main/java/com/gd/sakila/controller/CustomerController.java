@@ -72,6 +72,7 @@ public class CustomerController {
 		
 		model.addAttribute("customerOne", resultMap.get("customerOne"));
 		model.addAttribute("rentalList", resultMap.get("rentalList"));
+		model.addAttribute("total", resultMap.get("total"));
 		return "getCustomerOne";
 	}
 	

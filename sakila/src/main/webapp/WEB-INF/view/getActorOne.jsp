@@ -17,49 +17,48 @@
 </head>
 <body>
 <div class="container">
-    <h1>getActorList</h1> <jsp:include page="/WEB-INF/view/nav.jsp"/>
+    <h1>getActorOne</h1> <jsp:include page="/WEB-INF/view/nav.jsp"/>
     <table class="table table-striped">
         
 		<tr>
 			<thead>
-			<th> actorID</th>
+			<th> 
+			    <ul class="pager">
+			        <c:if test="${currentPage > 1}">
+			            <li class="previous"><a href="${pageContext.request.contextPath}/admin/getActorList?currentPage=${currentPage-1}&searchWord=${searchWord}">이전</a></li>
+			        </c:if>
+			        
+			        actorID
+			        
+			        <c:if test="${currentPage < lastPage}">
+			            <li class="next"><a href="${pageContext.request.contextPath}/admin/getActorList?currentPage=${currentPage+1}&searchWord=${searchWord}">다음</a></li>
+			        </c:if>
+    			</ul>
+			</th>
 			<th width="200"> name</th>
-			<th> film count</th>
-			<th> gerne count</th>
-			<th> gerne</th>
+			<th> film info</th>
 			</thead>
 		</tr>
 		
 		<c:forEach var="a" items="${actorList}">
 		<tr>
 			<td>${a.actorId}</td>
-			<td>
-			<c:set var="temp1" value=""/>
-				<c:forTokens var="temp2" items="${a.name} " delims=" " varStatus="g">
-					<c:if test="${g.count==1}">
-						<c:set var="temp1" value="firstName=${temp2}"/>
-					</c:if>
-					<c:if test="${g.count==2}">
-						<c:set var="temp1" value="${temp1}&lastName=${temp2}"/>
-					</c:if>
-				</c:forTokens>
-			<a href="${pageContext.request.contextPath}/admin/getActorOne?${temp1}">${a.name}</a>
-			</td>
-			<td>
-			${a.filmNum }
-			</td>
-			<td>
-			${a.gerneNum }
-			</td>
+			<td>${a.name}</td>
 
 			<td>
 			<c:forTokens var="temp0" items="${a.filmInfo} " delims=";" varStatus="status">
 				<c:set var="temp1" value="${fn:split(temp0,':')}"/>
 					<c:forEach var="temp2" items="${temp1 }" varStatus="g">
 						<c:if test="${g.count==1}">
-						${temp2},
+						${temp2} : 
+						</c:if>
+						<c:if test="${g.count==2}">
+							<c:forTokens var="temp3" items="${temp2} " delims="," varStatus="status">
+							<a href="${pageContext.request.contextPath}/admin/getFilmOne?title=${temp3}">${temp3}</a>,
+							</c:forTokens>
 						</c:if>
 					</c:forEach>
+					<br>
 			</c:forTokens>
 			</td>
 		</tr>
@@ -86,9 +85,6 @@
         <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/getActorList?currentPage=${lastPage}">마지막 페이지로</a>
 
     </ul>
-    <div>
-        <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/addActor">배우 입력</a>
-    </div>
 </div>
 </body>
 </html>

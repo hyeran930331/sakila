@@ -20,8 +20,20 @@ import lombok.extern.slf4j.Slf4j;
 public class ActorService {
 	@Autowired ActorMapper actorMapper;
 	
+	public Map<String,Object> getActorOne(Map<String,Object> paramMap){
+		log.debug("2 controller에서 보낸 paramMap확인"+paramMap.toString());
+		
+		int total = (actorMapper.selectActorForCount(""));
+		List<Map<String,Object>> actorList = actorMapper.selectActorOne(paramMap);
+		log.debug("4 mapper에서 보낸 actorOme확인"+actorList.toString());
+		
+		HashMap<String,Object> resultMap = new HashMap<String,Object>();
+		resultMap.put("total", total);
+		resultMap.put("actorList", actorList);
+		return resultMap;
+	}
 	
-	public Map<String,Object> getActorInfoList(int currentPage, int rowPerPage, String searchWord){
+	public Map<String,Object> getActorList(int currentPage, int rowPerPage, String searchWord){
 		Page page = new Page();
 		int beginRow = ((currentPage-1)*rowPerPage);
 		int total = (actorMapper.selectActorForCount(searchWord));
@@ -32,7 +44,7 @@ public class ActorService {
 		page.setSearchWord(searchWord);
 		log.debug("ⓢActorServiceⓢ Param : "+ page);
 		
-		List<Map<String, Object>> actorList = actorMapper.selectActorInfoList(page);
+		List<Map<String, Object>> actorList = actorMapper.selectActorList(page);
 		log.debug("ⓢActorServiceⓢ actorMapper.selectActorInfoList(page) : "+ actorList); //여기까지 출력
 		log.debug("ⓢActorServiceⓢ actorMapper.selectActorInfoList(page) : "+ actorList.toString()); //여기까지 출력
 		

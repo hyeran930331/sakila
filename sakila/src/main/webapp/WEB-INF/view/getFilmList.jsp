@@ -164,8 +164,6 @@ $(document).ready(function(){
              <li class="previous"><a href="${pageContext.request.contextPath}/admin/getFilmList?currentPage=${currentPage-1}">이전</a></li>
         </c:if>
         <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/getFilmList?currentPage=1">첫페이지로</a>
-        <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/getFilmList?currentPage=(int)(Math.ceil((double)currentPage/ rowPerPage))}">목록 페이지로</a>
-        <!-- ex 32페이지다 32/10 = 3.xx -> (int)3.xx => 3 --> 
         <c:if test="${currentPage < lastPage}">
              <li class="next"><a href="${pageContext.request.contextPath}/admin/getFilmList?currentPage=${currentPage+1}">다음</a></li>
          </c:if>

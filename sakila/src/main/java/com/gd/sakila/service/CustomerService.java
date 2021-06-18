@@ -65,10 +65,13 @@ public class CustomerService {
 		log.debug("3. 매퍼에서 받은 List 확인"+customerOne.toString());
 		List<Map<String,Object>> rentalList = customerMapper.selectRentalListByCustomer(customerId);
 		log.debug("4. 매퍼에서 받은 List 확인"+rentalList.toString());
+		Map<String,Object> paramMap = new HashMap<String,Object>();
+		int total = customerMapper.selectCustomerTotal(paramMap);
 		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap.put("customerOne", customerOne);
 		resultMap.put("rentalList", rentalList);
+		resultMap.put("total", total);
 		return resultMap;
 	}
 

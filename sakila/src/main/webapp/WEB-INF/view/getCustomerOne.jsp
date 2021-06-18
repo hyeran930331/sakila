@@ -65,12 +65,14 @@
 			</tr>	
 
 			<tr bgcolor="yellow">
+				<fmt:formatNumber type="number" var="currentPageC" value="${((total-co.customerId)/10) - (((total-co.customerId)/10)%1)}" />
 				<th width="300">storeId : name(customerId) </th>
 				<td>가게${co.storeId} : ${co.name}(${co.customerId}) </td>
 			</tr>			
 			<tr>
 				<th>대여하기</th>
 				<form id="addForm" action="${pageContext.request.contextPath}/admin/addRental" method="get">
+				
 					<td>
 						<input type="text" hidden="hidden" name="customerId" value="${co.customerId}">
 						<input type="text" hidden="hidden" name="storeId" value="${co.storeId}">
@@ -103,8 +105,8 @@
 							<tr id="line" ${rl.overdueDate != '' ? 'bgcolor="red"' : ''}>
 								<td>${rl.rentalId}</td>
 								<td>
-								<fmt:formatNumber type="number" var="currentPage" maxFractionDigits="0"  value="${(rl.inventoryId)/10}" />
-								<a href="${pageContext.request.contextPath}/admin/getInventoryList?currentPage=${currentPage+1}"> ${rl.inventoryId} </a></td>
+								<fmt:formatNumber type="number" var="currentPageI" value="${(rl.inventoryId/10) - ((rl.inventoryId/10)%1)}" />
+								<a href="${pageContext.request.contextPath}/admin/getInventoryList?currentPage=${currentPageI+1}"> ${rl.inventoryId} </a></td>
 								<td>${rl.title }</td>
 								<td>${rl.rentalDate}</td>
 								<td>${rl.returnDate}</td>
@@ -129,8 +131,8 @@
     
     
     <!-- 버튼들 -->
-    <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/getCustomerOne?customerId="${customerId-1}>이전으로</a>
-    <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/getCustomerList">목록으로</a>
+    
+    <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/getCustomerList?currentPage=${currentPageC+1}">목록으로</a>
 	
 </div>
 </body>
