@@ -5,8 +5,7 @@
 	<select id="selectCategoryList"
 			resultType="com.gd.sakila.vo.Category">
 		SELECT 
-			category_id categoryId
-			,name name
+			name name
 		FROM 
 			category;
 	</select>

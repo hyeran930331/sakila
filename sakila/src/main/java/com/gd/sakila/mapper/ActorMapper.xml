@@ -22,7 +22,7 @@
 		FROM
 			actor_info
 		<where>
-			<if test="#{searchWord} != null">
+			<if test="searchWord != null">
 				CONCAT(first_name,' ',last_name) LIKE CONCAT('%',#{searchWord},'%')
 			</if>
 		</where>		

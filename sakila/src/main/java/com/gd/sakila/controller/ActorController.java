@@ -68,18 +68,25 @@ public class ActorController {
 							, @RequestParam(value="currentPage", defaultValue = "1") int currentPage
 							, @RequestParam(value="rowPerPage", defaultValue="10") int rowPerPage
 							, @RequestParam(value="searchWord", required=false) String searchWord) {
-		log.debug(currentPage+"<--currentPage");
-		log.debug(rowPerPage+"<--rowPerPage");
-		log.debug(searchWord+"<--searchWord");
+		log.debug("0 view에서 넘어온 param 확인:"+currentPage+"<--currentPage");
+		log.debug("0 view에서 넘어온 param 확인:"+rowPerPage+"<--rowPerPage");
+		log.debug("0 view에서 넘어온 param 확인:"+searchWord+"<--searchWord");
 		
-		Map<String,Object> resultMap = actorService.getActorList(currentPage, rowPerPage, searchWord);
-		log.debug(resultMap.get("lastPage")+"<--map.get(\"lastPage\")");
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("currentPage", currentPage);
+		map.put("rowPerPage", rowPerPage);
+		map.put("searchWord", searchWord);
+		log.debug("1 servicedp map 확인: "+map.toString());
 		
+		Map<String,Object> resultMap = actorService.getActorList(map);
+		log.debug("6 Servive에서 온 resultMap : "+resultMap.toString());
 		
 		model.addAttribute("currentPage", currentPage);
 		model.addAttribute("rowPerPage", rowPerPage);
+		model.addAttribute("searchWord", searchWord);
 		model.addAttribute("lastPage", resultMap.get("lastPage"));
 		model.addAttribute("actorList", resultMap.get("actorList"));
+		log.debug("7 view로 보낼 model : "+model.toString());
 		return "getActorList"; //마지막에 ; 마침표!
 	}
 }

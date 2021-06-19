@@ -30,7 +30,7 @@ public class InventoryController {
 		log.debug("0 addInventory Param 확인 : filmId "+ filmId);
 		log.debug("1 서비스에 줄 param : "+filmId);
 		
-		Map<String,Object> resultMap = filmService.getFilmOne(filmId);
+		Map<String,Object> resultMap = filmService.getFilmOneForFilmId(filmId);
 		
 		log.debug("6 서비스에 받은 map 확인 : "+ resultMap.toString());
 		model.addAttribute("filmList", resultMap.get("filmList"));

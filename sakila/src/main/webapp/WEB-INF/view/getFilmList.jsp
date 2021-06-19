@@ -44,91 +44,36 @@ $(document).ready(function(){
 	<!-- 검색어 입력창 -->
     <form action="/admin/getFilmList" method="get">
 			<div>
-			카테고리
-				<select id="category" name="category">
-					<option value="">모두보기</option>
-					<c:forEach var="c" items="${categoryList}">
-					
-						<c:if test = "${c.equals(category)}" >
-							<option selected="selected" value="${c.categoryId}">${c.name}</option>
-						</c:if>
-						
-						<c:if test="${!c.equals(category)}">
-							<option value="${c.categoryId}">${c.name}</option>
-						</c:if>
-						
-					</c:forEach>
-				</select>
+				카테고리 :
+			<select id="category" name="category">
+				<option value="">모두보기</option>
+				<c:forEach var="cl" items="${categoryList}">
+					<option value="${cl.name}" ${cl.name.equals(category) ? "selected=selected" : ""} >${cl.name}</option>					
+				</c:forEach>
+			</select> 
 
 				가격 :
-				<select id="price" name="price">
-					<option value="">모두보기</option>
-					<c:if test="${price == 0.99}">
-						<option value="0.99" selected="selected">0.99</option>
-					</c:if>
-					<c:if test="${price != 0.99}">
-						<option value="0.99">0.99</option>
-					</c:if>
+			<select id="price" name="price">
+				<option value="">모두보기</option>
+				<option value="0.99" ${price == 0.99 ? "selected=selected" : ""} >0.99</option>
+				<option value="2.99" ${price == 2.99 ? "selected=selected" : ""} >2.99</option>
+				<option value="4.99" ${price == 4.99 ? "selected=selected" : ""} >4.99</option>
+			</select>
 
-					<c:if test="${price == 2.99}">
-						<option value="2.99" selected="selected">2.99</option>
-					</c:if>
-					<c:if test="${price != 2.99}">
-						<option value="2.99">2.99</option>
-					</c:if>
-
-					<c:if test="${price == 4.99}">
-						<option value="4.99" selected="selected">4.99</option>
-					</c:if>
-					<c:if test="${price != 4.99}">
-						<option value="4.99">4.99</option>
-					</c:if>
-				</select>
-
-				등급 :
+				등급 :  
 	    	<select id="rating" name="rating" >
 	    		<option value="">모두보기</option>
-	    		
-	    		<c:if test="${rating == 'G'}">
-						<option value="G" selected="selected">G</option>
-					</c:if>
-					<c:if test="${rating != 'G'}">
-						<option value="G">G</option>
-					</c:if>
-					
-				<c:if test="${rating == 'PG'}">
-						<option value="PG" selected="selected">PG</option>
-					</c:if>
-					<c:if test="${rating != 'PG'}">
-						<option value="PG">PG-13</option>
-					</c:if>	
-					
-	    		<c:if test="${rating == 'PG-13'}">
-						<option value="PG-13" selected="selected">PG-13</option>
-					</c:if>
-					<c:if test="${rating != 'PG-13'}">
-						<option value="PG-13">PG-13</option>
-					</c:if>
-					
-				<c:if test="${rating == 'R'}">
-						<option value="R" selected="selected">R</option>
-					</c:if>
-					<c:if test="${rating != 'R'}">
-						<option value="R">R</option>
-					</c:if>	
-					
-				<c:if test="${rating == 'NC-17'}">
-						<option value="NC-17" selected="selected">NC-17</option>
-					</c:if>
-					<c:if test="${rating != 'NC-17'}">
-						<option value="NC-17">NC-17</option>
-					</c:if>
+	    		<option value="G" ${rating == 'G' ? "selected=selected" : ""} >G</option>
+	    		<option value="PG" ${rating == 'PG' ? "selected=selected" : ""} >PG</option>
+				<option value="PG-13" ${rating == 'PG-12' ? "selected=selected" : ""} >PG-13</option>
+				<option value="R" ${rating == 'R' ? "selected=selected" : ""} >R</option>	
+	    		<option value="NC-17" ${rating == 'NC-17' ? "selected=selected" : ""} >NC-17</option>
 			</select>							    
 		    </div>
     	
-        영화이름 :
+       			영화이름 :
 	        <input name="title" type="text">
-	    배우 :   
+	   			배우 :   
 	        <input name="actor" type="text">
 	        <button type="submit">검색</button>
  
@@ -161,11 +106,11 @@ $(document).ready(function(){
  <!-- 페이징 검색어 적용전-->
     <ul class="pager">
          <c:if test="${currentPage > 1}">
-             <li class="previous"><a href="${pageContext.request.contextPath}/admin/getFilmList?currentPage=${currentPage-1}">이전</a></li>
+             <li class="previous"><a href="${pageContext.request.contextPath}/admin/getFilmList?currentPage=${currentPage-1}&category=${category}&price=${price}&rating=${rating}&title=${title}&actor=${actor}">이전</a></li>
         </c:if>
         <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/getFilmList?currentPage=1">첫페이지로</a>
         <c:if test="${currentPage < lastPage}">
-             <li class="next"><a href="${pageContext.request.contextPath}/admin/getFilmList?currentPage=${currentPage+1}">다음</a></li>
+             <li class="next"><a href="${pageContext.request.contextPath}/admin/getFilmList?currentPage=${currentPage+1}&category=${category}&price=${price}&rating=${rating}&title=${title}&actor=${actor}">다음</a></li>
          </c:if>
         <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/getFilmList?currentPage=${lastPage}">마지막 페이지로</a>
     </ul>

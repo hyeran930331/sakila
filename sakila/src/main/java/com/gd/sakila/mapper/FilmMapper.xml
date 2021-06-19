@@ -220,7 +220,7 @@
 			</if>
 			
 			<if test="actor != null and actor != ''">
-				AND actor LIKE CONCAT('%', #{actor}, '%')
+				AND actors LIKE CONCAT('%', #{actor}, '%')
 			</if>
 			
 			<if test="rating != null and rating != ''">

@@ -87,7 +87,7 @@ $(document).ready(function(){
 	</table>
    </form>
    
- <!-- 페이징 검색어 적용전-->
+ <!-- 페이징 검색어 적용-->
     <ul class="pager">
          <c:if test="${currentPage > 1}">
              <li class="previous"><a href="${pageContext.request.contextPath}/admin/getCustomerList?currentPage=${currentPage-1}&serchWord=${searchWord}&storeId=${storeId}">이전</a></li>

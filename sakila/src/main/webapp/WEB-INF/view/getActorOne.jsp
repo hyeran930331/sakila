@@ -42,7 +42,17 @@
 		
 		<c:forEach var="a" items="${actorList}">
 		<tr>
-			<td>${a.actorId}</td>
+			<td>
+			  <ul class="pager">
+		        <c:if test="${currentPage > 1}">
+		            <li class="previous"><a href="${pageContext.request.contextPath}/admin/getActorList?currentPage=${currentPage-1}&searchWord=${searchWord}">이전</a></li>
+		        </c:if>
+		        ${a.actorId}
+		        <c:if test="${currentPage < lastPage}">
+		            <li class="next"><a href="${pageContext.request.contextPath}/admin/getActorList?currentPage=${currentPage+1}&searchWord=${searchWord}">다음</a></li>
+		        </c:if>
+  			  </ul>
+			</td>
 			<td>${a.name}</td>
 
 			<td>
@@ -64,27 +74,10 @@
 		</tr>
 		</c:forEach>
 	</table>
-	
-	<!-- 검색어 입력창 admin을 빠뜨리다니... -->
-    <form action="admin/getActorList" method="get">
-        <label for="searchWord">검색어(이름) :</label> 
-        <input name="searchWord" type="text">
-        <button type="submit">검색</button>
-    </form>
-
-    <ul class="pager">
-        <c:if test="${currentPage > 1}">
-            <li class="previous"><a href="${pageContext.request.contextPath}/admin/getActorList?currentPage=${currentPage-1}&searchWord=${searchWord}">이전</a></li>
-        </c:if>
-        <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/getActorList?currentPage=1">첫페이지로</a>
-        
-        <c:if test="${currentPage < lastPage}">
-            <li class="next"><a href="${pageContext.request.contextPath}/admin/getActorList?currentPage=${currentPage+1}&searchWord=${searchWord}">다음</a></li>
-        </c:if>
-
-        <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/getActorList?currentPage=${lastPage}">마지막 페이지로</a>
-
-    </ul>
+	<div>
+		<a class="btn btn-default" href="${pageContext.request.contextPath}/admin/getActorList?currentPage=${lastPage}">목록으로</a>
+	</div>
+  
 </div>
 </body>
 </html>

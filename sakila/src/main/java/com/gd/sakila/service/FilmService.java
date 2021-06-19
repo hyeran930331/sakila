@@ -91,60 +91,38 @@ public class FilmService {
 		return Filmlist;
 	}
 	
-	public Map<String, Object> getFilmList(int currentPage, int rowPerPage, String category, Double price, String title, String actor, String rating) {
-		/*map으로 받으면 한번에 할수 있지만... controller에서는 최대한 정보처리를 안하기 위해서... 서비스에서 복붙+ctrl f 찾아바꾸기 하는걸로 흙흑*/
-		log.debug("ⓢFilmServiceⓢ param확인 currentPage :"+ currentPage);
-		log.debug("ⓢFilmServiceⓢ param확인 rowPerPage :"+ rowPerPage);
-		log.debug("ⓢFilmServiceⓢ param확인 category :"+ category);
-		log.debug("ⓢFilmServiceⓢ param확인 price :"+ price);
-		log.debug("ⓢFilmServiceⓢ param확인 title :"+ title);
-		log.debug("ⓢFilmServiceⓢ param확인 actor :"+ actor);
-		log.debug("ⓢFilmServiceⓢ param확인 rating :"+ rating);
+	public Map<String, Object> getFilmList(Map<String,Object> paramMap) {
+		log.debug("2 controller에서 온 값 확인 "+paramMap.toString());
 		
 		//선택하지 않고 검색했을때 버그수정
-		if(category != null && category.equals("")) {
-			category = null;
+		if(paramMap.get("category") != null && paramMap.get("category").equals("")) {
+			paramMap.put("category",null);
 		}
-		if(price != null && price == 0) {
-			price = null;
+		if(paramMap.get("price") != null && (double)paramMap.get("price") == 0) {
+			paramMap.put("price",null);
 		}	
-		if(rating != null && rating.equals("")) {
-			rating = null;
+		if(paramMap.get("rating") != null && paramMap.get("rating").equals("")) {
+			paramMap.put("rating",null);
 		}	
 		
-		HashMap<String, Object> paramMap = new HashMap<>();
-		paramMap.put("category", category);
-		paramMap.put("price", price);
-		paramMap.put("title", title);
-		paramMap.put("actor", actor);
-		paramMap.put("rating", rating);
-		paramMap.put("currentPage", currentPage);
-		paramMap.put("rowPerPage", rowPerPage);
-		
-		log.debug("ⓢFilmServiceⓢ +paramMap확인 currentPage :"+paramMap.get("currentPage"));
-		log.debug("ⓢFilmServiceⓢ +paramMap확인 rowPerPage :"+paramMap.get("rowPerPage"));
-		log.debug("ⓢFilmServiceⓢ +paramMap확인 category :"+paramMap.get("category"));
-		log.debug("ⓢFilmServiceⓢ +paramMap확인 price :"+paramMap.get("price"));
-		log.debug("ⓢFilmServiceⓢ +paramMap확인 title :"+paramMap.get("title"));
-		log.debug("ⓢFilmServiceⓢ +paramMap확인 actor :"+paramMap.get("actor"));
-		log.debug("ⓢFilmServiceⓢ +paramMap확인 rating :"+paramMap.get("rating"));
+		log.debug("3 mapper에 줄 값 확인"+paramMap.toString());
 		
 		//페이징
 		int total = filmMapper.selectStaffListForCount(paramMap);//전체 갯수구하기
-		log.debug("ⓢStaffServiceⓢ getFilmList() filmMapper.selectStaffListForCount:"+total);
-		int lastPage= (int)(Math.ceil((double)total / rowPerPage));//마지막 페이지구하기
-		int beginRow = ((currentPage-1)*rowPerPage); 
+		log.debug("4 mapper에서 온 total값 :"+total);
+		
+		int lastPage= (int)(Math.ceil((double)total / (int)paramMap.get("rowPerPage")));//마지막 페이지구하기
+		int beginRow = (((int)paramMap.get("currentPage")-1)*(int)paramMap.get("rowPerPage")); 
 		//현재페이지가 rowPage의 어디에 있는지.
 		//ex 1페이지면 0부터 10개 9페이지면 80부터~10개
-		log.debug("ⓢStaffServiceⓢ getFilmList() param BeginRow:"+beginRow);
-		
 		paramMap.put("beginRow",beginRow);
 		
+		log.debug("3 mapper에 줄 값 확인"+paramMap.toString());
 		List<Map<String, Object>> filmList = filmMapper.selectFilmList(paramMap);
-		log.debug("ⓢFilmServiceⓢ filmMapper.selectFilmList :"+ filmList.toString());
+		log.debug("4 mapper에서 온 filmList값 :"+ filmList.toString());
 		
 		List<Category> categoryList = categoryMapper.selectCategoryList();
-		log.debug("ⓢFilmServiceⓢ categoryMapper.selectCategoryNameList :"+ categoryList.toString());
+		log.debug("4 mapper에서 온 categoeyList값 ::"+ categoryList.toString());
 			
 		Map<String, Object> returnMap = new HashMap<>();
 		returnMap.put("filmList", filmList);
@@ -156,58 +134,59 @@ public class FilmService {
 	
 	//Map <- film , 재고량 filmCount
 	public Map<String, Object> getFilmOneForFilmId(int filmId){
-		log.debug("3 콘트롤러에서 받은 filmId 확인 : "+filmId); //파라미터 확인
-		List<Integer> FilmInStockStore = new ArrayList<Integer>(); //재고를 저장할 리스트 초기화
-		
-		List<Integer> storeNum = filmMapper.selectStoreForCount(); //스토어 번호를 불러오는 mapper
-		log.debug("4 서비스에서 받은 storeNum 확인 : "+storeNum);
-		for ( int num : storeNum) { //스토어 번호가 있으면
-			int count = 0; //프로시저 out 변수
-			log.debug("4 서비스에서 받은 : "+ filmMapper.selectFilmInStock(filmId,num,count).toString() );
-			List<Integer> list = filmMapper.selectFilmInStock(filmId,num,count);
-			int i = (int) list.size();
-			log.debug("4 서비스에서 받은 : "+ i);
-			FilmInStockStore.add(i); //재고에 넣는다(재고를 불러오는 mapper에서 저장한 count를)
-			log.debug("4 서비스에서 받은 FilmInStockStore : "+FilmInStockStore);//재고 리스트 확인
-		}
+		log.debug("2 콘트롤러에서 받은 filmId 확인 : "+filmId); //파라미터 확인
+		log.debug("3 mapper에 바뀌는 값 없음");
 		
 		Map<String, Object> filmList = filmMapper.selectFilmOneForFilmId(filmId); //필름정보를 저장하는 리스트 = mapper
-		log.debug("ⓢFilmServiceⓢ getFilmOne()  filmMapper.selectFilmOne :"+ filmList); //필름리스트 확인
+		log.debug("4 mapper에서 받은 filmList:"+ filmList); //필름리스트 확인
+		
+		List<Integer> FilmInStockStore = new ArrayList<Integer>(); //재고를 저장할 리스트 초기화
+		List<Integer> storeNum = filmMapper.selectStoreForCount(); //스토어 번호를 불러오는 mapper
+		log.debug("4 mapper에서 받은 storeNum 확인 : "+storeNum);
+		for ( int num : storeNum) { //스토어 번호가 있으면
+			int count = 0; //프로시저 out 변수
+			List<Integer> list = filmMapper.selectFilmInStock(filmId,num,count);
+			log.debug("4 mapper에서 받은 list : "+ list.toString() );
+			int i = (int) list.size();
+			log.debug("4 mapper에서 받은 : "+ i);
+			FilmInStockStore.add(i); //재고에 넣는다(재고를 불러오는 mapper에서 저장한 count를)
+			log.debug("4 mapper에서 받은 FilmInStockStore : "+FilmInStockStore);//재고 리스트 확인
+		}
+
 		
 		Map<String,Object> returnMap = new HashMap<String, Object>();
 		returnMap.put("FilmInStockStore", FilmInStockStore);
 		returnMap.put("filmList", filmList);
-
+		log.debug("5 controller에 줄 returnMap :"+ returnMap.toString()); 
 		return returnMap;
 	}
 	
 	public Map<String, Object> getFilmOneForTitle(String title){
-		log.debug("3 콘트롤러에서 받은 paramMap 확인 : "+title); //파라미터 확인
+		log.debug("2 콘트롤러에서 받은 paramMap 확인 : "+title); //파라미터 확인
+		log.debug("3 mapper에 바뀌는 값 없음");
 		
 		Map<String, Object> filmList = filmMapper.selectFilmOneForTitle(title); //필름정보를 저장하는 리스트 = mapper
 		log.debug("4mapper에서 받은 filmList:"+ filmList); //필름리스트 확인
+		int filmId= (int) filmList.get("filmId");
+		log.debug("4 mapper에서 받은 filmId 확인: "+ filmId );
 		
 		List<Integer> FilmInStockStore = new ArrayList<Integer>(); //재고를 저장할 리스트 초기화
-		
 		List<Integer> storeNum = filmMapper.selectStoreForCount(); //스토어 번호를 불러오는 mapper
 		log.debug("4 서비스에서 받은 storeNum 확인 : "+storeNum);
 		for ( int num : storeNum) { //스토어 번호가 있으면
 			int count = 0; //프로시저 out 변수
-			int filmId= (int) filmList.get("filmId");
-			log.debug("4 서비스에서 받은 : "+ filmMapper.selectFilmInStock(filmId,num,count).toString() );
 			List<Integer> list = filmMapper.selectFilmInStock(filmId,num,count);
+			log.debug("4 mapper에서 받은 list : "+ list.toString() );
 			int i = (int) list.size();
-			log.debug("4 서비스에서 받은 : "+ i);
+			log.debug("4 mapper에서 받은 : "+ i);
 			FilmInStockStore.add(i); //재고에 넣는다(재고를 불러오는 mapper에서 저장한 count를)
-			log.debug("4 서비스에서 받은 FilmInStockStore : "+FilmInStockStore);//재고 리스트 확인
+			log.debug("4 mapper에서 받은 FilmInStockStore : "+FilmInStockStore);//재고 리스트 확인
 		}
-		
-		
+
 		
 		Map<String,Object> returnMap = new HashMap<String, Object>();
 		returnMap.put("FilmInStockStore", FilmInStockStore);
 		returnMap.put("filmList", filmList);
-
 		return returnMap;
 	}
 	

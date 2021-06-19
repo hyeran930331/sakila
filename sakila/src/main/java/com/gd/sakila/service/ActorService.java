@@ -30,27 +30,35 @@ public class ActorService {
 		HashMap<String,Object> resultMap = new HashMap<String,Object>();
 		resultMap.put("total", total);
 		resultMap.put("actorList", actorList);
+		log.debug("5 controller에서 보낸 resultMap 확인 : "+ resultMap.toString()); //여기까지 출력
 		return resultMap;
 	}
 	
-	public Map<String,Object> getActorList(int currentPage, int rowPerPage, String searchWord){
+	public Map<String,Object> getActorList(Map<String,Object> paramMap){
+		log.debug("2 controller에서 보낸 paramMap확인"+paramMap.toString());
+		if(paramMap.get("searchWord") != null && paramMap.get("searchWord").equals("")) {
+			paramMap.put("searchWord",null);
+		}
+		log.debug("3 mapper로 보낼 map확인:"+paramMap.toString());
+		
+		int beginRow = (((int)paramMap.get("currentPage")-1)*(int)paramMap.get("rowPerPage"));
+		int total = (actorMapper.selectActorForCount((String)paramMap.get("searchWord")));
+		log.debug("4 mapper에서 온 total 확인: "+ total);
+		int lastPage = (int)(Math.ceil((double)total / (int)paramMap.get("rowPerPage")));
+		
 		Page page = new Page();
-		int beginRow = ((currentPage-1)*rowPerPage);
-		int total = (actorMapper.selectActorForCount(searchWord));
-		log.debug("ⓢActorServiceⓢ Param total : "+ total);
-		int lastPage = (int)(Math.ceil((double)total / rowPerPage));
 		page.setBeginRow(beginRow);
-		page.setRowPerPage(rowPerPage);
-		page.setSearchWord(searchWord);
-		log.debug("ⓢActorServiceⓢ Param : "+ page);
+		page.setRowPerPage((int)paramMap.get("rowPerPage"));
+		page.setSearchWord((String)paramMap.get("searchWord"));
+		log.debug("3 mapper로 보낼 Page 학인 : "+ page.toString());
 		
 		List<Map<String, Object>> actorList = actorMapper.selectActorList(page);
-		log.debug("ⓢActorServiceⓢ actorMapper.selectActorInfoList(page) : "+ actorList); //여기까지 출력
-		log.debug("ⓢActorServiceⓢ actorMapper.selectActorInfoList(page) : "+ actorList.toString()); //여기까지 출력
+		log.debug("4 mapper에서 온 actorList 확인 : "+ actorList.toString()); //여기까지 출력
 		
 		HashMap<String,Object> resultMap = new HashMap<> ();
 		resultMap.put("lastPage", lastPage);
 		resultMap.put("actorList", actorList);
+		log.debug("5 controller로 보낼 resultMap 확인 : "+ resultMap.toString()); //여기까지 출력
 		return resultMap;
 	}
 

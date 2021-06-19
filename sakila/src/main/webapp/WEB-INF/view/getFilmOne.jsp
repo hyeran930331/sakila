@@ -139,7 +139,8 @@
     </form>
     
 	<div>
-    <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/getFilmList">목록으로</a>
+	<fmt:formatNumber type="number" var="currentPage" value="${((filmList.filmId)/10) - (((filmList.filmId)/10)%1)}" />
+    <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/getFilmList?currentPage=${currentPage}">목록으로</a>
 	</div>
 	
 </div>

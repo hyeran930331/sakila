@@ -69,7 +69,7 @@
 	<!-- 검색어 입력창 admin을 빠뜨리다니... -->
     <form action="admin/getActorList" method="get">
         <label for="searchWord">검색어(이름) :</label> 
-        <input name="searchWord" type="text">
+        <input id="searchWord" name="searchWord" type="text">
         <button type="submit">검색</button>
     </form>
 
