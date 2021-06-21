@@ -21,7 +21,7 @@ public class LoginFilter implements Filter {
  
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		//요청전
-		log.debug("★★★★★ Login filter 요청전");
+		log.debug("★★★★★ Login filter 요청전"); //5/20 2:51 log왜 오류날까?
 		HttpSession session = null;
 		if (request instanceof HttpServletRequest) {
 			session = ((HttpServletRequest)request).getSession(); //(HttpServletRequest)형태로 형변환

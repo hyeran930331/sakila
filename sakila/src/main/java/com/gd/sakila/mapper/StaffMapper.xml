@@ -1,6 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gd.sakila.mapper.StaffMapper">
+
+	<select id="selectStaff"
+			parameterType="int"
+			resultType="com.gd.sakila.vo.Staff">
+			
+		SELECT 
+			ID staffId
+			, name username
+		FROM staff_list
+		WHERE
+			SID = #{storeId}
+		Order BY
+			staffId ASC
+	</select>
+
+	<insert id="insertStaff"
+			parameterType="com.gd.sakila.vo.Staff">
+		<selectKey resultType="int" keyProperty="addressId" order="BEFORE">
+			SELECT 
+				MAX(address_id) addressId
+			FROM address a
+				left join city c on a.city_id = c.city_id   
+		</selectKey>    	
+			
+		INSERT INTO
+			staff (active, first_name, last_name, address_id, email, store_id, username, password)
+			VALUES (1, #{firstName}, #{lastName}, #{addressId}, #{email}, #{storeId}, #{username}, PASSWORD(#{password}))
+	</insert>
+	
 	<select id="selectStaffByLogin"
 			parameterType="com.gd.sakila.vo.Staff"
 			resultType="com.gd.sakila.vo.Staff">
@@ -12,4 +41,42 @@
 		WHERE email = #{email} <!-- getEmail() -->
 		AND password = PASSWORD(#{password}) <!-- getPassword() -->
 	</select>
+	
+	<select id="selectStaffList"
+			parameterType="com.gd.sakila.vo.Page"
+			resultType="HashMap">
+			
+		SELECT 
+			ID staffId
+			, SID storeId
+			, name username
+			, address address
+			, city city
+			, country country
+			, phone phone
+		FROM staff_list
+		<where>
+			<if test="searchWord != null">
+				name LIKE CONCAT('%',#{searchWord},'%')
+			</if>
+		</where>
+		Order BY
+			SID ASC
+		LIMIT
+			#{beginRow}, #{rowPerPage}
+	</select>
+	
+	<select id="selectStaffListForCount"
+			parameterType="String"
+			resultType="int">
+		SELECT 
+			COUNT(ID)
+		FROM staff_list		
+		<where>
+			<if test="searchWord != null">
+				name LIKE CONCAT('%',#{searchWord},'%')
+			</if>
+		</where>
+	</select>
+	
 </mapper>

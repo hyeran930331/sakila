@@ -17,7 +17,13 @@ public class CommentService {
 
 	public int addComment(Comment comment) {
 		// TODO Auto-generated method stub
-		log.debug("▶▶▶▶▶▶addComment param: "+ comment.toString());
+		log.debug("ⓜCommentMapperⓜ addComment param: "+ comment.toString());
 		return commentMapper.insertComment(comment); //int return은 만들지 않아서 인가? (5:47)
+	}
+
+	public int removeCommentByCommentId(int commentId) {
+		// TODO Auto-generated method stub
+		log.debug("ⓜCommentMapperⓜ removeComment param: "+ commentId);
+		return commentMapper.deleteCommentByCommentId(commentId);
 	}
 }

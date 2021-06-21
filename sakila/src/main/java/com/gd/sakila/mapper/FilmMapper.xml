@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gd.sakila.mapper.FilmMapper">
+	
+	<update id="updateFilm"
+			parameterType="com.gd.sakila.vo.Film">
+		UPDATE 
+			film 
+		SET 
+			title=#{title}
+			, description=#{description}
+			, length=#{length}
+			, rating=#{rating}
+			, rental_rate=#{rentalRate}
+		WHERE 
+			film_id=#{filmId}
+	</update>
+	
+	<update id="updateFilmCategory"
+			parameterType="Map">
+		UPDATE 
+			film_category 
+		SET 
+			category_id=#{categoryId}
+		WHERE 
+			film_id=#{filmId}
+	</update>
+
+	<insert id="insertFilmCategory"
+			parameterType="java.util.Map">
+		INSERT INTO 
+			film_category( film_id, category_id)
+			VALUES( #{filmId}, #{categoryId})
+	</insert>
+	
+	<insert id="insertFilm"
+			parameterType="com.gd.sakila.vo.Film">
+		<selectKey keyProperty="filmId" resultType="int" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		
+		INSERT INTO 
+			film( 	title
+					,description
+					,release_year
+					,language_id
+					,original_laguage_id
+					,reantal_duration
+					,rental_rate
+					,length
+					,replacement_cost
+					,rating
+					,special_features)
+					
+			VALUES(	${title}
+					,${description}
+					,${releaseYear}
+					,${languageId}
+					,${originalLanguageId}
+					,${reantalDuration}
+					,${rantalRate}
+					,${length}
+					,${replacementCost}
+					,${rating}
+					,${specialFeatures})
+	</insert>
+
+
+	<insert id="insertFilmActor" 
+			parameterType="java.util.Map">
+		<if test="actorId != null and actorId != ''">
+			INSERT INTO film_actor(
+				actor_id,
+				film_id
+			) VALUES (
+				#{actorId},
+				#{filmId}
+			)
+		</if>
+	</insert>
+	
+	<delete id="deleteFilmActor"
+			parameterType="int">
+		DELETE 
+		FROM 
+			film_actor
+		WHERE 
+			film_id = #{filmId}
+	</delete>
+
+	<select id ="selectFilmActorListByFilm"
+			parameterType="int"
+			resultType="Map">
+		SELECT 
+	   		a.actor_id actorId
+	   		,  CONCAT(first_name,' ',last_name) name
+	   		, t.actor_id cast
+		FROM
+	         actor a
+	         LEFT JOIN 
+	         	(SELECT * 
+	        	 FROM film_actor fa
+	        	 WHERE film_id = ${filmId}) t
+	       	<!-- actor는 다나오게 하고 = left  join-->
+			ON a.actor_id = t.actor_id
+			<!-- 기준은 두 테이블의 actor Id가 같을때 -->
+			<!--  null = 출연하지 않는 배우 -->
+		ORDER BY
+			first_name ASC
+	</select>
+
+	<select id ="selectStoreForCount"
+			resultType="Integer"> <!-- 리스트는 안에 있는 속성으로... -->
+		SELECT 
+			store_id
+		FROM 
+			store;
+	</select>
+	
+	<select id="selectFilmInStock"
+			statementType="CALLABLE" 
+			parameterType="int"
+			resultType="Integer" >
+		<!--  Map : filmId, storeId, filmCount (mode=OUT) -->
+		{
+		call 
+			film_in_stock 
+			(
+			#{filmId}
+			,#{storeId}
+			,#{count, mode=OUT, jdbcType=DECIMAL, javaType=Integer}
+			)
+		}
+	</select>
+	
+	
+	<select id="selectStaffListForCount"
+			parameterType="java.util.Map"
+			resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			film_list
+			
+		<include refid="searchWords"></include>	
+		
+	</select>
+	
+	
+	<select id="selectFilmList" 
+			parameterType="java.util.Map"
+			resultType="java.util.Map">
+		SELECT 
+			FID filmId
+			, title
+			, category
+			, price
+			, rating
+		FROM 
+			film_list
+		<include refid="searchWords"> </include>
+		<!-- 조건절이 order보다 앞에 있어야 됩니다 -->
+		Order BY
+			FID ASC 	
+
+		LIMIT
+			#{beginRow}, #{rowPerPage}	
+	</select>
+
+	<select id="selectFilmOneForFilmId"
+			parameterType="int"
+			resultType="java.util.Map">
+	
+		SELECT
+			FID filmId
+			, title
+			, description
+			, category
+			, price
+			, rating
+			, length
+			, actors
+		FROM
+			film_list 
+		WHERE
+			FID = #{filmId} 
+	</select>
+	
+	<select id="selectFilmOneForTitle"
+			parameterType="String"
+			resultType="java.util.Map">
+	
+		SELECT
+			FID filmId
+			, title
+			, description
+			, category
+			, price
+			, rating
+			, length
+			, actors
+		FROM
+			film_list 
+		WHERE
+			title = #{title}
+	</select>
+	
+	<sql id="searchWords">
+		<where>
+			<if test="category != null and category != ''">
+				AND category = #{category}
+			</if>
+			
+			<if test="price != null and price != ''">
+				AND price = #{price}
+			</if>
+			
+			<if test="title != null and title != ''">
+				AND title LIKE CONCAT('%', #{title}, '%')
+			</if>
+			
+			<if test="actor != null and actor != ''">
+				AND actors LIKE CONCAT('%', #{actor}, '%')
+			</if>
+			
+			<if test="rating != null and rating != ''">
+				AND rating = #{rating}
+			</if>
+		</where>
+	</sql>
+</mapper>

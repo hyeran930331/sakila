@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gd.sakila.mapper.CountryMapper">
+	<select id="selectCountry"
+			resultType="com.gd.sakila.vo.Country">
+		SELECT
+			country_id countryId,
+			country 
+		FROM country
+	</select>
+	
+	<insert id="insertCountry"
+			parameterType="String">
+		INSERT INTO
+			country(country)
+			VALUES (${country})
+	</insert>
+
 	<select id="selectCountryList" 
 			resultType="Map"
 			parameterType="com.gd.sakila.vo.Page">
@@ -18,6 +33,9 @@
 	
 	<select id="selectCountryTotal"
 			resultType="int">
-		SELECT COUNT(*) FROM country
+		SELECT 
+			COUNT(*) 
+		FROM 
+			country
 	</select>
 </mapper>

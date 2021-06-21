@@ -1,3 +1,4 @@
+<!--  http://localhost/home -->
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
@@ -47,26 +48,28 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h1> Home</h1>
+	<div class="container">
+	<h1> Home</h1> <jsp:include page="/WEB-INF/view/nav.jsp"/>
 	<!-- 로그오프시 -->
 	<c:if test="${loginStaff == null}">
 		<form id ="loginForm" action="${pageContext.request.contextPath}/login" method="post">
-			<div> mail :</div>
-			<input type="text" id="email" name="email">
-			<div> password : </div>
-			<input type="password" id="password" name="password">
-			<input type="button" id="btn" name="btn" type="button" value="로그인">
+			<div> e mail Id :
+				<input type="text" id="email" name="email">
+				
+			</div>
+			<div> password :
+				<input type="password" id="password" name="password">
+				<input type="button" id="btn" name="btn" type="button" value="로그인">
+			</div>
+			
 			<!-- button type="submit"이 아니고 input type="button" <script>활용 -->
 		</form>
 	</c:if>
-	
-	
-	
+
 	<!-- 로그온시 -->
 	<c:if test="${loginStaff!= null}">
-		<a href="${pageContext.request.contextPath}/admin/getBoardList">게시판 보기</a>
-		<br>
 		<a href="${pageContext.request.contextPath}/admin/logout">로그아웃</a>
 	</c:if>
+	</div>
 </body>
 </html>

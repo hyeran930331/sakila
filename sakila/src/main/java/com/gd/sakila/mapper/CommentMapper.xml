@@ -8,12 +8,12 @@
 			DELETE FROM 
 				comment
 			WHERE 
-				board_id = #{boardId}
+				comment_id = #{commentId}
 	</delete>
 
 	 <!-- 댓글하나만 -->
 	<delete id ="deleteCommentByCommentId" 
-			parameterType = "Integer">
+			parameterType = "int">
 	
 			DELETE FROM 
 				comment
@@ -29,7 +29,7 @@
 				comment
 				(staff_id, content, insert_date, board_id)
 				VALUES
-				(${staffId}, ${content}, now(), ${boardId})
+				(${staffId}, '${content}', now(), ${boardId})
 	</insert>
 
 
@@ -38,10 +38,11 @@
 			parameterType="Integer"> <!--parameterType="int" 뭐가 다른가--> <!-- username가져오기... -->
 			
 			SELECT 
-			comment_id commentId,
-			staff_id staffId,
-			content content,
-			insert_date insertDate
+			comment_id commentId
+			, staff_id staffId
+			, content content
+			, insert_date insertDate
+			, board_id boardId
 		FROM
 			comment
 		Where

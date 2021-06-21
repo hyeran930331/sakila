@@ -1,5 +1,7 @@
 package com.gd.sakila.controller;
 
+import java.io.File;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +21,7 @@ public class HomeController {
 	
 	@PostMapping({"/login"})
 	public String login(HttpSession session, Staff staff) { //servlet 세션을 직접사용. 컨트롤러 메서드의 매개변수는 DI대상
-		log.debug ("login() parm staff "+staff.toString());
+		log.debug ("login() parm staff "+staff.toString()); 
 		
 		Staff loginStaff = staffService.login(staff);
 
@@ -40,6 +42,11 @@ public class HomeController {
 	public String home() {
 		//System.out.println("홈");
 		log.debug("home"); //@Slf4j를 했기때문에 Logger log = 하지 않고도 사용가능.
-		return "home";
+		
+		File file = new File("");
+		String path = file.getAbsolutePath();
+		log.debug(path);
+		
+		return "/home";
 	}
 }

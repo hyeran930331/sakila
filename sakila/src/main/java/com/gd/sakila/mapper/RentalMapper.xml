@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gd.sakila.mapper.RentalMapper">
+	<update id="updateRental"
+			parameterType="Map">
+		<!-- 가장큰  rentalId를 int로 받는 셀렉트를 먼저실행-->
+		<selectKey resultType="int" keyProperty="rentalId" order="BEFORE">
+			SELECT 
+				MAX(r.rental_id) rentalId
+			FROM rental r
+			WHERE
+				r.return_date IS NULL and r.inventory_id= #{inventoryId}
+				<!-- 조건은 인벤토리가 받아온 map의 인벤토리랑 같고 return_date가 null인것 -->
+		</selectKey> 
+			
+		UPDATE
+			rental 
+		<!-- 렌탈 테이블을 수정 -->	
+		SET
+			return_date = now() <!-- 반납날짜를 현재로 -->
+		WHERE
+			rental_id = #{rentalId}
+			<!-- 조건은 셀렉트키로 받은  가장큰  rentalId-->
+	</update>
+
+</mapper>

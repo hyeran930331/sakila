@@ -29,12 +29,12 @@
  
 <script>
     $(document).ready(function() {
-        $('#addButton').click(function() {
+        $('#removeBtn').click(function() {
             if ($('#boardPw').val().length < 4) {
                 alert('boardPw는 4자이상 이어야 합니다');
                 $('#boardPw').focus();
             } else {
-                $('#addForm').submit();
+                $('#removeForm').submit();
             }
         });
     });
@@ -43,7 +43,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>remove BOARD(spring mvc 방식)</h1>
+        <h1>remove BOARD(spring mvc 방식)</h1> <jsp:include page="/WEB-INF/view/nav.jsp"/>
         <form id="removeForm"
             action="${pageContext.request.contextPath}/admin/removeBoard" method="post">
             <div class="form-group">
@@ -55,7 +55,7 @@
                     name="boardPw" id="boardPw" type="password" />
             </div>
             <div>
-                <input class="btn btn-default" id="removeButton" type="button" value="글삭제" /> 
+                <input class="btn btn-default" id="removeBtn" type="button" value="글삭제" /> 
                 <input class="btn btn-default" type="reset" value="초기화" /> 
                 <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/getBoardList">글목록</a>
             </div>

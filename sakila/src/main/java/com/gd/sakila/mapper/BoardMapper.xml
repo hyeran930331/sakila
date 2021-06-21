@@ -53,6 +53,11 @@
 
 	<insert id="insertBoard" 
 			parameterType="com.gd.sakila.vo.Board">
+		<selectKey resultType="int"
+					keyProperty="boardId" order="AFTER">
+			SELECT LAST_INSERT_ID() 
+			<!-- 5/21 10:52오타 -->
+		</selectKey>
 		INSERT INTO board( 
 			staff_id, board_pw, board_title, board_content, insert_date
 		) VALUES (
@@ -63,8 +68,8 @@
 	<delete id="deleteBoard"
 			parameterType="com.gd.sakila.vo.Board">
 		DELETE FROM board 
-		WHERE board_id = #{boardID} 
-		AND board_pw = PASSWORD(#{boardPW})
+		WHERE board_id = #{boardId} <!-- 5/21 12:17오타 -->
+		AND board_pw = PASSWORD(#{boardPw}) <!-- 5/21 12:17오타 -->
 	</delete>
 	
 	<update id="updateBoard" 

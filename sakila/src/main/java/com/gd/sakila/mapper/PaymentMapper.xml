@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gd.sakila.mapper.PaymentMapper">
+
+	<update id="updatePaymentAmount"
+			parameterType="Map">
+		<!-- 가장큰  rentalId를 int로 받는 셀렉트를 먼저실행-->
+		<selectKey resultType="int" keyProperty="rentalId" order="BEFORE">
+			SELECT 
+				MAX(r.rental_id) rentalId
+			FROM rental r
+			WHERE
+				r.inventory_id= ${inventoryId} AND return_date IS null
+				<!-- 조건은 인벤토리가 받아온 map의 인벤토리랑 같고 return_date가 null인것 -->
+		</selectKey> 
+		
+		UPDATE
+			payment p
+		<!-- 페이먼트 테이블을 수정 -->
+		SET  amount = p.amount+#{overdueDate} <!-- 여기가 포인트. 기존p.amount값 + 연쳬일을 더한다 -->
+			, staff_id = 3 <!-- 스태프 임의설정 -->
+			, payment_date = now() <!-- 받은 날짜를 현재로 바꾸기 -->
+		
+		WHERE
+			rental_id = #{rentalId} 
+			<!-- 조건은 셀렉트키로 받은  가장큰  rentalId-->
+	</update>
+
+</mapper>
